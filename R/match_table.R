@@ -4,15 +4,19 @@
 #' It can also be used to convert country names in different languages.
 #' The use of fuzzy matching allows more flexibility in recognising and identifying country names.
 #' @param x A vector of country names
-#' @param to A vector containg one or more desired naming conventions to which \code{x} should be converted. Possible values are: "all", "ISO-3", "ISO-2", ... Default is "all".
+#' @param to A vector containing one or more desired naming conventions to which \code{x} should be converted to. Possible values are: "all", "ISO-3", "ISO-2", ... Default is "all".
 #' @param fuzzy_match Logical value indicating whether fuzzy matching of country names should be allowed (\code{TRUE}), or only exact matches are allowed (\code{FALSE}). Default is \code{TRUE}.
-#' @param verbose Logical value indicating whether the function should print to the console a report on the matching process
+#' @param verbose Logical value indicating whether the function should print to the console a report on the matching process. Default is \code{FALSE}.
 #' @param matching_info Logical value. If set to true the output match table will include additional information on the matching of \code{x}'s entries.
-#' @param simplify Logical value. If set to \code{TRUE} the function will return a the match table as a data.frame object. If set to \code{FALSE}, the function will return a list object containing the match table and additional details on the country matching process. Default is \code{TRUE}.
-#' @param custom_table Custom conversion table to be used. Default is \code{NULL}.
+#' @param simplify Logical value. If set to \code{TRUE} the function will return the match table as a \code{data.frame} object. If set to \code{FALSE}, the function will return a list object containing the match table and additional details on the country matching process. Default is \code{TRUE}.
+#' @param custom_table Custom conversion table to be used. This needs to be a data.frame object. Default is \code{NULL}.
 #' @return Returns a conversion table for countries names to the desired naming conventions.
 #' @export
-#' @import dplyr data.table magrittr stringdist stringr fastmatch assertthat
+#' @import dplyr magrittr assertthat
+#' @importFrom stringdist stringdist
+#' @importFrom stringr str_trim
+#' @importFrom stats na.omit quantile
+#' @importFrom utils data
 #' @examples
 #' match_table(x=c("US","Italia","France","United States"), to= "ISO3")
 match_table <- function(x,
@@ -39,24 +43,21 @@ match_table <- function(x,
   if (is.null(custom_table)){
     if (!all(to %in% c("all","ISO3","M49_code")) | length(to)<1)  stop("The value provided to the - to - argument is not valid")
     if (to %in% "all"){to <- c("ISO3","M49_code")}
-    table_references<-read.csv("./programme files/country_reference_list_FULL.csv",header=TRUE,colClasses = "character")
-    table_references_lower <- table_references %>% mutate_all(.funs=tolower)
-    flat_references_lower <- unlist(table_references_lower)
-    flat_references_lower <- flat_references_lower[flat_references_lower != "" & !is.na(flat_references_lower)]
-
+    utils::data("country_reference_list")
+    table_references <- country_reference_list
   } else {
 
     #coerce to data frame and check that the provided table has at least two columns. otherwise give error
     custom_table <- as.data.frame(custom_table)
-    if(ncol(custom_table)<2){stop("The table provided in - custom table - needs to have at least two column: a country ")}
-
-    #check for "all" in to. if present then use all column names
-    #fuzzy match column name - set maximum distance, otherwise give error
-
-    #!this snippet needs to produce a table_references and a flat_references_lower
+    if(!is.data.frame(custom_table)){stop("The table provided in - custom_table - needs to be coecible to a data.frame class")}
+    if (to %in% "all"){to <- c(colnames(custom_table))}
+    table_references <- custom_table
   }
 
-
+  #prepare the reference table for matching
+  table_references_lower <- table_references %>% mutate_all(.funs=tolower)
+  flat_references_lower <- unlist(table_references_lower)
+  flat_references_lower <- flat_references_lower[flat_references_lower != "" & !is.na(flat_references_lower)]
   #_________________________________________________________
 
 
@@ -69,7 +70,12 @@ match_table <- function(x,
   #create table
   conversion_table <- data.frame(list_countries, simplified = str_trim(tolower(list_countries), side = "both"), exact_match = NA , closest_match=NA, dist=NA)
 
-  #add conversionn columns for each of the desired standards
+  #check that values given in "to" are are among the column header name, otherwise stop execution
+  if (!all(to %in% colnames(table_references))){
+    stop("One or more of the values provided to the - to - argument is not valid. If a custom conversion is used, make sure the values in - to - are among the column names of the provided table.")
+  }
+
+  #add conversion columns for each of the desired naming conventions
   for (i in to){
     conversion_table[,i] <- NA
   }
@@ -135,6 +141,7 @@ match_table <- function(x,
   repeated <- duplicated(na.omit(conversion_table[,to]))|duplicated(na.omit(conversion_table[,to]),fromLast=TRUE)
   n_exact_matches <- sum(conversion_table$exact_match)
   dist_summary <- summary(conversion_table$dist[!conversion_table$exact_match], na.rm=TRUE)
+  uncertain_matches <- list_countries[conversion_table$dist/nchar(list_countries) > 0.4]
 
   #issue report
   if (verbose){
@@ -157,6 +164,12 @@ match_table <- function(x,
     if (any(repeated)){
       cat("\n\nMultiple country IDs have been matched to the same country:")
       cat(paste0("\n  - ", na.omit(conversion_table)[repeated,"list_countries"]," : ",na.omit(conversion_table)[repeated,to[1]]))
+    }
+
+    #Message on uncertain matches
+    if(length(uncertain_matches)>0){
+      cat("\n\nThe matching for the following countries could be inaccurate:")
+      cat(paste(uncertain_matches, collapse=", "))
     }
   } else {
     if (any(no_equiv>0)) message("Some country IDs have no match in one or more country naming conventions")
