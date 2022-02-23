@@ -18,9 +18,9 @@
 #' @importFrom stats na.omit quantile
 #' @importFrom utils data
 #' @examples
-#' match_table(x=c("US","Italia","France","United States"), to= "ISO3")
+#' match_table(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= c("UN_en","ISO3"))
 match_table <- function(x,
-                        to = "all",     # ISO3 ISO2 M49_name M49_code WB IMF WTO ...
+                        to = c("name_en","ISO3"),
                         fuzzy_match = TRUE,
                         verbose = FALSE,
                         matching_info = TRUE,
@@ -39,10 +39,11 @@ match_table <- function(x,
 
   #LOADING REFERENCE TABLE AND PREP INPUTS :----------------
 
+  list_nomenclatures <- c("simple", "ISO3", "ISO2", "ISO_code", "UN_ar", "UN_zh", "UN_en", "UN_fr", "UN_ru", "UN_es", "WTO_en", "WTO_fr", "WTO_es", "GTAP", "name_ar", "name_bg", "name_cs", "name_da", "name_de", "name_el", "name_en", "name_es", "name_et", "name_eu", "name_fi", "name_fr", "name_hu", "name_it", "name_ja", "name_ko", "name_lt", "name_nl", "name_no", "name_pl", "name_pt", "name_ro", "name_ru", "name_sk", "name_sv", "name_th", "name_uk", "name_zh", "name_zh-tw")
   x <- as.character(x)
   if (is.null(custom_table)){
-    if (!all(to %in% c("all","ISO3","M49_code")) | length(to)<1)  stop("The value provided to the - to - argument is not valid")
-    if (to %in% "all"){to <- c("ISO3","M49_code")}
+    if (!all(to %in% c("all",list_nomenclatures)) | length(to)<1)  stop("The value provided to the - to - argument is not valid")
+    if ("all" %in% to){to <- list_nomenclatures}
     utils::data("country_reference_list")
     table_references <- country_reference_list
   } else {
@@ -51,6 +52,7 @@ match_table <- function(x,
     custom_table <- as.data.frame(custom_table)
     if(!is.data.frame(custom_table)){stop("The table provided in - custom_table - needs to be coecible to a data.frame class")}
     if (to %in% "all"){to <- c(colnames(custom_table))}
+    if (!all(to %in% c("all",colnames(custom_table)) | length(to)<1))  stop("The value provided to the - to - argument is not valid. It needs to be a vector of column names from the table used in the - custom_table - argument or the string `all`.")
     table_references <- custom_table
   }
 
@@ -162,7 +164,7 @@ match_table <- function(x,
 
     # Message on multiple ids matched to same country
     if (any(repeated)){
-      cat("\n\nMultiple country IDs have been matched to the same country:")
+      cat("\n\nMultiple arguments have been matched to the same country name:")
       cat(paste0("\n  - ", na.omit(conversion_table)[repeated,"list_countries"]," : ",na.omit(conversion_table)[repeated,to[1]]))
     }
 

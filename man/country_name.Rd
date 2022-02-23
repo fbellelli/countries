@@ -8,7 +8,7 @@ country_name(
   x,
   to = "ISO3",
   fuzzy_match = TRUE,
-  verbose = TRUE,
+  verbose = FALSE,
   simplify = TRUE,
   custom_table = NULL
 )
@@ -20,19 +20,26 @@ country_name(
 
 \item{fuzzy_match}{Logical value indicating whether fuzzy matching of country names should be allowed (\code{TRUE}), or only exact matches are allowed (\code{FALSE}). Default is \code{TRUE}.}
 
-\item{verbose}{Logical value indicating whether the function should print to the console a report on the matching process. Default is \code{FALSE}.}
+\item{verbose}{Logical value indicating whether the function should print to the console a full report. Default is \code{FALSE}.}
 
-\item{simplify}{Logical value. If set to \code{TRUE} the function will return the match table as a \code{data.frame} object. If set to \code{FALSE}, the function will return a list object containing the match table and additional details on the country matching process. Default is \code{TRUE}.}
+\item{simplify}{Logical value. If set to \code{TRUE} the function will return a vector of converted names. If set to \code{FALSE}, the function will return a list object containing the converted vector and additional details on the country matching process. Default is \code{TRUE}.}
 
-\item{custom_table}{Custom conversion table to be used. This needs to be a data.frame object. Default is \code{NULL}.}
+\item{custom_table}{Custom conversion table to be used. This needs to be a \code{data.frame} object. Default is \code{NULL}.}
 }
 \value{
-Returns a vector of converted country names.
+Returns a vector of converted country names. If multiple nomenclatures are passed to the argument \code{to}, the vectors are arranged in a data frame.
 }
 \description{
 This function recognises and converts country names to different nomenclatures and languages.
 It supports fuzzy matching for greater flexibility.
 }
 \examples{
-country_name(x=c("US","Italia","France","United States"), to= "ISO3")
+#Convert country names to a single nomenclatures: (e.g. 3-letters ISO code)
+country_name(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= "ISO3")
+
+#When multiple arguments are provided to the - to - argument, a data frame is returned:
+country_name(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= c("UN_en","UN_fr","ISO3"))
+
+#This function can also be used to translate country names: (e.g. translating all to Chinese)
+country_name(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= "name_zh")
 }

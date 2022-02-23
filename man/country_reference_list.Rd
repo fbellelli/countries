@@ -7,7 +7,15 @@
 \format{
 A data frame with columns corresponding to different country naming conventions.
 \describe{
-  \item{ISO3}{ISO-3 country codes}
+  \item{simple}{Reference name for the geographic unit. The names in this column contain only ASCII characters. This nomenclature is available for all countries.}
+  \item{ISO3}{3-letter country codes as defined in ISO standard \code{3166-1 alpha-3}. This nomenclature is available for the territories in the standard (currently 249 territories).}
+  \item{ISO2}{2-letter country codes as defined in ISO standard \code{3166-1 alpha-2}. This nomenclature is available for the territories in the standard (currently 249 territories).}
+  \item{ISO_code}{Numeric country codes as defined in ISO standard \code{3166-1 numeric}. This country code is the same as the UN's country number (\href{https://unstats.un.org/unsd/methodology/m49/}{M49 standard}). This nomenclature is available for the territories in the ISO standard (currently 249 countries).}
+  \item{UN_\strong{xx}}{Official UN name in 6 official UN languages. Arabic (\code{UN_ar}), Chinese  (\code{UN_zh}), English  (\code{UN_en}), French  (\code{UN_fr}), Spanish  (\code{UN_es}), Russian (\code{UN_ru}). This nomenclature is only available for countries in the \href{https://unstats.un.org/unsd/methodology/m49/}{M49 standard} (currently 249 territories).}
+  \item{WTO_\strong{xx}}{Official WTO name in 3 official WTO languages: English (\code{WTO_en}), French (\code{WTO_fr}), Spanish (\code{WTO_es}). This nomenclature is only available for \href{https://www.wto.org/english/thewto_e/whatis_e/tif_e/org6_e.htm}{WTO members and observers} (currently 189 entities).}
+  \item{name_\strong{xx}}{Translation of ISO country names in 28 different languages: Arabic (\code{name_ar}), Bulgarian (\code{name_bg}), Czech (\code{name_cs}), Danish (\code{name_da}), German (\code{name_de}), Greek (\code{name_el}), English  (\code{name_en}), Spanish  (\code{name_es}), Estonian (\code{name_et}),  Basque (\code{name_eu}),  Finnish (\code{name_fi}), French (\code{name_fr}), Hungarian (\code{name_hu}), Italian (\code{name_it}), Japponease (\code{name_ja}), Korean (\code{name_ko}), Lithuanian (\code{name_lt}), Dutch (\code{name_nl}), Norwegian (\code{name_no}), Polish (\code{name_po}), Portuguese (\code{name_pt}), Romenian (\code{name_ro}), Russian (\code{name_ru}), Slovak (\code{name_sk}), Swedish (\code{name_sv}), Thai (\code{name_th}), Ukranian (\code{name_uk}), Chinese simplified (\code{name_zh}), Chinese traditional (\code{name_zh-tw})}
+  \item{GTAP}{\href{https://www.gtap.agecon.purdue.edu/databases/regions.aspx?version=9.211}{GTAP} country and region codes.}
+  \item{Name0-20}{Other variants of the country name included to improve the matching process}
 }
 }
 \usage{

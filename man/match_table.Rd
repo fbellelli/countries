@@ -6,7 +6,7 @@
 \usage{
 match_table(
   x,
-  to = "all",
+  to = c("name_en", "ISO3"),
   fuzzy_match = TRUE,
   verbose = FALSE,
   matching_info = TRUE,
@@ -38,5 +38,5 @@ It can also be used to convert country names in different languages.
 The use of fuzzy matching allows more flexibility in recognising and identifying country names.
 }
 \examples{
-match_table(x=c("US","Italia","France","United States"), to= "ISO3")
+match_table(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= c("UN_en","ISO3"))
 }
