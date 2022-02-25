@@ -1,9 +1,9 @@
 #' Convert and translate country names
 #'
-#' This function recognises and converts country names to different nomenclatures and languages.
-#' It supports fuzzy matching for greater flexibility.
+#' This function recognises and converts country names to different nomenclatures and languages using a fuzzy matching algorithm.
+#' \code{country_name()} can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures.
 #' @param x A vector of country names
-#' @param to A string containing the desired naming conventions to which \code{x} should be converted to. Possible values are: "all", "ISO-3", "ISO-2", ... Default is "ISO3".
+#' @param to A string containing the desired naming conventions to which \code{x} should be converted to. For a list of possible values use: \code{print_nomenclatures()}. Default is "ISO3".
 #' @param fuzzy_match Logical value indicating whether fuzzy matching of country names should be allowed (\code{TRUE}), or only exact matches are allowed (\code{FALSE}). Default is \code{TRUE}.
 #' @param verbose Logical value indicating whether the function should print to the console a full report. Default is \code{FALSE}.
 #' @param simplify Logical value. If set to \code{TRUE} the function will return a vector of converted names. If set to \code{FALSE}, the function will return a list object containing the converted vector and additional details on the country matching process. Default is \code{TRUE}.
@@ -41,7 +41,7 @@ country_name <- function(x,
   conv_table <- left_join(conv_table, matches$match_table[,c("list_countries",to)], by = c("Countries"="list_countries"))
 
   #warning
-  if (verbose == FALSE & (!is.null(matches$summary$ids_no_equiv)|!is.null(matches$summary$ids_confluent))) message("Set - verbose - to TRUE for more details")
+  if (verbose == FALSE & matches$warning) message("Set - verbose - to TRUE for more details")
 
   #RETURN RESULTS
   if (simplify){

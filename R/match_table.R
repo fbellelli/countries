@@ -4,7 +4,7 @@
 #' It can also be used to convert country names in different languages.
 #' The use of fuzzy matching allows more flexibility in recognising and identifying country names.
 #' @param x A vector of country names
-#' @param to A vector containing one or more desired naming conventions to which \code{x} should be converted to. Possible values are: "all", "ISO-3", "ISO-2", ... Default is "all".
+#' @param to A vector containing one or more desired naming conventions to which \code{x} should be converted to. For a list of possible values use: \code{print_nomenclatures()}. Default is "ISO3".
 #' @param fuzzy_match Logical value indicating whether fuzzy matching of country names should be allowed (\code{TRUE}), or only exact matches are allowed (\code{FALSE}). Default is \code{TRUE}.
 #' @param verbose Logical value indicating whether the function should print to the console a report on the matching process. Default is \code{FALSE}.
 #' @param matching_info Logical value. If set to true the output match table will include additional information on the matching of \code{x}'s entries.
@@ -23,7 +23,7 @@ match_table <- function(x,
                         to = c("name_en","ISO3"),
                         fuzzy_match = TRUE,
                         verbose = FALSE,
-                        matching_info = TRUE,
+                        matching_info = FALSE,
                         simplify = TRUE,
                         custom_table = NULL){
 
@@ -144,8 +144,10 @@ match_table <- function(x,
   n_exact_matches <- sum(conversion_table$exact_match)
   dist_summary <- summary(conversion_table$dist[!conversion_table$exact_match], na.rm=TRUE)
   uncertain_matches <- list_countries[conversion_table$dist/nchar(list_countries) > 0.4]
+  uncertain_matches_to <- conversion_table[conversion_table$dist/nchar(list_countries) > 0.4, to[1]]
 
   #issue report
+  output_warning <- FALSE
   if (verbose){
     # Exact matching and fuzzy matching
     cat(paste0("\nIn total ",length(list_countries)," unique country identifiers have been found\n",n_exact_matches,"/",length(list_countries)," have been matched with EXACT matching"))
@@ -169,14 +171,20 @@ match_table <- function(x,
     }
 
     #Message on uncertain matches
-    if(length(uncertain_matches)>0){
+    if(length(uncertain_matches)>0 & all(!is.na(uncertain_matches))){
       cat("\n\nThe matching for the following countries could be inaccurate:")
-      cat(paste(uncertain_matches, collapse=", "))
+      cat(paste0("\n - ", uncertain_matches," : ",uncertain_matches_to))
     }
   } else {
-    if (any(no_equiv>0)) message("Some country IDs have no match in one or more country naming conventions")
-    if (any(repeated)) message("Multiple country IDs have been matched to the same country name")
-    if (length(uncertain_matches)>0) message("There is low confidence on the matching of some country names")
+    if (any(no_equiv>0)){
+      message("Some country IDs have no match in one or more country naming conventions")
+      output_warning <- TRUE}
+    if (any(repeated)){
+      message("Multiple country IDs have been matched to the same country name")
+      output_warning <- TRUE}
+    if (length(uncertain_matches)>0){
+      message("There is low confidence on the matching of some country names")
+      output_warning <- TRUE}
   }
   cat("\n\n")
   #___________________________________________________________
@@ -204,6 +212,7 @@ match_table <- function(x,
                                dist_summary = if (fuzzy_match & n_exact_matches < length(list_countries)) dist_summary else NULL,
                                ids_no_equiv = if (any(no_equiv>0)) conversion_table$list_countries[no_equiv>0] else NULL,
                                ids_confluent = if (any(repeated)) data.frame(ID = na.omit(conversion_table)[repeated,"list_countries"], to = na.omit(conversion_table)[repeated,to[1]]) else NULL),
+                warning = output_warning,
                 call = list(data = x,
                             to = to,     # ISO3 ISO2 M49_name M49_code WB IMF WTO ...
                             fuzzy_match = fuzzy_match,

@@ -4,4 +4,4 @@
 * Function *match_table()* to easily construct conversion tables with the help of fuzzy matching
 * Function *get_mode()* returns the mode from vectors
 * Dataset *country_reference_list* containing a country names in different languages and naming conventions
-* Added vignettes
+* Added vignettes and documentation

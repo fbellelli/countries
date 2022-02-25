@@ -9,7 +9,7 @@ match_table(
   to = c("name_en", "ISO3"),
   fuzzy_match = TRUE,
   verbose = FALSE,
-  matching_info = TRUE,
+  matching_info = FALSE,
   simplify = TRUE,
   custom_table = NULL
 )
@@ -17,7 +17,7 @@ match_table(
 \arguments{
 \item{x}{A vector of country names}
 
-\item{to}{A vector containing one or more desired naming conventions to which \code{x} should be converted to. Possible values are: "all", "ISO-3", "ISO-2", ... Default is "all".}
+\item{to}{A vector containing one or more desired naming conventions to which \code{x} should be converted to. For a list of possible values use: \code{print_nomenclatures()}. Default is "ISO3".}
 
 \item{fuzzy_match}{Logical value indicating whether fuzzy matching of country names should be allowed (\code{TRUE}), or only exact matches are allowed (\code{FALSE}). Default is \code{TRUE}.}
 

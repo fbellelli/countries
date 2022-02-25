@@ -13,8 +13,8 @@ get_mode(x)
 Returns the mode of the vector \code{x}
 }
 \description{
-This function returns the the value that appears most frequently in the vector.
-It works with strings, numerical and mixed inputs. \code{NA} values are treated as distinct value.
+This function returns the mode of a distribution. For any given vector of values, it returns the value that appears most frequently.
+The function works with strings, numerical and mixed inputs. \code{NA} values are treated as distinct value.
 In case there are two or more values that appear most frequently in the vector, only the first is returned.
 }
 \examples{

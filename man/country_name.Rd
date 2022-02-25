@@ -16,7 +16,7 @@ country_name(
 \arguments{
 \item{x}{A vector of country names}
 
-\item{to}{A string containing the desired naming conventions to which \code{x} should be converted to. Possible values are: "all", "ISO-3", "ISO-2", ... Default is "ISO3".}
+\item{to}{A string containing the desired naming conventions to which \code{x} should be converted to. For a list of possible values use: \code{print_nomenclatures()}. Default is "ISO3".}
 
 \item{fuzzy_match}{Logical value indicating whether fuzzy matching of country names should be allowed (\code{TRUE}), or only exact matches are allowed (\code{FALSE}). Default is \code{TRUE}.}
 
@@ -30,8 +30,8 @@ country_name(
 Returns a vector of converted country names. If multiple nomenclatures are passed to the argument \code{to}, the vectors are arranged in a data frame.
 }
 \description{
-This function recognises and converts country names to different nomenclatures and languages.
-It supports fuzzy matching for greater flexibility.
+This function recognises and converts country names to different nomenclatures and languages using a fuzzy matching algorithm.
+\code{country_name()} can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures.
 }
 \examples{
 #Convert country names to a single nomenclatures: (e.g. 3-letters ISO code)

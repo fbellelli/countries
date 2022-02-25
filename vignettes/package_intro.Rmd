@@ -78,7 +78,7 @@ knitr::kable(tab)
 
 
 
-## Fuzzy matching and warning messages
+## Further options and warning messages
 
 `country_name()` can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures.  
 
@@ -88,29 +88,55 @@ fuzzy_example <- c("US","C@ète d^Ivoire","Zaire","FYROM","Estados Unidos","ITA"
 country_name(x= fuzzy_example, to=c("UN_en"))
 ```
 
-More information on the country matching process can be obtained by setting ´verbose=TRUE´. The function will print information on:
-* The number of unique strings provided by the user. In the example below 6 distinct country names strings have been provided.
-* How many country names correspond exactly to the ones in the function's reference list and how many have been recognised with fuzzy matching. In the example below, `"C@ète d^Ivoire"` is the only name recognised with fuzzy matching. The function's reference table can be accessed with the command ´data(country_reference_list)´.
-* The function prints summary statistics on fuzzy matching. The DISTANCE metric refers to the number of insertions, deletions or substitutions necessary to go from the provided string (´"C@ète d^Ivoire"´) to the closest reference (´"Côte d'Ivoire"´). Lower DISTANCE statistics indicate more reliable fuzzy matching.  
+More information on the country matching process can be obtained by setting `verbose=TRUE`. The function will print information on:
+
+* The number of unique values provided by the user. In the example below 6 distinct strings have been provided.
+* How many country names correspond exactly to the ones in the function's reference list and how many have been recognised with fuzzy matching. In the example below, `"C@ète d^Ivoire"` is the only name recognised with fuzzy matching. The function's reference table can be accessed with the command `data(country_reference_list)`.
+* The function prints summary statistics on fuzzy matching. The DISTANCE metric refers to the number of insertions, deletions or substitutions necessary to go from the provided string (`"C@ète d^Ivoire"`) to the closest reference (`"Côte d'Ivoire"`). Lower DISTANCE statistics indicate more reliable fuzzy matching.  
 
 
 ```{r}
 country_name(x= fuzzy_example, to=c("UN_en"), verbose=TRUE)
-
-#
-country_name(x= "slélakd", to=c("UN_en"), verbose = TRUE, fuzzy_match = TRUE)
 ```
 
-In addition, setting ´verbose=TRUE´ will also print additional informations relating  to specific warnings.:
-* If multiple strings have been matched to the same country, the function will signal it to the user (´Multiple country IDs have been matched to the same country name´). In the example above, both ´"US"´ and ´"Estados Unidos"´ are matched to the same country. If the vector of country names is a unique identifier, this could indicate that some country name was not recognised correctly (see next section on how to use use custom tables).
-* If ´fuzzy_match´is set to ´FALSE´, the function will print all the strings for which no exact match was found. The user might consider using ´fuzzy_match=TRUE´ or custom tables (see next section) to match strings that are not recognised exactly. 
-  + Finally, if the closest element in the function's reference list is very different to the provided string, the function will flag it to the user  is matched to 
+In addition, setting `verbose=TRUE` will also print additional informations relating  to specific warnings that are normally given by the function:
+
+* `Multiple country IDs have been matched to the same country name`: This warning is issued if multiple strings have been matched to the same country. In verbose mode, the strings and corresponding countries will be listed. In the example above, both `"US"` and `"Estados Unidos"` are matched to the same country. If the vector of country names is a unique identifier, this could indicate that some country name was not recognised correctly. The user might consider using custom tables (refer to the next section).
+* `Some country IDs have no match in one or more country naming conventions`: indicates that it is impossible to find an exact match for one or more country names with `fuzzy_match=TRUE`. The user might consider using `fuzzy_match=TRUE` or custom tables (refer to the next section). 
+* `There is low confidence on the matching of some country names`: This warning indicates that some strings have been matched poorly. Thus indicating that the country might have been mididentified. In verbose mode the function will provide a list of problematic strings (see the example below). The user might consider using custom tables to solve this type of issues (refer to the next section). 
+* `Some country IDs have no match in one or more country naming conventions`: Conversion is requested to a nomenclature for which there is no information on the country. For instance, in the example below "Taiwan" has no correspondence in the [UN M49 standard](https://unstats.un.org/unsd/methodology/m49/). In verbose mode, the function will print all the country names affected by this problem. The user might consider using custom tables to solve this type of issues (refer to the next section). 
+
+```{r}
+country_name(x= c("Taiwan","lsajdèd"), to=c("UN_en"), verbose=FALSE)
+```
+
+All the information from verbose mode can be accessed by setting ´simplify=FALSE´. This will return a list object containing:
+
+* ´converted_data´: the normal output of the function
+* ´match_table´: the conversion table with information on the closest match for each country name and distance metrics.
+* ´summary´: summary values for the distance metrics
+* ´warning´: logical value indicating whether a warning is issued by the function
+* ´call´: the arguments passed by the user
 
 ## Using custom conversion tables
 
-```{r}
-data(country_reference_list)
+In some cases, the user might be unhappy with the naming conversion or no valid conversion might exist for the provided territory. In these cases, it might be useful to tweak the conversion table. The package contains a utility function called ´match_table()´, which can be used to generate conversion tables for small adjustments. 
 
-#match_table()
+```{r}
+example_custom <- c("Siam","Burma","H#@°)Koe2")
+
+#suppose we are unhappy with how "H#@°)Koe2" is interpreted by the function
+country_name(x = example_custom, to = "name_en")
+
+#match_table can be used to generate a table for small adjustments
+tab <- match_table(x = example_custom, to = "name_en")
+tab$name_en[2] <- "Hong Kong"
+
+#which can then be used for conversion
+country_name(x = example_custom, to = "name_en", custom_table = tab)
 ```
+
+
+
+
 
