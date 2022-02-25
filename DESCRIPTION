@@ -1,11 +1,10 @@
 Package: Countries
 Type: Package
 Title: A package to deal with country data in a quick and easy way
-Version: 0.1.0
+Version: 0.1
 Author: Francesco Saverio Bellelli
 Maintainer: Francesco Saverio Bellelli <fsabellelli@gmail.com>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Wrangle country data more effectively and quickly. This package containts functions to easily identify and convert country names, pull country info and datasets, merge country data from different sources, and make quick world maps.
 License: GPL-3
 Encoding: UTF-8
 LazyData: True

@@ -176,6 +176,7 @@ match_table <- function(x,
   } else {
     if (any(no_equiv>0)) message("Some country IDs have no match in one or more country naming conventions")
     if (any(repeated)) message("Multiple country IDs have been matched to the same country name")
+    if (length(uncertain_matches)>0) message("There is low confidence on the matching of some country names")
   }
   cat("\n\n")
   #___________________________________________________________
