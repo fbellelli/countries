@@ -2,7 +2,7 @@
 title: "Converting and translating country names"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{package_intro}
+  %\VignetteIndexEntry{Converting and translating country names}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
