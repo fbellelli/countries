@@ -39,4 +39,6 @@ The use of fuzzy matching allows more flexibility in recognising and identifying
 \examples{
 match_table(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= c("UN_en","ISO3"))
 }
-\concept{Country name functions}
+\seealso{
+\link[Countries]{country_name}
+}

@@ -43,4 +43,6 @@ country_name(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= c("UN_en","
 #This function can also be used to translate country names: (e.g. translating all to Chinese)
 country_name(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= "name_zh")
 }
-\concept{country names functions}
+\seealso{
+\link[Countries]{country_name}
+}

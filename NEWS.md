@@ -5,3 +5,4 @@
 * Function *get_mode()* returns the mode from vectors
 * Dataset *country_reference_list* containing a country names in different languages and naming conventions
 * Added vignettes and documentation
+* Created website for the package
