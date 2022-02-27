@@ -6,7 +6,7 @@
 \usage{
 match_table(
   x,
-  to = c("name_en", "ISO3"),
+  to = c("simple", "ISO3"),
   fuzzy_match = TRUE,
   verbose = FALSE,
   matching_info = FALSE,
@@ -17,26 +17,26 @@ match_table(
 \arguments{
 \item{x}{A vector of country names}
 
-\item{to}{A vector containing one or more desired naming conventions to which \code{x} should be converted to. For a list of possible values use: \code{print_nomenclatures()}. Default is "ISO3".}
+\item{to}{A vector containing one or more desired naming conventions to which \code{x} should be converted to (e.g. \code{"ISO3"}, \code{"name_en"}, \code{"UN_fr"}, ...). For a list of all possible check the vignette on country names \code{vignette("dealing_with_names")}. Default is \code{c("simple", "ISO3")}.}
 
 \item{fuzzy_match}{Logical value indicating whether fuzzy matching of country names should be allowed (\code{TRUE}), or only exact matches are allowed (\code{FALSE}). Default is \code{TRUE}.}
 
 \item{verbose}{Logical value indicating whether the function should print to the console a report on the matching process. Default is \code{FALSE}.}
 
-\item{matching_info}{Logical value. If set to true the output match table will include additional information on the matching of \code{x}'s entries.}
+\item{matching_info}{Logical value. If set to true the output match table will include additional information on the matching of \code{x}'s entries. Default is \code{FALSE}.}
 
 \item{simplify}{Logical value. If set to \code{TRUE} the function will return the match table as a \code{data.frame} object. If set to \code{FALSE}, the function will return a list object containing the match table and additional details on the country matching process. Default is \code{TRUE}.}
 
 \item{custom_table}{Custom conversion table to be used. This needs to be a data.frame object. Default is \code{NULL}.}
 }
 \value{
-Returns a conversion table for countries names to the desired naming conventions.
+Returns a conversion table for countries names to the desired naming conventions. If \code{simplify=FALSE} it returns a list object.
 }
 \description{
-This function returns a conversion table for country names to the desired naming conventions.
-It can also be used to convert country names in different languages.
+This function returns a conversion table for country names to the desired naming conventions and languages.
 The use of fuzzy matching allows more flexibility in recognising and identifying country names.
 }
 \examples{
 match_table(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= c("UN_en","ISO3"))
 }
+\concept{Country name functions}

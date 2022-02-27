@@ -1,5 +1,5 @@
 ---
-title: "Converting and translating country names"
+title: "Getting started"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Converting and translating country names}
@@ -28,115 +28,7 @@ install.packages("devtools")
 library(devtools)
 
 # Install and load Countries package
-devtools::install_github("fbellelli/countries")
+devtools::install_github("fbellelli/countries", build_vignettes = TRUE)
 library(Countries)
 ```
-
-
-## Dealing with country names
-
-The function `country_name()` can be used to convert country names to different naming conventions or to translate them to different languages. 
-
-```{r}
-example <- c("United States","DR Congo", "Morocco")
-
-# Getting 3-letters ISO code
-country_name(x= example, to="ISO3")
-
-# Translating to spanish
-country_name(x= example, to="name_es")
-```
-
-If multiple arguments are passed to the argument `to`, the function will output a `data.frame` object, with one column corresponding to every naming convention.
-
-```{r}
-# Requesting 2-letter ISO codes and translation to Spanish and French
-country_name(x= example, to=c("ISO2","name_es","name_fr"))
-```
-
-
-The `to` argument supports all the following naming conventions:
-
-
-
-
-```{r echo=FALSE}
-tab <- data.frame(CODE=c("**simple**","**ISO3**","**ISO2**","**ISO_code**","**UN_**xx","**WTO_**xx","**name_**xx","**GTAP**", "**all**"),
-           DESCRIPTION=c("This is a simple english version of the name containing only ASCII characters. This nomenclature is available for all countries.",
-                         "3-letter country codes as defined in ISO standard `3166-1 alpha-3`. This nomenclature is available only for the territories in the standard (currently 249 territories).",
-           "2-letter country codes as defined in ISO standard `3166-1 alpha-2`. This nomenclature is available only for the territories in the standard (currently 249 territories).",
-           "Numeric country codes as defined in ISO standard `3166-1 numeric`. This country code is the same as the UN's country number (M49 standard). This nomenclature is available for the territories in the ISO standard (currently 249 countries).",
-           "Official UN name in 6 official UN languages. Arabic (`UN_ar`), Chinese  (`UN_zh`), English  (`UN_en`), French  (`UN_fr`), Spanish  (`UN_es`), Russian (`UN_ru`). This nomenclature is only available for countries in the M49 standard (currently 249 territories).",
-           "Official WTO name in 3 official WTO languages: English (`WTO_en`), French (`WTO_fr`), Spanish (`WTO_es`). This nomenclature is only available for WTO members and observers (currently 189 entities).",
-           "Translation of ISO country names in 28 different languages: Arabic (`name_ar`), Bulgarian (`name_bg`), Czech (`name_cs`), Danish (`name_da`), German (`name_de`), Greek (`name_el`), English  (`name_en`), Spanish  (`name_es`), Estonian (`name_et`),  Basque (`name_eu`),  Finnish (`name_fi`), French (`name_fr`), Hungarian (`name_hu`), Italian (`name_it`), Japponease (`name_ja`), Korean (`name_ko`), Lithuanian (`name_lt`), Dutch (`name_nl`), Norwegian (`name_no`), Polish (`name_po`), Portuguese (`name_pt`), Romenian (`name_ro`), Russian (`name_ru`), Slovak (`name_sk`), Swedish (`name_sv`), Thai (`name_th`), Ukranian (`name_uk`), Chinese simplified (`name_zh`), Chinese traditional (`name_zh-tw`)",
-           "GTAP country and region codes.", "Converts to all the nomenclatures and languages in this table"))
-
-knitr::kable(tab)
-```
-
-
-
-
-
-## Further options and warning messages
-
-`country_name()` can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures.  
-
-```{r}
-fuzzy_example <- c("US","C@ète d^Ivoire","Zaire","FYROM","Estados Unidos","ITA")
-
-country_name(x= fuzzy_example, to=c("UN_en"))
-```
-
-More information on the country matching process can be obtained by setting `verbose=TRUE`. The function will print information on:
-
-* The number of unique values provided by the user. In the example below 6 distinct strings have been provided.
-* How many country names correspond exactly to the ones in the function's reference list and how many have been recognised with fuzzy matching. In the example below, `"C@ète d^Ivoire"` is the only name recognised with fuzzy matching. The function's reference table can be accessed with the command `data(country_reference_list)`.
-* The function prints summary statistics on fuzzy matching. The DISTANCE metric refers to the number of insertions, deletions or substitutions necessary to go from the provided string (`"C@ète d^Ivoire"`) to the closest reference (`"Côte d'Ivoire"`). Lower DISTANCE statistics indicate more reliable fuzzy matching.  
-
-
-```{r}
-country_name(x= fuzzy_example, to=c("UN_en"), verbose=TRUE)
-```
-
-In addition, setting `verbose=TRUE` will also print additional informations relating  to specific warnings that are normally given by the function:
-
-* `Multiple country IDs have been matched to the same country name`: This warning is issued if multiple strings have been matched to the same country. In verbose mode, the strings and corresponding countries will be listed. In the example above, both `"US"` and `"Estados Unidos"` are matched to the same country. If the vector of country names is a unique identifier, this could indicate that some country name was not recognised correctly. The user might consider using custom tables (refer to the next section).
-* `Some country IDs have no match in one or more country naming conventions`: indicates that it is impossible to find an exact match for one or more country names with `fuzzy_match=TRUE`. The user might consider using `fuzzy_match=TRUE` or custom tables (refer to the next section). 
-* `There is low confidence on the matching of some country names`: This warning indicates that some strings have been matched poorly. Thus indicating that the country might have been mididentified. In verbose mode the function will provide a list of problematic strings (see the example below). The user might consider using custom tables to solve this type of issues (refer to the next section). 
-* `Some country IDs have no match in one or more country naming conventions`: Conversion is requested to a nomenclature for which there is no information on the country. For instance, in the example below "Taiwan" has no correspondence in the [UN M49 standard](https://unstats.un.org/unsd/methodology/m49/). In verbose mode, the function will print all the country names affected by this problem. The user might consider using custom tables to solve this type of issues (refer to the next section). 
-
-```{r}
-country_name(x= c("Taiwan","lsajdèd"), to=c("UN_en"), verbose=FALSE)
-```
-
-All the information from verbose mode can be accessed by setting ´simplify=FALSE´. This will return a list object containing:
-
-* ´converted_data´: the normal output of the function
-* ´match_table´: the conversion table with information on the closest match for each country name and distance metrics.
-* ´summary´: summary values for the distance metrics
-* ´warning´: logical value indicating whether a warning is issued by the function
-* ´call´: the arguments passed by the user
-
-## Using custom conversion tables
-
-In some cases, the user might be unhappy with the naming conversion or no valid conversion might exist for the provided territory. In these cases, it might be useful to tweak the conversion table. The package contains a utility function called ´match_table()´, which can be used to generate conversion tables for small adjustments. 
-
-```{r}
-example_custom <- c("Siam","Burma","H#@°)Koe2")
-
-#suppose we are unhappy with how "H#@°)Koe2" is interpreted by the function
-country_name(x = example_custom, to = "name_en")
-
-#match_table can be used to generate a table for small adjustments
-tab <- match_table(x = example_custom, to = "name_en")
-tab$name_en[2] <- "Hong Kong"
-
-#which can then be used for conversion
-country_name(x = example_custom, to = "name_en", custom_table = tab)
-```
-
-
-
-
 

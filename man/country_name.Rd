@@ -16,7 +16,7 @@ country_name(
 \arguments{
 \item{x}{A vector of country names}
 
-\item{to}{A string containing the desired naming conventions to which \code{x} should be converted to. For a list of possible values use: \code{print_nomenclatures()}. Default is "ISO3".}
+\item{to}{A string containing the desired naming conventions to which \code{x} should be converted to (e.g. \code{"ISO3"}, \code{"name_en"}, \code{"UN_fr"}, ...). For a list of all possible check the vignette on country names: \code{vignette("dealing_with_names")}. Default is \code{"ISO3"}.}
 
 \item{fuzzy_match}{Logical value indicating whether fuzzy matching of country names should be allowed (\code{TRUE}), or only exact matches are allowed (\code{FALSE}). Default is \code{TRUE}.}
 
@@ -27,7 +27,7 @@ country_name(
 \item{custom_table}{Custom conversion table to be used. This needs to be a \code{data.frame} object. Default is \code{NULL}.}
 }
 \value{
-Returns a vector of converted country names. If multiple nomenclatures are passed to the argument \code{to}, the vectors are arranged in a data frame.
+Returns a vector of converted country names. If multiple nomenclatures are passed to the argument \code{to}, the vectors are arranged in a data frame. If \code{simplify=FALSE}, the function will return a list object.
 }
 \description{
 This function recognises and converts country names to different nomenclatures and languages using a fuzzy matching algorithm.
@@ -43,3 +43,4 @@ country_name(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= c("UN_en","
 #This function can also be used to translate country names: (e.g. translating all to Chinese)
 country_name(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= "name_zh")
 }
+\concept{country names functions}
