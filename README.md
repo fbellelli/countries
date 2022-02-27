@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Countries
+# Countries <img src='man/figures/hexagon_sticker.png' align="right" height="180" />
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -62,3 +62,18 @@ country_name(x= example, to=c("ISO3","ISO2","UN_en"))
 #> 4  MKD   MK          North Macedonia
 #> 5  SAU   SA             Saudi Arabia
 ```
+
+## Work in progress:
+
+-   function to test strings on whether they are country names
+-   functions to identify columns in dataframes containing country names
+    and date information
+-   function for downloading up-to-date information on countries
+    (e.g. currency, language, population, etc.)
+-   function for downloading country data for analysis from different
+    sources (e.g. UN, World Bank, FRED, etc.)
+-   function to quickly merge country data from different sources
+-   function to tag countries based on common criteria (e.g. developing
+    status, World bank income group, geographic region, etc.)
+-   function to easily plot chloropleth maps
+-   publish on CRAN
