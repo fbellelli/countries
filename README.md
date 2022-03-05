@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Countries <img src='man/figures/hexagon_sticker.png' align="right" height="180px" />
+# Countries <img src='man/figures/hexagon_sticker_small.png' align="right" height="180px" />
 
 <!-- badges: start -->
 <!-- badges: end -->
