@@ -3,7 +3,7 @@
 #' This function recognises and converts country names to different nomenclatures and languages using a fuzzy matching algorithm.
 #' \code{country_name()} can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures.
 #' @param x A vector of country names
-#' @param to A string containing the desired naming conventions to which \code{x} should be converted to (e.g. \code{"ISO3"}, \code{"name_en"}, \code{"UN_fr"}, ...). For a list of all possible check the vignette on country names: \code{vignette("dealing_with_names")}. Default is \code{"ISO3"}.
+#' @param to A string containing the desired naming conventions to which \code{x} should be converted to (e.g. \code{"ISO3"}, \code{"name_en"}, \code{"UN_fr"}, ...). For a list of all possible values \link[https://fbellelli.github.io/Countries/articles/dealing_with_names.html]{click here} or refer to the vignette on country names \code{vignette("dealing_with_names")}. Default is \code{"ISO3"}.
 #' @param fuzzy_match Logical value indicating whether fuzzy matching of country names should be allowed (\code{TRUE}), or only exact matches are allowed (\code{FALSE}). Default is \code{TRUE}.
 #' @param verbose Logical value indicating whether the function should print to the console a full report. Default is \code{FALSE}.
 #' @param simplify Logical value. If set to \code{TRUE} the function will return a vector of converted names. If set to \code{FALSE}, the function will return a list object containing the converted vector and additional details on the country matching process. Default is \code{TRUE}.
