@@ -6,9 +6,9 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-Countries is an R package designed to quickly wrangle, merge and explore
-country data. This package contains functions to easily identify and
-convert country names, pull country info and datasets, merge country
+´Countries´ is an R package designed to quickly wrangle, merge and
+explore country data. This package contains functions to easily identify
+and convert country names, pull country info and datasets, merge country
 data from different sources, and make quick world maps.
 
 ## Installing and loading the package

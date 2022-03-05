@@ -1,0 +1,11 @@
+pandoc: 2.14.0.3
+pkgdown: 2.0.2
+pkgdown_sha: ~
+articles:
+  dealing_with_names: dealing_with_names.html
+  package_intro: package_intro.html
+last_built: 2022-03-05T18:04Z
+urls:
+  reference: https://fbellelli.github.io/Countries/reference
+  article: https://fbellelli.github.io/Countries/articles
+
