@@ -46,7 +46,7 @@ match_table <- function(x,
   if (is.null(custom_table)){
     if (!all(to %in% c("all",list_nomenclatures)) | length(to)<1)  stop("The value provided to the - to - argument is not valid")
     if ("all" %in% to){to <- list_nomenclatures}
-    utils::data("country_reference_list")
+    utils::data("country_reference_list", package="Countries")
     table_references <- country_reference_list
   } else {
 
