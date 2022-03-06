@@ -3,7 +3,7 @@
 #' This function recognises and converts country names to different nomenclatures and languages using a fuzzy matching algorithm.
 #' \code{country_name()} can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures.
 #' @param x A vector of country names
-#' @param to A string containing the desired naming conventions to which \code{x} should be converted to (e.g. \code{"ISO3"}, \code{"name_en"}, \code{"UN_fr"}, ...). For a list of all possible values \link[https://fbellelli.github.io/Countries/articles/dealing_with_names.html]{click here} or refer to the vignette on country names \code{vignette("dealing_with_names")}. Default is \code{"ISO3"}.
+#' @param to A string containing the desired naming conventions to which \code{x} should be converted to (e.g. \code{"ISO3"}, \code{"name_en"}, \code{"UN_fr"}, ...). For a list of all possible values \href{https://fbellelli.github.io/Countries/articles/dealing_with_names.html}{click here} or refer to the vignette on country names \code{vignette("dealing_with_names")}. Default is \code{"ISO3"}.
 #' @param fuzzy_match Logical value indicating whether fuzzy matching of country names should be allowed (\code{TRUE}), or only exact matches are allowed (\code{FALSE}). Default is \code{TRUE}.
 #' @param verbose Logical value indicating whether the function should print to the console a full report. Default is \code{FALSE}.
 #' @param simplify Logical value. If set to \code{TRUE} the function will return a vector of converted names. If set to \code{FALSE}, the function will return a list object containing the converted vector and additional details on the country matching process. Default is \code{TRUE}.
@@ -23,32 +23,36 @@
 #' country_name(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= "name_zh")
 
 country_name <- function(x,
-                          to = "ISO3",
-                          fuzzy_match = TRUE,
-                          verbose = FALSE,
-                          simplify = TRUE,
-                          custom_table = NULL){
+                         to = "ISO3",
+                         fuzzy_match = TRUE,
+                         verbose = FALSE,
+                         simplify = TRUE,
+                         custom_table = NULL){
 
   #CHECK INPUTS (the rest is checked by match_table)
   if (!is.logical(simplify) | length(simplify)!=1) stop("Function argument - simplify - needs to be a logical statement (TRUE/FALSE)")
 
-  # BUILD CONVERSION TABLE
-  matches <- match_table(x, to = to, fuzzy_match = fuzzy_match, verbose = verbose, matching_info= TRUE, simplify = FALSE, custom_table = custom_table)
-  to <- matches$call$to
+  if (all(is.na(x))){
+    message("All values in argument - x - are NA")
+    return(rep(NA, length(x)))} else{
+    # BUILD CONVERSION TABLE
+    matches <- match_table(x, to = to, fuzzy_match = fuzzy_match, verbose = verbose, matching_info= TRUE, simplify = FALSE, custom_table = custom_table)
+    to <- matches$call$to
 
-  # CONVERT DATA
-  conv_table <- as.data.frame(x)
-  colnames(conv_table) <- "Countries"
-  conv_table <- left_join(conv_table, matches$match_table[,c("list_countries",to)], by = c("Countries"="list_countries"))
+    # CONVERT DATA
+    conv_table <- as.data.frame(x)
+    colnames(conv_table) <- "Countries"
+    conv_table <- left_join(conv_table, matches$match_table[,c("list_countries",to)], by = c("Countries"="list_countries"))
 
-  #warning
-  if (verbose == FALSE & matches$warning) message("Set - verbose - to TRUE for more details")
+    #warning
+    if (verbose == FALSE & matches$warning) message("Set - verbose - to TRUE for more details")
 
-  #RETURN RESULTS
-  if (simplify){
-    return(conv_table[,to])
-  } else {
-    matches$converted_data <- conv_table[,to]
-    return(matches)
+    #RETURN RESULTS
+    if (simplify){
+      return(conv_table[,to])
+    } else {
+      matches$converted_data <- conv_table[,to]
+      return(matches)
+    }
   }
 }

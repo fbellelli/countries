@@ -3,7 +3,7 @@
 #' This function returns a conversion table for country names to the desired naming conventions and languages.
 #' The use of fuzzy matching allows more flexibility in recognising and identifying country names.
 #' @param x A vector of country names
-#' @param to A vector containing one or more desired naming conventions to which \code{x} should be converted to (e.g. \code{"ISO3"}, \code{"name_en"}, \code{"UN_fr"}, ...). For a list of all possible values \link[https://fbellelli.github.io/Countries/articles/dealing_with_names.html]{click here} or refer to the vignette on country names \code{vignette("dealing_with_names")}. Default is \code{c("simple", "ISO3")}.
+#' @param to A vector containing one or more desired naming conventions to which \code{x} should be converted to (e.g. \code{"ISO3"}, \code{"name_en"}, \code{"UN_fr"}, ...). For a list of all possible values \href{https://fbellelli.github.io/Countries/articles/dealing_with_names.html}{click here} or refer to the vignette on country names \code{vignette("dealing_with_names")}. Default is \code{c("simple", "ISO3")}.
 #' @param fuzzy_match Logical value indicating whether fuzzy matching of country names should be allowed (\code{TRUE}), or only exact matches are allowed (\code{FALSE}). Default is \code{TRUE}.
 #' @param verbose Logical value indicating whether the function should print to the console a report on the matching process. Default is \code{FALSE}.
 #' @param matching_info Logical value. If set to true the output match table will include additional information on the matching of \code{x}'s entries. Default is \code{FALSE}.
@@ -29,6 +29,8 @@ match_table <- function(x,
 
   #CHECK VALIDITY OF FUNCTION ARGUMENTS :-------------------
   stopifnot(is.vector(x))
+  if (all(is.na(x))) stop("All values in argument - x - are NA")
+  if (!is.vector(x)) stop("The function argument - x - needs to be a vector")
   if (!is.vector(x)) stop("The function argument - x - needs to be a vector")
   if (!is.logical(fuzzy_match) & length(fuzzy_match)==1) stop("Function argument - fuzzy_match - needs to be a logical statement (TRUE/FALSE)")
   if (!is.logical(verbose) | length(verbose)!=1) stop("Function argument - verbose - needs to be a logical statement (TRUE/FALSE)")
@@ -94,7 +96,7 @@ match_table <- function(x,
 
     if (nrow(matches)>0){
       # find exact match
-      conversion_table[i,to] <- table_references[get_mode(matches$row), to]
+      conversion_table[i,to] <- table_references[get_mode(matches$row, first_only = TRUE), to]
 
       # fill in table
       conversion_table[i,c("exact_match","closest_match","dist")]<-c(TRUE,conversion_table$simplified[i],0)
@@ -124,7 +126,7 @@ match_table <- function(x,
         # fill in table
         conversion_table[i,c("closest_match","dist")] <- c(match,min_dist)
         matches <- as.data.frame(which(table_references_lower == match, arr.ind=TRUE))
-        conversion_table[i,to] <- table_references[get_mode(matches$row), to]
+        conversion_table[i,to] <- table_references[get_mode(matches$row, first_only=TRUE), to]
       }
     }
   }
