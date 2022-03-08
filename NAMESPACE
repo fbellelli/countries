@@ -2,6 +2,7 @@
 
 export(country_name)
 export(get_mode)
+export(is_country)
 export(match_table)
 import(assertthat)
 import(dplyr)

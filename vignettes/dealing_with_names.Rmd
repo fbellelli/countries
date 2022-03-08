@@ -1,5 +1,5 @@
 ---
-title: "Converting and translating country names"
+title: "Dealing with country names"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{dealing_with_names}
@@ -16,8 +16,16 @@ knitr::opts_chunk$set(
 library(Countries)
 ```
 
+## Identifying country names
 
-## Dealing with country names
+The function `is_country()` allows to check whether a string is a country name. The argument `fuzzy_margin` can be used to increase tolerance and allow for small typos in the names. For instance, a value of 0.1 allows up to 10% of the characters in the strings to be wrong.
+
+```{r}
+is_country(c("United States","Unated States","pot","DNK",123), fuzzy_margin = 0)
+is_country(c("United States","Unated States","pot","DNK",123), fuzzy_margin = 0.1)
+```
+
+## Converting and translating country names
 
 The function `country_name()` can be used to convert country names to different naming conventions or to translate them to different languages. 
 
@@ -62,7 +70,7 @@ knitr::kable(tab)
 
 
 
-## Further options and warning messages
+### Further options and warning messages
 
 `country_name()` can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures.  
 

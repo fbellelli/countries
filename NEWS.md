@@ -1,3 +1,7 @@
+# Countries 0.2
+
+* Added function *is_country()* to test whether a string is a country name
+
 # Countries 0.1
 
 * Function *country_name()* for converting and translating country names based on a fuzzy matching approach

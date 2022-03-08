@@ -1,4 +1,4 @@
-#GET MODE ----------------------------------------
+#GET_MODE ----------------------------------------
 test_that("get_mode output has the correct format", {
   expect_equal(is.numeric(get_mode(c(NA,1,1,2))), TRUE)
   expect_equal(is.character(get_mode(c(NA,"prova"))), TRUE)
@@ -43,5 +43,12 @@ test_that("country_name seems to correctly deal with NA values", {
 })
 
 
+# IS_COUNTRY ---------------------------------------------------
+example <- c("ITA","Estados Unidos","Estado Unidos","bungalow","dog",542,NA)
+test_that("output from is_country seems to correspond to expectations", {
+  expect_equal(length(is_country(example)), length(example))
+  expect_equal(is_country(example, fuzzy_margin = 0.1), c(TRUE, TRUE, TRUE,FALSE,FALSE,FALSE,NA))
+  expect_equal(is_country(example, fuzzy_margin = 0), c(TRUE, TRUE, FALSE,FALSE,FALSE,FALSE,NA))
+})
 
 

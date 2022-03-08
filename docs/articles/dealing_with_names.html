@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="Countries">
-<title>Converting and translating country names • Countries</title>
+<title>Dealing with country names • Countries</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Converting and translating country names">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Dealing with country names">
 <meta property="og:description" content="Countries">
 <meta property="og:image" content="https://fbellelli.github.io/Countries/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">Countries</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +48,7 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/dealing_with_names.html">Converting and translating country names</a>
+    <a class="dropdown-item" href="../articles/dealing_with_names.html">Dealing with country names</a>
     <a class="dropdown-item" href="../articles/package_intro.html">Getting started</a>
   </div>
 </li>
@@ -79,7 +79,7 @@
 
 <div class="row">
   <main id="main"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Converting and translating country names</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Dealing with country names</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/fbellelli/Countries/blob/HEAD/vignettes/dealing_with_names.Rmd" class="external-link"><code>vignettes/dealing_with_names.Rmd</code></a></small>
@@ -89,10 +89,20 @@
     
     
 <div class="section level2">
-<h2 id="dealing-with-country-names">Dealing with country names<a class="anchor" aria-label="anchor" href="#dealing-with-country-names"></a>
+<h2 id="identifying-country-names">Identifying country names<a class="anchor" aria-label="anchor" href="#identifying-country-names"></a>
+</h2>
+<p>The function <code><a href="../reference/is_country.html">is_country()</a></code> allows to check whether a string is a country name. The argument <code>fuzzy_margin</code> can be used to increase tolerance and allow for small typos in the names. For instance, a value of 0.1 allows up to 10% of the characters in the strings to be wrong.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/is_country.html">is_country</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States"</span>,<span class="st">"Unated States"</span>,<span class="st">"pot"</span>,<span class="st">"DNK"</span>,<span class="fl">123</span><span class="op">)</span>, fuzzy_margin <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+<span class="co">#&gt; [1]  TRUE FALSE FALSE  TRUE FALSE</span>
+<span class="fu"><a href="../reference/is_country.html">is_country</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States"</span>,<span class="st">"Unated States"</span>,<span class="st">"pot"</span>,<span class="st">"DNK"</span>,<span class="fl">123</span><span class="op">)</span>, fuzzy_margin <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>
+<span class="co">#&gt; [1]  TRUE  TRUE FALSE  TRUE FALSE</span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="converting-and-translating-country-names">Converting and translating country names<a class="anchor" aria-label="anchor" href="#converting-and-translating-country-names"></a>
 </h2>
 <p>The function <code><a href="../reference/country_name.html">country_name()</a></code> can be used to convert country names to different naming conventions or to translate them to different languages.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States"</span>,<span class="st">"DR Congo"</span>, <span class="st">"Morocco"</span><span class="op">)</span>
 
 <span class="co"># Getting 3-letters ISO code</span>
@@ -104,7 +114,7 @@
 <span class="co">#&gt; [1] "Estados Unidos"                  "República Democrática del Congo"</span>
 <span class="co">#&gt; [3] "Marruecos"</span></code></pre></div>
 <p>If multiple arguments are passed to the argument <code>to</code>, the function will output a <code>data.frame</code> object, with one column corresponding to every naming convention.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Requesting 2-letter ISO codes and translation to Spanish and French</span>
 <span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">example</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ISO2"</span>,<span class="st">"name_es"</span>,<span class="st">"name_fr"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;   ISO2                         name_es                          name_fr</span>
@@ -163,12 +173,11 @@
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section level2">
-<h2 id="further-options-and-warning-messages">Further options and warning messages<a class="anchor" aria-label="anchor" href="#further-options-and-warning-messages"></a>
-</h2>
+<div class="section level3">
+<h3 id="further-options-and-warning-messages">Further options and warning messages<a class="anchor" aria-label="anchor" href="#further-options-and-warning-messages"></a>
+</h3>
 <p><code><a href="../reference/country_name.html">country_name()</a></code> can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fuzzy_example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"US"</span>,<span class="st">"C@ète d^Ivoire"</span>,<span class="st">"Zaire"</span>,<span class="st">"FYROM"</span>,<span class="st">"Estados Unidos"</span>,<span class="st">"ITA"</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">fuzzy_example</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN_en"</span><span class="op">)</span><span class="op">)</span>
@@ -183,7 +192,7 @@
 <li>How many country names correspond exactly to the ones in the function’s reference list and how many have been recognised with fuzzy matching. In the example below, <code>"C@ète d^Ivoire"</code> is the only name recognised with fuzzy matching. The function’s reference table can be accessed with the command <code>data(country_reference_list)</code>.</li>
 <li>The function prints summary statistics on fuzzy matching. The DISTANCE metric refers to the number of insertions, deletions or substitutions necessary to go from the provided string (<code>"C@ète d^Ivoire"</code>) to the closest reference (<code>"Côte d'Ivoire"</code>). Lower DISTANCE statistics indicate more reliable fuzzy matching.</li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">fuzzy_example</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN_en"</span><span class="op">)</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; In total 6 unique country identifiers have been found</span>
@@ -215,7 +224,7 @@
 <li>
 <code>Some country IDs have no match in one or more country naming conventions</code>: Conversion is requested to a nomenclature for which there is no information on the country. For instance, in the example below “Taiwan” has no correspondence in the <a href="https://unstats.un.org/unsd/methodology/m49/" class="external-link">UN M49 standard</a>. In verbose mode, the function will print all the country names affected by this problem. The user might consider using custom tables to solve this type of issues (refer to the next section).</li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Taiwan"</span>,<span class="st">"lsajdèd"</span><span class="op">)</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN_en"</span><span class="op">)</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; Some country IDs have no match in one or more country naming conventions</span>
 <span class="co">#&gt; There is low confidence on the matching of some country names</span>
@@ -230,11 +239,12 @@
 <li>´call´: the arguments passed by the user</li>
 </ul>
 </div>
+</div>
 <div class="section level2">
 <h2 id="using-custom-conversion-tables">Using custom conversion tables<a class="anchor" aria-label="anchor" href="#using-custom-conversion-tables"></a>
 </h2>
 <p>In some cases, the user might be unhappy with the naming conversion or no valid conversion might exist for the provided territory. In these cases, it might be useful to tweak the conversion table. The package contains a utility function called ´match_table()´, which can be used to generate conversion tables for small adjustments.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">example_custom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Siam"</span>,<span class="st">"Burma"</span>,<span class="st">"H#@°)Koe2"</span><span class="op">)</span>
 
 <span class="co">#suppose we are unhappy with how "H#@°)Koe2" is interpreted by the function</span>
