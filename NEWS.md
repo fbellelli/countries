@@ -1,6 +1,6 @@
 # Countries 0.2
 
-* Added function *is_country()* to test whether a string is a country name
+* Added function *is_country()* to test whether a string is a country name or related to list of countries names
 
 # Countries 0.1
 

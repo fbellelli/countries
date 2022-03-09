@@ -57,7 +57,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">is_country</span><span class="op">(</span><span class="va">x</span>, fuzzy_margin <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">is_country</span><span class="op">(</span><span class="va">x</span>, fuzzy_margin <span class="op">=</span> <span class="fl">0.1</span>, check_for <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -65,15 +65,19 @@
     <dl><dt>x</dt>
 <dd><p>A character vector to be tested (also supports UN/ISO country codes)</p></dd>
 <dt>fuzzy_margin</dt>
-<dd><p>A number between 0 and 1 indicating the margin of error tolerated by the fuzzy matching. 0 indicates that an exact match is requested. Default is 0.1 - i.e. up to 10<!-- % of the string characters are allowed to be wrong.} --></p></dd>
+<dd><p>A number between 0 and 1 indicating the margin of error tolerated by the fuzzy matching. 0 indicates that an exact match is requested. Default is 0.1 - i.e. up to 10<!-- % of the string characters are allowed to be wrong.} --></p>
+<p>check_forA vector of country names to narrow down testing. The function will return <code>TRUE</code> only if the string relates to a country in this vector. Default is NULL.</p></dd>
 </dl><p>Returns a logical vector indicating whether the string is a country name
 
 This function checks whether the string is a country name. It supports different languages and naming conventions.
-For the purpose of this function, a string is considered a country name if it relates to one of the 249 countries of the ISO standard <code>3166</code>.
+The function returns <code>TRUE</code> if it relates to one of the 249 countries of the ISO standard <code>3166</code>.
+Alternatively, the argument <code>check_for</code> allows to narrow down the test to a subset of countries.
 Fuzzy matching can be used to allow a small margin of error in the string.
 
+#Detect strings that are country names
 is_country(x=c("ITA","Estados Unidos","Estado Unidos","bungalow","dog",542), fuzzy_margin=0)
-is_country(x=c("ITA","Estados Unidos","Estado Unidos","bungalow","dog",542), fuzzy_margin=0.1)
+is_country(x=c("ITA","Estados Unidos","Estado Unidos","bungalow","dog",542), fuzzy_margin=0.1)#Checking for a specific subset of countries
+is_country(x=c("Ceylon","LKA","Indonesia","Inde"), check_for=c("India","Sri Lanka"))
 
 <a href="match_table.html">match_table</a> <a href="country_name.html">country_name</a></p>
     </div>

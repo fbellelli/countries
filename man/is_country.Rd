@@ -4,24 +4,31 @@
 \alias{is_country}
 \title{Tests whether a string is a country name}
 \usage{
-is_country(x, fuzzy_margin = 0.1)
+is_country(x, fuzzy_margin = 0.1, check_for = NULL)
 }
 \arguments{
 \item{x}{A character vector to be tested (also supports UN/ISO country codes)}
 
 \item{fuzzy_margin}{A number between 0 and 1 indicating the margin of error tolerated by the fuzzy matching. 0 indicates that an exact match is requested. Default is 0.1 - i.e. up to 10% of the string characters are allowed to be wrong.}
+
+\item{check_for}{A vector of country names to narrow down testing. The function will return \code{TRUE} only if the string relates to a country in this vector. Default is NULL.}
 }
 \value{
 Returns a logical vector indicating whether the string is a country name
 }
 \description{
 This function checks whether the string is a country name. It supports different languages and naming conventions.
-For the purpose of this function, a string is considered a country name if it relates to one of the 249 countries of the ISO standard \code{3166}.
+The function returns \code{TRUE} if it relates to one of the 249 countries of the ISO standard \code{3166}.
+Alternatively, the argument \code{check_for} allows to narrow down the test to a subset of countries.
 Fuzzy matching can be used to allow a small margin of error in the string.
 }
 \examples{
+#Detect strings that are country names
 is_country(x=c("ITA","Estados Unidos","Estado Unidos","bungalow","dog",542), fuzzy_margin=0)
 is_country(x=c("ITA","Estados Unidos","Estado Unidos","bungalow","dog",542), fuzzy_margin=0.1)
+
+#Checking for a specific subset of countries
+is_country(x=c("Ceylon","LKA","Indonesia","Inde"), check_for=c("India","Sri Lanka"))
 }
 \seealso{
 \link[Countries]{match_table} \link[Countries]{country_name}

@@ -25,6 +25,13 @@ is_country(c("United States","Unated States","pot","DNK",123), fuzzy_margin = 0)
 is_country(c("United States","Unated States","pot","DNK",123), fuzzy_margin = 0.1)
 ```
 
+Furthermore, `is_country()` can also be used to check for a specific subset of countries. In the following example, the function is used to test whether the string relates to India or Sri Lanka, while allowing for different naming conventions and languages.
+
+```{r}
+is_country(x=c("Ceylon","LKA","Indonesia","Inde"), check_for=c("India","Sri Lanka"))
+```
+
+
 ## Converting and translating country names
 
 The function `country_name()` can be used to convert country names to different naming conventions or to translate them to different languages. 

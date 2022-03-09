@@ -97,12 +97,16 @@
 <span class="co">#&gt; [1]  TRUE FALSE FALSE  TRUE FALSE</span>
 <span class="fu"><a href="../reference/is_country.html">is_country</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States"</span>,<span class="st">"Unated States"</span>,<span class="st">"pot"</span>,<span class="st">"DNK"</span>,<span class="fl">123</span><span class="op">)</span>, fuzzy_margin <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>
 <span class="co">#&gt; [1]  TRUE  TRUE FALSE  TRUE FALSE</span></code></pre></div>
+<p>Furthermore, <code><a href="../reference/is_country.html">is_country()</a></code> can also be used to check for a specific subset of countries. In the following example, the function is used to test whether the string relates to India or Sri Lanka, while allowing for different naming conventions and languages.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/is_country.html">is_country</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ceylon"</span>,<span class="st">"LKA"</span>,<span class="st">"Indonesia"</span>,<span class="st">"Inde"</span><span class="op">)</span>, check_for<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"India"</span>,<span class="st">"Sri Lanka"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1]  TRUE  TRUE FALSE  TRUE</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="converting-and-translating-country-names">Converting and translating country names<a class="anchor" aria-label="anchor" href="#converting-and-translating-country-names"></a>
 </h2>
 <p>The function <code><a href="../reference/country_name.html">country_name()</a></code> can be used to convert country names to different naming conventions or to translate them to different languages.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States"</span>,<span class="st">"DR Congo"</span>, <span class="st">"Morocco"</span><span class="op">)</span>
 
 <span class="co"># Getting 3-letters ISO code</span>
@@ -114,7 +118,7 @@
 <span class="co">#&gt; [1] "Estados Unidos"                  "República Democrática del Congo"</span>
 <span class="co">#&gt; [3] "Marruecos"</span></code></pre></div>
 <p>If multiple arguments are passed to the argument <code>to</code>, the function will output a <code>data.frame</code> object, with one column corresponding to every naming convention.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Requesting 2-letter ISO codes and translation to Spanish and French</span>
 <span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">example</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ISO2"</span>,<span class="st">"name_es"</span>,<span class="st">"name_fr"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;   ISO2                         name_es                          name_fr</span>
@@ -177,7 +181,7 @@
 <h3 id="further-options-and-warning-messages">Further options and warning messages<a class="anchor" aria-label="anchor" href="#further-options-and-warning-messages"></a>
 </h3>
 <p><code><a href="../reference/country_name.html">country_name()</a></code> can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fuzzy_example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"US"</span>,<span class="st">"C@ète d^Ivoire"</span>,<span class="st">"Zaire"</span>,<span class="st">"FYROM"</span>,<span class="st">"Estados Unidos"</span>,<span class="st">"ITA"</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">fuzzy_example</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN_en"</span><span class="op">)</span><span class="op">)</span>
@@ -192,7 +196,7 @@
 <li>How many country names correspond exactly to the ones in the function’s reference list and how many have been recognised with fuzzy matching. In the example below, <code>"C@ète d^Ivoire"</code> is the only name recognised with fuzzy matching. The function’s reference table can be accessed with the command <code>data(country_reference_list)</code>.</li>
 <li>The function prints summary statistics on fuzzy matching. The DISTANCE metric refers to the number of insertions, deletions or substitutions necessary to go from the provided string (<code>"C@ète d^Ivoire"</code>) to the closest reference (<code>"Côte d'Ivoire"</code>). Lower DISTANCE statistics indicate more reliable fuzzy matching.</li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">fuzzy_example</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN_en"</span><span class="op">)</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; In total 6 unique country identifiers have been found</span>
@@ -224,7 +228,7 @@
 <li>
 <code>Some country IDs have no match in one or more country naming conventions</code>: Conversion is requested to a nomenclature for which there is no information on the country. For instance, in the example below “Taiwan” has no correspondence in the <a href="https://unstats.un.org/unsd/methodology/m49/" class="external-link">UN M49 standard</a>. In verbose mode, the function will print all the country names affected by this problem. The user might consider using custom tables to solve this type of issues (refer to the next section).</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Taiwan"</span>,<span class="st">"lsajdèd"</span><span class="op">)</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN_en"</span><span class="op">)</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; Some country IDs have no match in one or more country naming conventions</span>
 <span class="co">#&gt; There is low confidence on the matching of some country names</span>
@@ -244,7 +248,7 @@
 <h2 id="using-custom-conversion-tables">Using custom conversion tables<a class="anchor" aria-label="anchor" href="#using-custom-conversion-tables"></a>
 </h2>
 <p>In some cases, the user might be unhappy with the naming conversion or no valid conversion might exist for the provided territory. In these cases, it might be useful to tweak the conversion table. The package contains a utility function called ´match_table()´, which can be used to generate conversion tables for small adjustments.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">example_custom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Siam"</span>,<span class="st">"Burma"</span>,<span class="st">"H#@°)Koe2"</span><span class="op">)</span>
 
 <span class="co">#suppose we are unhappy with how "H#@°)Koe2" is interpreted by the function</span>
