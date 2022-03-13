@@ -34,6 +34,20 @@ library(Countries)
 
 ## Dealing with country names
 
+The package contains several functions to work with country names. For
+instance, the function `is_country()` can be used to test for country
+names or subsets of countries:
+
+``` r
+#Detect strings that are country names
+is_country(x=c("ITA","Estados Unidos","bungalow","dog",542))
+#> [1]  TRUE  TRUE FALSE FALSE FALSE
+
+#Checking for a specific subset of countries
+is_country(x=c("Ceylon","LKA","Indonesia","Inde"), check_for=c("India","Sri Lanka"))
+#> [1]  TRUE  TRUE FALSE  TRUE
+```
+
 The function `country_name()` can be used to convert country names to
 different naming conventions or to translate them to different
 languages. `country_name()` can identify countries even when they are
@@ -63,11 +77,11 @@ country_name(x= example, to=c("ISO3","ISO2","UN_en"))
 #> 5  SAU   SA             Saudi Arabia
 ```
 
+Learn more about country names functions in [this
+article](/articles/dealing_with_names.html).
+
 ## Work in progress:
 
--   function to test strings on whether they are country names
--   functions to identify columns in dataframes containing country names
-    and date information
 -   function for downloading up-to-date information on countries
     (e.g. currency, language, population, etc.)
 -   function for downloading country data for analysis from different

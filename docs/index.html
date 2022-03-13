@@ -100,8 +100,17 @@
 <div class="section level2">
 <h2 id="dealing-with-country-names">Dealing with country names<a class="anchor" aria-label="anchor" href="#dealing-with-country-names"></a>
 </h2>
-<p>The function <code><a href="reference/country_name.html">country_name()</a></code> can be used to convert country names to different naming conventions or to translate them to different languages. <code><a href="reference/country_name.html">country_name()</a></code> can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures.</p>
+<p>The package contains several functions to work with country names. For instance, the function <code>is_country</code> can be used to test for country names or subsets of countries:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#Detect strings that are country names</span>
+<span class="fu"><a href="reference/is_country.html">is_country</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ITA"</span>,<span class="st">"Estados Unidos"</span>,<span class="st">"bungalow"</span>,<span class="st">"dog"</span>,<span class="fl">542</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1]  TRUE  TRUE FALSE FALSE FALSE</span>
+
+<span class="co">#Checking for a specific subset of countries</span>
+<span class="fu"><a href="reference/is_country.html">is_country</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ceylon"</span>,<span class="st">"LKA"</span>,<span class="st">"Indonesia"</span>,<span class="st">"Inde"</span><span class="op">)</span>, check_for<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"India"</span>,<span class="st">"Sri Lanka"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1]  TRUE  TRUE FALSE  TRUE</span></code></pre></div>
+<p>The function <code><a href="reference/country_name.html">country_name()</a></code> can be used to convert country names to different naming conventions or to translate them to different languages. <code><a href="reference/country_name.html">country_name()</a></code> can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"US"</span>,<span class="st">"C@ète d^Ivoire"</span>, <span class="st">"Morocco"</span>,<span class="st">"FYROM"</span>, <span class="st">"Arabie Saoudite"</span><span class="op">)</span>
 
 <span class="co"># Getting 3-letters ISO code</span>
@@ -121,13 +130,12 @@
 <span class="co">#&gt; 3  MAR   MA                  Morocco</span>
 <span class="co">#&gt; 4  MKD   MK          North Macedonia</span>
 <span class="co">#&gt; 5  SAU   SA             Saudi Arabia</span></code></pre></div>
+<p>Learn more about country names functions in <a href="/articles/dealing_with_names.html">this article</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="work-in-progress">Work in progress:<a class="anchor" aria-label="anchor" href="#work-in-progress"></a>
 </h2>
 <ul>
-<li>function to test strings on whether they are country names</li>
-<li>functions to identify columns in dataframes containing country names and date information</li>
 <li>function for downloading up-to-date information on countries (e.g. currency, language, population, etc.)</li>
 <li>function for downloading country data for analysis from different sources (e.g. UN, World Bank, FRED, etc.)</li>
 <li>function to quickly merge country data from different sources</li>

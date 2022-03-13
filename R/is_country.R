@@ -8,7 +8,7 @@
 #' @param fuzzy_margin A number between 0 and 1 indicating the margin of error tolerated by the fuzzy matching. 0 indicates that an exact match is requested. Default is 0.1 - i.e. up to 10% of the string characters are allowed to be wrong.
 #' @param check_for A vector of country names to narrow down testing. The function will return \code{TRUE} only if the string relates to a country in this vector. Default is NULL.
 #' @return Returns a logical vector indicating whether the string is a country name
-#' @seealso \link[Countries]{match_table} \link[Countries]{country_name}
+#' @seealso \link[Countries]{match_table} \link[Countries]{country_name} \link[Countries]{find_countrycol}
 #' @export
 #' @examples
 #' #Detect strings that are country names
@@ -33,7 +33,7 @@ is_country <- function(x, fuzzy_margin=0.1, check_for=NULL){
   }
 
   #use match table to test unique values
-  match <- suppressMessages(match_table(x, to="name_en", matching_info = TRUE))
+  match <- suppressWarnings(suppressMessages(match_table(x, to="name_en", matching_info = TRUE)))
   match$nchar <- nchar(match$list_countries)
 
   #test applying calliper

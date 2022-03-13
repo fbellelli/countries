@@ -49,6 +49,18 @@ test_that("output from is_country seems to correspond to expectations", {
   expect_equal(length(is_country(example)), length(example))
   expect_equal(is_country(example, fuzzy_margin = 0.1), c(TRUE, TRUE, TRUE,FALSE,FALSE,FALSE,NA))
   expect_equal(is_country(example, fuzzy_margin = 0), c(TRUE, TRUE, FALSE,FALSE,FALSE,FALSE,NA))
+  expect_equal(is_country(x=c("Ceylon","LKA","Indonesia","Inde"), check_for=c("India","Sri Lanka")), c(TRUE,TRUE,FALSE,TRUE))
 })
+
+
+# FIND_COUNTRYCOL ---------------------------------------------------
+example <- data.frame(a=c("Brésil","Tonga","FRA"),b=c(1,2,3))
+test_that("output from is_country seems to correspond to expectations", {
+  expect_equal(find_countrycol(example), "a")
+  expect_equal(find_countrycol(example, TRUE), 1)
+  expect_equal(length(find_countrycol(data.frame(a=c("Bra","Bro","Bru"),b=c(1,2,3)), TRUE)), 0)
+  expect_equal(length(find_countrycol(data.frame(a=c("Bra","Bro","Bru"),b=c(1,2,3)))), 0)
+})
+
 
 

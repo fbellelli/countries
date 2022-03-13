@@ -101,6 +101,7 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/is_country.html">is_country</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ceylon"</span>,<span class="st">"LKA"</span>,<span class="st">"Indonesia"</span>,<span class="st">"Inde"</span><span class="op">)</span>, check_for<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"India"</span>,<span class="st">"Sri Lanka"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1]  TRUE  TRUE FALSE  TRUE</span></code></pre></div>
+<p>Finally, the package also provides the function , which can be used to find which columns in a data frame contain country names.</p>
 </div>
 <div class="section level2">
 <h2 id="converting-and-translating-country-names">Converting and translating country names<a class="anchor" aria-label="anchor" href="#converting-and-translating-country-names"></a>
@@ -113,7 +114,7 @@
 <span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">example</span>, to<span class="op">=</span><span class="st">"ISO3"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "USA" "COD" "MAR"</span>
 
-<span class="co"># Translating to spanish</span>
+<span class="co"># Translating to Spanish</span>
 <span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">example</span>, to<span class="op">=</span><span class="st">"name_es"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Estados Unidos"                  "República Democrática del Congo"</span>
 <span class="co">#&gt; [3] "Marruecos"</span></code></pre></div>

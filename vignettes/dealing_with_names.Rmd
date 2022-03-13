@@ -31,6 +31,7 @@ Furthermore, `is_country()` can also be used to check for a specific subset of c
 is_country(x=c("Ceylon","LKA","Indonesia","Inde"), check_for=c("India","Sri Lanka"))
 ```
 
+Finally, the package also provides the function \code{find_countrycol()}, which can be used to find which columns in a data frame contain country names.
 
 ## Converting and translating country names
 
@@ -42,7 +43,7 @@ example <- c("United States","DR Congo", "Morocco")
 # Getting 3-letters ISO code
 country_name(x= example, to="ISO3")
 
-# Translating to spanish
+# Translating to Spanish
 country_name(x= example, to="name_es")
 ```
 

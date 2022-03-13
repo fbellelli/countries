@@ -31,5 +31,5 @@ is_country(x=c("ITA","Estados Unidos","Estado Unidos","bungalow","dog",542), fuz
 is_country(x=c("Ceylon","LKA","Indonesia","Inde"), check_for=c("India","Sri Lanka"))
 }
 \seealso{
-\link[Countries]{match_table} \link[Countries]{country_name}
+\link[Countries]{match_table} \link[Countries]{country_name} \link[Countries]{find_countrycol}
 }

@@ -44,5 +44,5 @@ country_name(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= c("UN_en","
 country_name(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= "name_zh")
 }
 \seealso{
-\link[Countries]{country_name}
+\link[Countries]{country_name} \link[Countries]{match_table}
 }
