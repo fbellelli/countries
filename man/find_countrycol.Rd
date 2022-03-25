@@ -22,5 +22,5 @@ For the purpose of this function, a country is any of the 249 territories design
 find_countrycol(x=data.frame(a=c("Brésil","Tonga","FRA"), b=c(1,2,3)))
 }
 \seealso{
-\link[Countries]{is_country} \link[Countries]{country_name}
+\link[countries]{is_country} \link[countries]{country_name}
 }

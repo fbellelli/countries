@@ -1,9 +1,9 @@
-# Countries 0.2
+# countries 0.2
 
 * Added function *is_country()* to test whether a string is a country name or related to list of countries names
 * Added function *find_countrycol()* to identify columns containing country names in a data frame
 
-# Countries 0.1
+# countries 0.1
 
 * Function *country_name()* for converting and translating country names based on a fuzzy matching approach
 * Function *match_table()* to easily construct conversion tables with the help of fuzzy matching

@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-library(Countries)
+library(countries)
 ```
 
 
@@ -27,8 +27,8 @@ Since the package is not yet on CRAN, it needs to be downloaded directly from th
 install.packages("devtools")
 library(devtools)
 
-# Install and load Countries package
+# Install and load countries package
 devtools::install_github("fbellelli/countries", build_vignettes = TRUE)
-library(Countries)
+library(countries)
 ```
 

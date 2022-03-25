@@ -1,4 +1,4 @@
-Package: Countries
+Package: countries
 Type: Package
 Title: A package to deal with country data in a quick and easy way
 Version: 0.2
@@ -23,6 +23,6 @@ Suggests:
     knitr,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
-URL: https://fbellelli.github.io/Countries/, https://github.com/fbellelli/Countries
-BugReports: https://github.com/fbellelli/Countries/issues
+URL: https://fbellelli.github.io/countries/, https://github.com/fbellelli/countries
+BugReports: https://github.com/fbellelli/countries/issues
 Config/testthat/edition: 3

@@ -5,7 +5,7 @@
 #' @param x A data frame object
 #' @param return_index A logical value indicating whether the function should return the index of country columns instead of the column names. Default is FALSE.
 #' @return Returns a vector of country names (\code{return_index=FALSE}) or column indices (\code{return_index=TRUE}) of columns containing country names.
-#' @seealso \link[Countries]{is_country} \link[Countries]{country_name}
+#' @seealso \link[countries]{is_country} \link[countries]{country_name}
 #' @export
 #' @examples
 #' find_countrycol(x=data.frame(a=c("Brésil","Tonga","FRA"), b=c(1,2,3)))

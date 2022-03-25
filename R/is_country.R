@@ -5,16 +5,15 @@
 #' Alternatively, the argument \code{check_for} allows to narrow down the test to a subset of countries.
 #' Fuzzy matching can be used to allow a small margin of error in the string.
 #' @param x A character vector to be tested (also supports UN/ISO country codes)
-#' @param fuzzy_margin A number between 0 and 1 indicating the margin of error tolerated by the fuzzy matching. 0 indicates that an exact match is requested. Default is 0.1 - i.e. up to 10% of the string characters are allowed to be wrong.
+#' @param fuzzy_margin A number between 0 and 1 indicating the margin of error tolerated by the fuzzy matching. 0 indicates that an exact match is requested. Default is 0.1 - i.e. up to 10 percent of the string characters are allowed to be wrong.
 #' @param check_for A vector of country names to narrow down testing. The function will return \code{TRUE} only if the string relates to a country in this vector. Default is NULL.
 #' @return Returns a logical vector indicating whether the string is a country name
-#' @seealso \link[Countries]{match_table} \link[Countries]{country_name} \link[Countries]{find_countrycol}
+#' @seealso \link[countries]{match_table} \link[countries]{country_name} \link[countries]{find_countrycol}
 #' @export
 #' @examples
 #' #Detect strings that are country names
 #' is_country(x=c("ITA","Estados Unidos","Estado Unidos","bungalow","dog",542), fuzzy_margin=0)
 #' is_country(x=c("ITA","Estados Unidos","Estado Unidos","bungalow","dog",542), fuzzy_margin=0.1)
-#'
 #' #Checking for a specific subset of countries
 #' is_country(x=c("Ceylon","LKA","Indonesia","Inde"), check_for=c("India","Sri Lanka"))
 is_country <- function(x, fuzzy_margin=0.1, check_for=NULL){
