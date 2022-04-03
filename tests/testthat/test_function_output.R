@@ -60,7 +60,27 @@ test_that("output from is_country seems to correspond to expectations", {
   expect_equal(find_countrycol(example, TRUE), 1)
   expect_equal(length(find_countrycol(data.frame(a=c("Bra","Bro","Bru"),b=c(1,2,3)), TRUE)), 0)
   expect_equal(length(find_countrycol(data.frame(a=c("Bra","Bro","Bru"),b=c(1,2,3)))), 0)
+  expect_equal(find_countrycol(data.frame(a=c("BRA","ITA"), b=c(2,3),c(1,NA),d=c("India","Paraguay"))), c("a","d"))
 })
 
 
+# IS_YEARCOL ---------------------------------------------------
+test_that("output from is_yearcol seems to correspond to expectations", {
+  expect_equal(is.yearcol(1990:3000), FALSE)
+  expect_equal(is.yearcol(1990:3000, limit=c(1800,3000)), TRUE)
+  expect_equal(is.yearcol(c("a",2)), FALSE)
+  expect_equal(is.yearcol(c(NA,2000), allow_NA=FALSE), FALSE)
+  expect_equal(is.yearcol(c(NA,2000), allow_NA=TRUE), FALSE)
+  expect_equal(is.yearcol(c(1998,2000,2002), regularity = TRUE), TRUE)
+  expect_equal(is.yearcol(c(1998,2000,2002,2003), regularity = TRUE), FALSE)
+})
 
+# IS_DATE ------------------------------------------------------
+test_that("output from is_date seems to correspond to expectations", {
+  expects_equal(is_date(NA), FALSE)
+  expects_equal(is_date(NA, c("%Y",NA)), FALSE)
+  expects_equal(length(is_date(c("2020-01-01","test",2020,"March 2030"))), 4)
+  expects_equal(is.logical(is_date(c("2020-01-01","test",2020,"March 2030",NA))), TRUE)
+  expect_equal(is_date(c("2020-01-01","test",2020,"March 2030")), c(TRUE, FALSE, FALSE, TRUE))
+  expect_equal(is_date(c("2020-01-01","test",2020,"March 2030"), allowed_formats = "%Y"), c(TRUE, FALSE, TRUE, FALSE))
+})
