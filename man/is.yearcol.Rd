@@ -2,7 +2,7 @@
 % Please edit documentation in R/is.yearcol.R
 \name{is.yearcol}
 \alias{is.yearcol}
-\title{Tests whether a vector of data could be containing year information}
+\title{Internal function - Tests whether a vector of data could be containing year information}
 \usage{
 is.yearcol(x, limit = c(1800, 2200), regularity = FALSE, allow_NA = TRUE)
 }
@@ -19,7 +19,7 @@ is.yearcol(x, limit = c(1800, 2200), regularity = FALSE, allow_NA = TRUE)
 Returns a logical vector indicating whether the vector could be containing year information
 }
 \description{
-Tests whether a vector of data could be containing year information
+Internal function - Tests whether a vector of data could be containing year information
 }
 \examples{
 is.yearcol(1990:2020)

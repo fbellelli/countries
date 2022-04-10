@@ -63,6 +63,31 @@ test_that("output from is_country seems to correspond to expectations", {
   expect_equal(find_countrycol(data.frame(a=c("BRA","ITA"), b=c(2,3),c(1,NA),d=c("India","Paraguay"))), c("a","d"))
 })
 
+# FIND_TIMECOL ------------------------------------------------------
+
+example <- data.frame(a=1950:2049,
+                      b=c(NA,sample(1800:2200,99)),
+                      c=sample(c("a","b","c"),100, replace=TRUE),
+                      d=rep("March 2020",100))
+example$e <- as.Date(as.character(example$a), format="%Y")
+example$f <- c(NA,as.character(example$d[2:100]))
+example$year <- example$a
+set.seed(123)
+example$year2 <- sample(example$year,100,replace=TRUE)
+example$a_fct <- as.factor(example$a)
+example$year2_fct <- as.factor(example$year2)
+test_that("output from find_timecol seems to correspond to expectations", {
+  expect_equal(find_timecol(example), c("d","e","year"))
+  expect_equal(find_timecol(example, TRUE), c(4,5,7))
+  expect_equal(is.null(find_timecol(example[,2:3], TRUE)), TRUE)
+  expect_equal(is.null(find_timecol(example[,2:3], TRUE, TRUE)), FALSE)
+  expect_equal(find_timecol(example[,2:3], FALSE, TRUE), "b")
+  expect_equal(find_timecol(example[,-c(1,4,5,6,7)], FALSE, TRUE,FALSE), "a_fct")
+  expect_equal(find_timecol(example[,-c(1,4,5,6,7,9)], FALSE, TRUE,FALSE), "year2")
+  expect_equal(is.null(find_timecol(example[,-c(1,4,5,6,7,9)], FALSE, TRUE,TRUE)), TRUE)
+})
+
+
 
 # IS_YEARCOL ---------------------------------------------------
 test_that("output from is_yearcol seems to correspond to expectations", {
@@ -84,3 +109,5 @@ test_that("output from is_date seems to correspond to expectations", {
   expect_equal(is_date(c("2020-01-01","test",2020,"March 2030")), c(TRUE, FALSE, FALSE, TRUE))
   expect_equal(is_date(c("2020-01-01","test",2020,"March 2030"), allowed_formats = "%Y"), c(TRUE, FALSE, TRUE, FALSE))
 })
+
+

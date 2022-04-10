@@ -1,4 +1,4 @@
-#' Tests whether a vector of data could be containing year information
+#' Internal function - Tests whether a vector of data could be containing year information
 #'
 #' @param x A vector to be tested
 #' @param limit A minimum and maximum year value \code{c(1800,2200)}
@@ -22,13 +22,18 @@ is.yearcol <- function(x,
   #reduce number of elements to check
   x <- unique(x)
 
+  #convert factor to string
+  if (is.factor(x)) x <- levels(x)
+
   #initiate checks
   #column contains no NA
   if (all(!is.na(x))|allow_NA==TRUE){
     x <- na.omit(x)
 
-    #checks that all values are numeric
+    #checks that all values are numeric or convertible to numeric
     if(all(!is.na(suppressWarnings(as.numeric(x))))){
+
+      x <- as.numeric(x)
 
       #checks vector contains all integer values
       if(all(x %% 1 == 0)){

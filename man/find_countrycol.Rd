@@ -9,7 +9,7 @@ find_countrycol(x, return_index = FALSE)
 \arguments{
 \item{x}{A data frame object}
 
-\item{return_index}{A logical value indicating whether the function should return the index of country columns instead of the column names. Default is FALSE.}
+\item{return_index}{A logical value indicating whether the function should return the index of country columns instead of the column names. Default is \code{FALSE}, column names are returned.}
 }
 \value{
 Returns a vector of country names (\code{return_index=FALSE}) or column indices (\code{return_index=TRUE}) of columns containing country names.
@@ -22,5 +22,5 @@ For the purpose of this function, a country is any of the 249 territories design
 find_countrycol(x=data.frame(a=c("Brésil","Tonga","FRA"), b=c(1,2,3)))
 }
 \seealso{
-\link[countries]{is_country} \link[countries]{country_name}
+\link[countries]{is_country} \link[countries]{country_name} \link[countries]{find_timecol}
 }

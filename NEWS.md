@@ -1,8 +1,12 @@
 # countries 0.2
 
 * Added function *is_country()* to test whether a string is a country name or related to list of countries names
-* Added function *find_countrycol()* to identify columns containing country names in a data frame
-* Added function *is_date()* to test whether a value is a date
+* Added function *is_date()* to test whether values are dates
+* Added function *find_countrycol()* to automate search of columns containing country names in data frames
+* Added function *find_timecol()* to automate search of date and/or year columns in data frames
+* Improvements and bug fixes
+
+
 
 # countries 0.1
 

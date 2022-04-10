@@ -2,7 +2,7 @@
 % Please edit documentation in R/is_date.R
 \name{is.date}
 \alias{is.date}
-\title{Tests whether the value is convertible to a date format}
+\title{internal function - Tests whether the value is convertible to a date format}
 \usage{
 is.date(x, formats)
 }
@@ -15,7 +15,7 @@ is.date(x, formats)
 Returns a logical value indicating whether the value can be converted to any of the date formats provided. This function is the basis for \code{countries::is_date()}.
 }
 \description{
-Tests whether the value is convertible to a date format
+Internal function behind \code{is_date()}.
 }
 \examples{
 is.date("2020-01-01")

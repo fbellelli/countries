@@ -1,5 +1,6 @@
-#' Tests whether the value is convertible to a date format
+#' internal function - Tests whether the value is convertible to a date format
 #'
+#' Internal function behind \code{is_date()}.
 #' @param x A vector of length 1 to be tested
 #' @param formats Formats to check for expressed in standard notation.
 #' @return Returns a logical value indicating whether the value can be converted to any of the date formats provided. This function is the basis for \code{countries::is_date()}.
@@ -51,7 +52,11 @@ is_date <- function(x, allowed_formats=c("%Y-%m-%d",
                                          "%b %Y",
                                          "%B %Y",
                                          "%b %y",
-                                         "%B %y")){
+                                         "%B %y",
+                                         "%m-%Y",
+                                         "%Y-%m",
+                                         "%m/%Y",
+                                         "%Y/%m")){
 
   #check that - allowed formats - is not empty
   if (!is.character(allowed_formats)) stop("Value provided to argument - allowed_formats - is not valid. It needs to be a character vector.")
@@ -60,7 +65,7 @@ is_date <- function(x, allowed_formats=c("%Y-%m-%d",
 
   #check that input is a vector
   if (length(x)==0) stop("The argument - x - is empty")
-  if (!is.vector(x)) stop("The input - x - needs to be a vector")
+  if (is.data.frame(x)) stop("The input - x - needs to be a vector")
 
   #check all possible formats for a match
   return(sapply(x, is.date, formats=allowed_formats, USE.NAMES = FALSE))
