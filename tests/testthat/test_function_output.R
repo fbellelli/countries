@@ -110,4 +110,16 @@ test_that("output from is_date seems to correspond to expectations", {
   expect_equal(is_date(c("2020-01-01","test",2020,"March 2030"), allowed_formats = "%Y"), c(TRUE, FALSE, TRUE, FALSE))
 })
 
+# IS_KEY ------------------------------------------------------
+example <- data.frame(a=c(1:5,1:5),b=sample(c("a","b","c"),10, replace=TRUE), c=as.factor(c(rep("a",5),rep("b",5))))
+example1 <- example
+example1$c[2] <- NA
+test_that("output from is_key seems to correspond to expectations", {
+  expects_equal(is_logical(is_key(example,c("a"))), TRUE)
+  expects_equal(length(is_key(example,c("a"))), 1)
+  expects_equal(is_key(example,c("a")), FALSE)
+  expects_equal(is_key(example,c("a","c")), TRUE)
+  expects_equal(is_key(example1,c("a","c"),allow_NA = FALSE, verbose=FALSE), FALSE)
+  expects_equal(is_key(example1,c("a","c"),allow_NA = TRUE, verbose=FALSE), TRUE)
+})
 

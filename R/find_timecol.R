@@ -1,6 +1,7 @@
 #' Finds columns containing date and year data
 #'
 #' This function takes a data frame as argument and returns the column names (or indices) of all columns containing dates and the most likely column containing year information, if any.
+#' It can be used to automate the search of date and year columns in data frames.
 #' @param x A data frame object
 #' @param return_index A logical value indicating whether the function should return the index of time columns instead of the column names. Default is \code{FALSE}, column names are returned.
 #' @param allow_NA Logical value indicating whether to allow time columns to contain \code{NA} values. Default is \code{allow_NA=FALSE}, the function will not return time column containing \code{NA} values.

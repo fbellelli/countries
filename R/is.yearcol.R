@@ -23,7 +23,7 @@ is.yearcol <- function(x,
   x <- unique(x)
 
   #convert factor to string
-  if (is.factor(x)) x <- levels(x)
+  if (is.factor(x)) x <- as.character(x)
 
   #initiate checks
   #column contains no NA

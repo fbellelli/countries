@@ -20,6 +20,7 @@ Returns a vector of names (\code{return_index=FALSE}) or indices (\code{return_i
 }
 \description{
 This function takes a data frame as argument and returns the column names (or indices) of all columns containing dates and the most likely column containing year information, if any.
+It can be used to automate the search of date and year columns in data frames.
 }
 \examples{
 find_timecol(x=data.frame(a=1970:2020, year=1970:2020, b=rep("2020-01-01",51),c=sample(1:1000,51)))

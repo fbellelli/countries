@@ -1,6 +1,7 @@
 #' Finds columns containing country names
 #'
 #' This function takes a data frame as argument and returns the column name (or index) of all columns containing country names.
+#' It can be used to automate the search of country columns in data frames.
 #' For the purpose of this function, a country is any of the 249 territories designated in the ISO standard \code{3166}.
 #' @param x A data frame object
 #' @param return_index A logical value indicating whether the function should return the index of country columns instead of the column names. Default is \code{FALSE}, column names are returned.
@@ -27,6 +28,8 @@ find_countrycol <- function(x, return_index=FALSE){
   #loop over all columns
   if (length(country_cols)==0){
     for (i in 1:ncol(x)){
+      #convert factors to charachter
+      if (is.factor(x[,i])) x[,i] <- as.character(x[,i])
       #check if it is a character vector
       if(is.character(x[,i])){
         #test if it contains country names

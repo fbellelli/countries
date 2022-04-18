@@ -16,6 +16,7 @@ Returns a vector of country names (\code{return_index=FALSE}) or column indices 
 }
 \description{
 This function takes a data frame as argument and returns the column name (or index) of all columns containing country names.
+It can be used to automate the search of country columns in data frames.
 For the purpose of this function, a country is any of the 249 territories designated in the ISO standard \code{3166}.
 }
 \examples{
