@@ -93,15 +93,15 @@
 </h2>
 <p>The function <code><a href="../reference/is_country.html">is_country()</a></code> allows to check whether a string is a country name. The argument <code>fuzzy_margin</code> can be used to increase tolerance and allow for small typos in the names. For instance, a value of 0.1 allows up to 10% of the characters in the strings to be wrong.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/is_country.html">is_country</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States"</span>,<span class="st">"Unated States"</span>,<span class="st">"pot"</span>,<span class="st">"DNK"</span>,<span class="fl">123</span><span class="op">)</span>, fuzzy_margin <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="../reference/is_country.html">is_country</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States"</span>,<span class="st">"Unated States"</span>,<span class="st">"dot"</span>,<span class="st">"DNK"</span>,<span class="fl">123</span><span class="op">)</span>, fuzzy_margin <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
 <span class="co">#&gt; [1]  TRUE FALSE FALSE  TRUE FALSE</span>
-<span class="fu"><a href="../reference/is_country.html">is_country</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States"</span>,<span class="st">"Unated States"</span>,<span class="st">"pot"</span>,<span class="st">"DNK"</span>,<span class="fl">123</span><span class="op">)</span>, fuzzy_margin <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>
+<span class="fu"><a href="../reference/is_country.html">is_country</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States"</span>,<span class="st">"Unated States"</span>,<span class="st">"dot"</span>,<span class="st">"DNK"</span>,<span class="fl">123</span><span class="op">)</span>, fuzzy_margin <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>
 <span class="co">#&gt; [1]  TRUE  TRUE FALSE  TRUE FALSE</span></code></pre></div>
 <p>Furthermore, <code><a href="../reference/is_country.html">is_country()</a></code> can also be used to check for a specific subset of countries. In the following example, the function is used to test whether the string relates to India or Sri Lanka, while allowing for different naming conventions and languages.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/is_country.html">is_country</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ceylon"</span>,<span class="st">"LKA"</span>,<span class="st">"Indonesia"</span>,<span class="st">"Inde"</span><span class="op">)</span>, check_for<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"India"</span>,<span class="st">"Sri Lanka"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1]  TRUE  TRUE FALSE  TRUE</span></code></pre></div>
-<p>Finally, the package also provides the function , which can be used to find which columns in a data frame contain country names.</p>
+<p>Finally, the package also provides the function <code><a href="../reference/find_countrycol.html">find_countrycol()</a></code>, which can be used to find which columns in a data frame contain country names.</p>
 </div>
 <div class="section level2">
 <h2 id="converting-and-translating-country-names">Converting and translating country names<a class="anchor" aria-label="anchor" href="#converting-and-translating-country-names"></a>
@@ -223,7 +223,7 @@
 <li>
 <code>Multiple country IDs have been matched to the same country name</code>: This warning is issued if multiple strings have been matched to the same country. In verbose mode, the strings and corresponding countries will be listed. In the example above, both <code>"US"</code> and <code>"Estados Unidos"</code> are matched to the same country. If the vector of country names is a unique identifier, this could indicate that some country name was not recognised correctly. The user might consider using custom tables (refer to the next section).</li>
 <li>
-<code>Some country IDs have no match in one or more country naming conventions</code>: indicates that it is impossible to find an exact match for one or more country names with <code>fuzzy_match=TRUE</code>. The user might consider using <code>fuzzy_match=TRUE</code> or custom tables (refer to the next section).</li>
+<code>Some country IDs have no match in one or more country naming conventions</code>: indicates that it is impossible to find an exact match for one or more country names with <code>fuzzy_match=FALSE</code>. The user might consider using <code>fuzzy_match=TRUE</code> or custom tables (refer to the next section).</li>
 <li>
 <code>There is low confidence on the matching of some country names</code>: This warning indicates that some strings have been matched poorly. Thus indicating that the country might have been mididentified. In verbose mode the function will provide a list of problematic strings (see the example below). The user might consider using custom tables to solve this type of issues (refer to the next section).</li>
 <li>
@@ -237,18 +237,23 @@
 <span class="co">#&gt; [1] NA                                 "Lao People's Democratic Republic"</span></code></pre></div>
 <p>All the information from verbose mode can be accessed by setting ´simplify=FALSE´. This will return a list object containing:</p>
 <ul>
-<li>´converted_data´: the normal output of the function</li>
-<li>´match_table´: the conversion table with information on the closest match for each country name and distance metrics.</li>
-<li>´summary´: summary values for the distance metrics</li>
-<li>´warning´: logical value indicating whether a warning is issued by the function</li>
-<li>´call´: the arguments passed by the user</li>
+<li>
+<code>converted_data</code>: the normal output of the function</li>
+<li>
+<code>match_table</code>: the conversion table with information on the closest match for each country name and distance metrics.</li>
+<li>
+<code>summary</code>: summary values for the distance metrics</li>
+<li>
+<code>warning</code>: logical value indicating whether a warning is issued by the function</li>
+<li>
+<code>call</code>: the arguments passed by the user</li>
 </ul>
 </div>
 </div>
 <div class="section level2">
 <h2 id="using-custom-conversion-tables">Using custom conversion tables<a class="anchor" aria-label="anchor" href="#using-custom-conversion-tables"></a>
 </h2>
-<p>In some cases, the user might be unhappy with the naming conversion or no valid conversion might exist for the provided territory. In these cases, it might be useful to tweak the conversion table. The package contains a utility function called ´match_table()´, which can be used to generate conversion tables for small adjustments.</p>
+<p>In some cases, the user might be unhappy with the naming conversion or no valid conversion might exist for the provided territory. In these cases, it might be useful to tweak the conversion table. The package contains a utility function called <code><a href="../reference/match_table.html">match_table()</a></code>, which can be used to generate conversion tables for small adjustments.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">example_custom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Siam"</span>,<span class="st">"Burma"</span>,<span class="st">"H#@°)Koe2"</span><span class="op">)</span>
 

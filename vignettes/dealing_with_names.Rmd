@@ -21,8 +21,8 @@ library(countries)
 The function `is_country()` allows to check whether a string is a country name. The argument `fuzzy_margin` can be used to increase tolerance and allow for small typos in the names. For instance, a value of 0.1 allows up to 10% of the characters in the strings to be wrong.
 
 ```{r}
-is_country(c("United States","Unated States","pot","DNK",123), fuzzy_margin = 0)
-is_country(c("United States","Unated States","pot","DNK",123), fuzzy_margin = 0.1)
+is_country(c("United States","Unated States","dot","DNK",123), fuzzy_margin = 0)
+is_country(c("United States","Unated States","dot","DNK",123), fuzzy_margin = 0.1)
 ```
 
 Furthermore, `is_country()` can also be used to check for a specific subset of countries. In the following example, the function is used to test whether the string relates to India or Sri Lanka, while allowing for different naming conventions and languages.
@@ -31,7 +31,7 @@ Furthermore, `is_country()` can also be used to check for a specific subset of c
 is_country(x=c("Ceylon","LKA","Indonesia","Inde"), check_for=c("India","Sri Lanka"))
 ```
 
-Finally, the package also provides the function \code{find_countrycol()}, which can be used to find which columns in a data frame contain country names.
+Finally, the package also provides the function `find_countrycol()`, which can be used to find which columns in a data frame contain country names.
 
 ## Converting and translating country names
 
@@ -102,7 +102,7 @@ country_name(x= fuzzy_example, to=c("UN_en"), verbose=TRUE)
 In addition, setting `verbose=TRUE` will also print additional informations relating  to specific warnings that are normally given by the function:
 
 * `Multiple country IDs have been matched to the same country name`: This warning is issued if multiple strings have been matched to the same country. In verbose mode, the strings and corresponding countries will be listed. In the example above, both `"US"` and `"Estados Unidos"` are matched to the same country. If the vector of country names is a unique identifier, this could indicate that some country name was not recognised correctly. The user might consider using custom tables (refer to the next section).
-* `Some country IDs have no match in one or more country naming conventions`: indicates that it is impossible to find an exact match for one or more country names with `fuzzy_match=TRUE`. The user might consider using `fuzzy_match=TRUE` or custom tables (refer to the next section). 
+* `Some country IDs have no match in one or more country naming conventions`: indicates that it is impossible to find an exact match for one or more country names with `fuzzy_match=FALSE`. The user might consider using `fuzzy_match=TRUE` or custom tables (refer to the next section). 
 * `There is low confidence on the matching of some country names`: This warning indicates that some strings have been matched poorly. Thus indicating that the country might have been mididentified. In verbose mode the function will provide a list of problematic strings (see the example below). The user might consider using custom tables to solve this type of issues (refer to the next section). 
 * `Some country IDs have no match in one or more country naming conventions`: Conversion is requested to a nomenclature for which there is no information on the country. For instance, in the example below "Taiwan" has no correspondence in the [UN M49 standard](https://unstats.un.org/unsd/methodology/m49/). In verbose mode, the function will print all the country names affected by this problem. The user might consider using custom tables to solve this type of issues (refer to the next section). 
 
@@ -112,15 +112,15 @@ country_name(x= c("Taiwan","lsajdèd"), to=c("UN_en"), verbose=FALSE)
 
 All the information from verbose mode can be accessed by setting ´simplify=FALSE´. This will return a list object containing:
 
-* ´converted_data´: the normal output of the function
-* ´match_table´: the conversion table with information on the closest match for each country name and distance metrics.
-* ´summary´: summary values for the distance metrics
-* ´warning´: logical value indicating whether a warning is issued by the function
-* ´call´: the arguments passed by the user
+* `converted_data`: the normal output of the function
+* `match_table`: the conversion table with information on the closest match for each country name and distance metrics.
+* `summary`: summary values for the distance metrics
+* `warning`: logical value indicating whether a warning is issued by the function
+* `call`: the arguments passed by the user
 
 ## Using custom conversion tables
 
-In some cases, the user might be unhappy with the naming conversion or no valid conversion might exist for the provided territory. In these cases, it might be useful to tweak the conversion table. The package contains a utility function called ´match_table()´, which can be used to generate conversion tables for small adjustments. 
+In some cases, the user might be unhappy with the naming conversion or no valid conversion might exist for the provided territory. In these cases, it might be useful to tweak the conversion table. The package contains a utility function called `match_table()`, which can be used to generate conversion tables for small adjustments. 
 
 ```{r}
 example_custom <- c("Siam","Burma","H#@°)Koe2")
