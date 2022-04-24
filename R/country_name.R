@@ -45,7 +45,7 @@ country_name <- function(x,
     conv_table <- left_join(conv_table, matches$match_table[,c("list_countries",to)], by = c("Countries"="list_countries"))
 
     #warning
-    if (verbose == FALSE & matches$warning) message("Set - verbose - to TRUE for more details")
+    if (verbose == FALSE & matches$warning) message("\nSet - verbose - to TRUE for more details")
 
     #RETURN RESULTS
     if (simplify){

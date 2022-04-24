@@ -12,7 +12,6 @@
 #' @return Returns a conversion table for countries names to the desired naming conventions. If \code{simplify=FALSE} it returns a list object.
 #' @seealso \link[countries]{country_name}
 #' @export
-#' @import dplyr magrittr assertthat
 #' @importFrom stringdist stringdist
 #' @importFrom stringr str_trim
 #' @importFrom stats na.omit quantile
@@ -60,7 +59,7 @@ match_table <- function(x,
   }
 
   #prepare the reference table for matching
-  table_references_lower <- table_references %>% mutate_all(.funs=tolower)
+  table_references_lower <- sapply(table_references, tolower)
   flat_references_lower <- unlist(table_references_lower)
   flat_references_lower <- flat_references_lower[flat_references_lower != "" & !is.na(flat_references_lower)]
   #_________________________________________________________
@@ -178,6 +177,7 @@ match_table <- function(x,
       cat("\n\nThe matching for the following countries could be inaccurate:")
       cat(paste0("\n - ", uncertain_matches," : ",uncertain_matches_to))
     }
+    cat("\n\n")
   } else {
     if (any(no_equiv>0)){
       message("Some country IDs have no match in one or more country naming conventions")
@@ -189,7 +189,7 @@ match_table <- function(x,
       message("There is low confidence on the matching of some country names")
       output_warning <- TRUE}
   }
-  cat("\n\n")
+
   #___________________________________________________________
 
 

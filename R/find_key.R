@@ -1,41 +1,96 @@
 #finds key of table
 #column or set of column that uniquely identify entries in table
 #this function is designed for country data: hence, it will first search for column containing country names and dates/years.
-#It will then prioritise left-most columns in table
+#It also prioritise left-most columns in table
 
 find_key <- function(x,
+                     return_index=FALSE,
                      allow_NA=FALSE){
 
-  #0) ceck inpunts
-  #check validity of inputs
+  #---- CHECK VALIDITY OF INPUTS ----
+  if(!is.data.frame(x)) stop("The argument - x - needs to be a data.frame")
+  if(!is.logical(allow_NA)|is.null(allow_NA)|length(allow_NA)>1|is.na(allow_NA)) stop("The argument - allow_NA - is either missing or invalid. It needs to be a TRUE/FALSE value.")
 
-  #check for columns containing NA and exlcude them if requested
+  #------- PREPARE DATA AND CHECK FOR NA ----------------
 
-  #transform any factor to character?
+  #initiate status variables
+  initial_cols <- colnames(x)
+  key_found <- FALSE
+  key<-NULL
 
-  #1) find all country columns
-  country_cols <- find_countrycol(x)
+  #check for columns containing NA and exclude them if requested
+  cols <- initial_cols
+  if(allow_NA == FALSE){
+    cols <- cols[!apply(is.na(x[,cols]), MARGIN=2,FUN=any, simplify=TRUE)]
+  }
 
-  #if none, move to 2
+  #transform any factor column to character
+  x <- x[,cols]
+  x[sapply(x, is.factor)] <- lapply(x[sapply(x, is.factor)], as.character)
 
-  #if more than one, check if columns are referring to same country,
-  #if two distinct, possibly dyad data. If more than 2, issue warning and only keep most likely (name, position, NA, ...)
 
-  #if at least one, check if it/they are key. if they are key, go to end
+  # --- 1) FIND COUNTRY COLUMN (AND CHECK FOR CROSS-SECTIONAL STRUCTURE)----
 
-  #2) look for time columns
+  #make a list of country columns
+  country_cols <- find_countrycol(x, allow_NA = allow_NA)
 
-  #if none, move to 3
+  #check if any of the country column is key of the table
+  if (length(country_col)>0){
+    #check all country columns individually to see if they are key, if more than one, select left-most column and terminate search
+    i <- 1
+    while (i<=length(country_cols) & key_found==FALSE){
+      if (is_key(x,country_cols[i], allow_NA=allow_NA, verbose=FALSE)){
+        key <- c("country"=country_cols[i])
+        key_found <- TRUE
+      }
+      i<-i+1
+    }
 
-  #if more than one, check if the dates are repeating,
-  #if still more than one, issue warning and only keep most likely (name, position, format, NA, ...)
+    #remove country cols from cols to check
+    cols <- cols[!(cols %in% country_cols)]
+  }
 
-  #if a time col is present, check if it is key with/without country cols. if they are, go to end
+  # --- 2) LOOK FOR TIME COLUMNS (AND CHECK FOR TIME SERIES STRUCTURE) ----
 
-  #3) check for any other col
+  if (length(cols)>0 & key_found == FALSE){
+    #find time columns
+    time_cols <- find_timecol(x[,cols], allow_NA = allow_NA, regularity = FALSE)
+
+    #check if time cols are key
+    if (length(time_cols)>0){
+      while (i<=length(time_cols) & key_found==FALSE){
+        if (is_key(x,time_cols[i], allow_NA=allow_NA, verbose=FALSE)){
+          key <- c("time"=time_cols[i])
+          key_found <- TRUE
+        }
+        i<-i+1
+      }
+
+      #remove from cols all time cols
+      cols <- cols[!(cols %in% time_cols)]
+    }
+  }
+
+  # --- 3) CHECK FOR PANEL STRUCTURE ----
+
+  if (key_found==FALSE & length(time_cols)>0 & length(country_cols)>0){
+
+    #Make a list of all possible country-time column combination
+    grid <- expand.grid(country_cols, time_cols, stringsAsFactors = FALSE)
+
+    #rank combinations
+
+    #check all combinations and stop if a key is found
+
+  #to do<------------!!!!!!!!!!! ////&&&&&&%%%%çççççç------!!!!!!!@@@@@@@°°°°°°°°
+  }
+
+  # --- 4) EVALUATE ALL COMBINATION OF COLUMNS ----
 
   #make list of all possible column combination.
-  grid <- expand.grid(rep(list(cols), length(cols)))
+  grid <- expand.grid(rep(list(cols), length(cols)), stringsAsFactors = FALSE)
+  grid <- grid[!duplicated(t(apply(check_combs, 1, sort))),] #remove permutations of the same combination
+  #remove rows with all same cols?
 
   #rank combination based on the position of the columns they contain.
   #score = sum of rank of all columns involved in the combination, where the column rank is its position in the table (e.g. a combination of column 1 and 2, has a score 3)
@@ -43,23 +98,19 @@ find_key <- function(x,
 
   #starting from the combination with the lowest score, test every combination to see if they could be a key. Stop as soon as one is found.
 
-  #END) prep output
+  # ---- END) Output keys of table ----
 
-  #NAMED vector containing names of columns that are key. the name of each entry indicates what type of column it is: country, time, other
-  #create an option for return_index?
+  #Return NAMED vector containing names (or indices) of columns that are the key of the table
+  #the name of each entry indicates what type of column it is: country, time, other
+  if (return_index){
+    key_indx <- match(key,initial_cols)
+    names(key_indx)<-names(key)
+    return(key_indx)
+  }else{
+    return(key)
+  }
 
-  #OPPURE:
 
-  #inserire opzione "simiplify"
-
-  #simplified:
-  #vector containing names of columns that are key
-  #create an option for return_index?
-
-  #non simplified:
-  #list breaking down the type of column: Country, time, other
-  #info on data structure?info on NA?
-  #list of key column indices?
 
 
 

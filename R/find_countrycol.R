@@ -5,20 +5,24 @@
 #' For the purpose of this function, a country is any of the 249 territories designated in the ISO standard \code{3166}.
 #' @param x A data frame object
 #' @param return_index A logical value indicating whether the function should return the index of country columns instead of the column names. Default is \code{FALSE}, column names are returned.
+#' @param allow_NA Logical value indicating whether to country columns to contain \code{NA} values. Default is \code{allow_NA=FALSE}, the function will not return country column containing \code{NA} values.
+#' @param min_share A value between \code{0} and \code{1} indicating the minimum share of country names in columns that are returned. A value of \code{0} will return any column containing a country name. A value of \code{1} will return only column whose entries are all country names. Default is \code{0.9}, i.e. at least 90 percent of the column entries need to be country names.
 #' @return Returns a vector of country names (\code{return_index=FALSE}) or column indices (\code{return_index=TRUE}) of columns containing country names.
 #' @seealso \link[countries]{is_country} \link[countries]{country_name} \link[countries]{find_timecol}
 #' @export
 #' @examples
 #' find_countrycol(x=data.frame(a=c("Brésil","Tonga","FRA"), b=c(1,2,3)))
-find_countrycol <- function(x, return_index=FALSE){
+find_countrycol <- function(x, return_index=FALSE, allow_NA=FALSE, min_share=0.9){
 
   #check inputs
   if(!is.data.frame(as.data.frame(x))|is.null(x)){stop("Argument - x - needs to be a dataframe")}
-  if(!is.logical(return_index)|is.null(return_index)){stop("Argument - return_index - needs to be a a logical value (TRUE/FALSE)")}
+  if(!is.logical(return_index)|is.null(return_index)|length(return_index)>1|is.na(return_index)){stop("Argument - return_index - needs to be a logical value (TRUE/FALSE)")}
+  if(!is.logical(allow_NA)|is.null(allow_NA)|length(allow_NA)>1|is.na(allow_NA)){stop("Argument - allow_NA - needs to be a logical value (TRUE/FALSE)")}
+  if(!is.numeric(min_share)|is.null(min_share)|length(min_share)>1|is.na(min_share)|min_share>1|min_share<0){stop("Argument - min_share - needs to be a numeric value between 0 and 1 indicating the requested minimum share of country names in the output columns")}
 
   #take sample if table is large
   if (nrow(x)>500){
-    x <- na.omit(x)
+    if (nrow(na.omit(x))>500) x <- na.omit(x)   #ensures that at least 500 rows are kept
     x <- x[sample(1:nrow(x), size= min(500 + sqrt(nrow(x)), nrow(x)) ,replace = FALSE), ]
   }
 
@@ -28,12 +32,15 @@ find_countrycol <- function(x, return_index=FALSE){
   #loop over all columns
   if (length(country_cols)==0){
     for (i in 1:ncol(x)){
-      #convert factors to charachter
-      if (is.factor(x[,i])) x[,i] <- as.character(x[,i])
-      #check if it is a character vector
-      if(is.character(x[,i])){
-        #test if it contains country names
-        if(sum(is_country(x[,i])) >= 0.95 * nrow(x)) country_cols <- c(country_cols, i)
+      #exclude NA columns if requested
+      if (!any(is.na(x[,i]))|allow_NA == TRUE) {
+        #convert factors to charachter
+        if (is.factor(x[,i])) x[,i] <- as.character(x[,i])
+        #check if it is a character vector
+        if(is.character(x[,i])){
+          #test if it contains country names
+          if(sum(is_country(x[,i]), na.rm=TRUE) >= min_share * length(x[!is.na(x[,i]),i])) country_cols <- c(country_cols, i)
+        }
       }
     }
   }

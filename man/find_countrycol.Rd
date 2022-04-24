@@ -4,12 +4,16 @@
 \alias{find_countrycol}
 \title{Finds columns containing country names}
 \usage{
-find_countrycol(x, return_index = FALSE)
+find_countrycol(x, return_index = FALSE, allow_NA = FALSE, min_share = 0.9)
 }
 \arguments{
 \item{x}{A data frame object}
 
 \item{return_index}{A logical value indicating whether the function should return the index of country columns instead of the column names. Default is \code{FALSE}, column names are returned.}
+
+\item{allow_NA}{Logical value indicating whether to country columns to contain \code{NA} values. Default is \code{allow_NA=FALSE}, the function will not return country column containing \code{NA} values.}
+
+\item{min_share}{A value between \code{0} and \code{1} indicating the minimum share of country names in columns that are returned. A value of \code{0} will return any column containing a country name. A value of \code{1} will return only column whose entries are all country names. Default is \code{0.9}, i.e. at least 90 percent of the column entries need to be country names.}
 }
 \value{
 Returns a vector of country names (\code{return_index=FALSE}) or column indices (\code{return_index=TRUE}) of columns containing country names.
