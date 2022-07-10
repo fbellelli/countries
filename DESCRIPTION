@@ -8,21 +8,17 @@ Authors@R:
 Description: Wrangle country data more effectively and quickly. This package containts functions to easily identify and convert country names, pull country info and datasets, merge country data from different sources, and make quick world maps.
 License: GPL-3
 Encoding: UTF-8
-LazyData: True
 RoxygenNote: 7.1.2
-Imports: utils,
-    dplyr,
-    magrittr,
+Imports: 
     stringdist,
-    stringr,
-    assertthat
+    fastmatch,
+    tidyr
 Depends: 
     R (>= 2.10)
 Suggests: 
-    rmarkdown,
-    knitr,
-    testthat (>= 3.0.0)
+    dplyr
 VignetteBuilder: knitr
 URL: https://fbellelli.github.io/countries/, https://github.com/fbellelli/countries
 BugReports: https://github.com/fbellelli/countries/issues
 Config/testthat/edition: 3
+LazyData: true

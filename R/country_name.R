@@ -11,7 +11,7 @@
 #' @return Returns a vector of converted country names. If multiple nomenclatures are passed to the argument \code{to}, the vectors are arranged in a data frame. If \code{simplify=FALSE}, the function will return a list object.
 #' @seealso \link[countries]{country_name} \link[countries]{match_table}
 #' @export
-#' @import dplyr magrittr assertthat
+#' @importFrom dplyr left_join
 #' @examples
 #' #Convert country names to a single nomenclatures: (e.g. 3-letters ISO code)
 #' country_name(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= "ISO3")

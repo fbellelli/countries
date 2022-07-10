@@ -5,7 +5,8 @@
 * Added function *is_key()* to test whether a set of columns could be the keys of a table
 * Added function *find_countrycol()* to automate search of columns containing country names in data frames
 * Added function *find_timecol()* to automate search of date and/or year columns in data frames
-* Improvements and bug fixes
+* Speed improvements for the functions *country_name()* and *match_table()*
+* Bug fixes
 
 
 

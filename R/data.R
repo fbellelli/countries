@@ -15,3 +15,7 @@
 #'   \item{Name0-20}{Other variants of the country name included to improve the matching process}
 #' }
 "country_reference_list"
+
+data(country_reference_list, envir=environment())
+
+

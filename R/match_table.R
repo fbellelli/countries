@@ -12,10 +12,11 @@
 #' @return Returns a conversion table for countries names to the desired naming conventions. If \code{simplify=FALSE} it returns a list object.
 #' @seealso \link[countries]{country_name}
 #' @export
-#' @importFrom stringdist stringdist
-#' @importFrom stringr str_trim
 #' @importFrom stats na.omit quantile
-#' @importFrom utils data
+#' @importFrom fastmatch fmatch
+#' @importFrom stringdist stringdistmatrix
+#' @import tidyr
+#' @import stringr
 #' @examples
 #' match_table(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= c("UN_en","ISO3"))
 match_table <- function(x,
@@ -46,114 +47,126 @@ match_table <- function(x,
   if (is.null(custom_table)){
     if (!all(to %in% c("all",list_nomenclatures)) | length(to)<1)  stop("The value provided to the - to - argument is not valid")
     if ("all" %in% to){to <- list_nomenclatures}
-    utils::data("country_reference_list", package="countries")
-    table_references <- country_reference_list
+    table_references <- country_reference_list_long
   } else {
-
     #coerce to data frame and check that the provided table has at least two columns. otherwise give error
     custom_table <- as.data.frame(custom_table)
     if(!is.data.frame(custom_table)){stop("The table provided in - custom_table - needs to be coecible to a data.frame class")}
     if (to %in% "all"){to <- c(colnames(custom_table))}
     if (!all(to %in% c("all",colnames(custom_table)) | length(to)<1))  stop("The value provided to the - to - argument is not valid. It needs to be a vector of column names from the table used in the - custom_table - argument or the string `all`.")
-    table_references <- custom_table
+
+
+    #transform to a long format
+    custom_table <- sapply(custom_table, as.character) #transform all columns into character vectors
+    columns <- colnames(custom_table) #make list of columns to pivot
+    custom_table$ID <- row.names(custom_table) #create entry ID number
+    custom_table <- tidyr::pivot_longer(custom_table,
+                                        cols = all_of(columns) ,
+                                        names_to = "nomenclature",
+                                        values_to = "name")
+    table_references <- custom_table[!(is.na(custom_table$name)|custom_table$name==""),]
   }
 
-  #prepare the reference table for matching
-  table_references_lower <- sapply(table_references, tolower)
-  flat_references_lower <- unlist(table_references_lower)
-  flat_references_lower <- flat_references_lower[flat_references_lower != "" & !is.na(flat_references_lower)]
+  #change to lower case to facilitate matching
+  table_references$name_lower <- tolower(table_references$name)
+
+  #create a shorter version of the reference table by eliminating stopwords and duplicated entries
+  table_references_short <- table_references[!duplicated(table_references$name_lower),]
   #_________________________________________________________
 
 
-  # PREPARING CONVERSION TABLE:-----------------------------
+  ##########################################################
+  # PREPARING CONVERSION TABLE:
+  ##########################################################
 
   #extract list of countries from file
   list_countries <- sort(unique(x))
-  if (length(list_countries)>250) warning(paste("Your data contains",length(list_countries), "unique country identifiers. That's a lot! Are you sure it contains only country names? You should check the conversion table."),call. = FALSE)
-
-  #create table
-  conversion_table <- data.frame(list_countries, simplified = str_trim(tolower(list_countries), side = "both"), exact_match = NA , closest_match=NA, dist=NA)
+  if (length(list_countries)>500) warning(paste("Your data contains",length(list_countries), "unique country identifiers. That's a lot! Are you sure it contains only country names? You should check the conversion table."),call. = FALSE)
 
   #check that values given in "to" are are among the column header name, otherwise stop execution
-  if (!all(to %in% colnames(table_references))){
+  if (!all(to %in% table_references$nomenclature)){
     stop("One or more of the values provided to the - to - argument is not valid. If a custom conversion is used, make sure the values in - to - are among the column names of the provided table.")
   }
 
-  #add conversion columns for each of the desired naming conventions
-  for (i in to){
-    conversion_table[,i] <- NA
-  }
-  #_________________________________________________________
+  #create table adding conversion columns for each of the desired naming conventions
+  conversion_table <- data.frame(list_countries, simplified = str_trim(tolower(list_countries), side = "both"), exact_match=NA, closest_match=NA, dist=NA, setNames(rep(list(NA), length(to)),to))
 
 
-  # COUNTRY MATCHING: --------------------------------------
 
-  #loop over every country to find a match
-  for (i in 1:length(list_countries)){
+  ##########################################################
+  # COUNTRY MATCHING:
+  ##########################################################
 
-    #make a table of EXACT MATCHES
-    matches <- as.data.frame(which(table_references_lower == conversion_table$simplified[i], arr.ind=TRUE))
+  # 1. EXACT MATCH
+  #----------------
 
-    if (nrow(matches)>0){
-      # find exact match
-      conversion_table[i,to] <- table_references[get_mode(matches$row, first_only = TRUE), to]
+  # get index of first EXACT match
+  exact_matches_index <- fmatch(conversion_table$simplified, table_references_short$name_lower, nomatch=NA)
 
-      # fill in table
-      conversion_table[i,c("exact_match","closest_match","dist")]<-c(TRUE,conversion_table$simplified[i],0)
-    } else {
-      #USE FUZZY MATCHING WHEN NECESSARY
-      # fill in table
-      conversion_table$exact_match[i] <- FALSE
+  # 2. FUZZY MATCH
+  #----------------
 
-      if(fuzzy_match){
-        # find closest matches using string distance osa method.
-        dist <- stringdist(conversion_table$simplified[i],flat_references_lower,method = "osa")
-        min_dist <- min(dist)
-        matches <-  unique(flat_references_lower[dist == min(dist)])
+  #find index for closest matches
+  if (any(is.na(exact_matches_index)) & fuzzy_match == TRUE){
 
-        #if multiple matches are found, also checks lcs and jw distance metrics and pick the match that is more frequent
-        if (length(unique(matches))>1){
-          dist <- stringdist(conversion_table$simplified[i],flat_references_lower,method = "lcs")
-          matches <-  c(matches,unique(flat_references_lower[dist == min(dist)]))
-          dist <- stringdist(conversion_table$simplified[i],flat_references_lower,method = "jw")
-          matches <-  c(matches,unique(flat_references_lower[dist == min(dist)]))
-
-          match <- names(sort(table(matches), decreasing=TRUE))[1]
-        } else {
-          match <- unique(matches)
-        }
-
-        # fill in table
-        conversion_table[i,c("closest_match","dist")] <- c(match,min_dist)
-        matches <- as.data.frame(which(table_references_lower == match, arr.ind=TRUE))
-        conversion_table[i,to] <- table_references[get_mode(matches$row, first_only=TRUE), to]
-      }
-    }
+    distance_matrix <- stringdistmatrix(conversion_table$simplified[is.na(exact_matches_index)],table_references_short$name_lower, method = "jw")
+    fuzzy_matches_index <-apply(distance_matrix, 1, which.min)
+  } else {
+    distance_matrix <- NULL
+    fuzzy_matches_index <- NULL
   }
 
-  # When naming convention has no equivalent insert NA
-  conversion_table[,to][conversion_table[,to] == ""] <- NA
-  conversion_table$dist <- as.numeric(conversion_table$dist)
-  conversion_table$exact_match <- as.logical(conversion_table$exact_match)
-  #__________________________________________________________
+  # 3. FILL CONVERSION TABLE
+  #-------------------------
+
+  #retrieve country ID from reference table for all closest matches
+  matches_ID <- table_references_short$ID[exact_matches_index] #exact matches
+  matches_ID[is.na(exact_matches_index)] <- if (fuzzy_match == TRUE & length(fuzzy_matches_index)>0){table_references_short$ID[fuzzy_matches_index]} else {NA} #fuzzy matches
+
+  #fill converted country names in table
+  if (any(!is.na(matches_ID))){
+    temp<- table_references[table_references$ID %in% matches_ID & table_references$nomenclature %in% to,]
+    temp <- pivot_wider(temp[,c("ID","nomenclature","name")], values_from = name, names_from = nomenclature)
+    conversion_table[,to]<-temp[fmatch(matches_ID, temp$ID),to]
+  }
+
+  #FILL MATCHING INFORMATION IN CONVERSION TABLE
+
+  #exact matches
+  conversion_table$exact_match <- !is.na(exact_matches_index)
+  conversion_table$closest_match <- table_references_short$name_lower[exact_matches_index]
+  conversion_table$dist[!is.na(exact_matches_index)] <- 0
+
+  #fuzzy matches
+  conversion_table$closest_match[is.na(exact_matches_index)] <- if (!is.null(fuzzy_matches_index)){table_references_short$name_lower[fuzzy_matches_index]} else {NA}
+  conversion_table$dist[is.na(exact_matches_index)] <- if (!is.null(distance_matrix)){apply(distance_matrix, 1, min)} else {NA}
 
 
-  #MATCHING REPORT:------------------------------------------
+
+  ##########################################################
+  #MATCHING REPORT:
+  ##########################################################
 
   #info for report:
   if (length(to)>1) no_equiv <- rowSums(is.na(conversion_table[,to])) else no_equiv <- is.na(conversion_table[,to])
   repeated <- duplicated(na.omit(conversion_table[,to]))|duplicated(na.omit(conversion_table[,to]),fromLast=TRUE)
   n_exact_matches <- sum(conversion_table$exact_match)
-  dist_summary <- summary(conversion_table$dist[!conversion_table$exact_match], na.rm=TRUE)
-  uncertain_matches <- list_countries[conversion_table$dist/nchar(list_countries) > 0.4]
-  uncertain_matches_to <- conversion_table[conversion_table$dist/nchar(list_countries) > 0.4, to[1]]
+  n_matched <- sum(!is.na(conversion_table$closest_match))
+  uncertain_matches <- na.omit(list_countries[conversion_table$dist/nchar(list_countries) > 0.4])
+  uncertain_matches_to <- na.omit(conversion_table[conversion_table$dist/nchar(list_countries) > 0.4, to[1]])
+
 
   #issue report
   output_warning <- FALSE
   if (verbose){
-    # Exact matching and fuzzy matching
-    cat(paste0("\nIn total ",length(list_countries)," unique country identifiers have been found\n",n_exact_matches,"/",length(list_countries)," have been matched with EXACT matching"))
+    # Number of exact matching and fuzzy matching
+    cat(paste0("\nIn total ",length(list_countries)," unique country identifiers have been found\n",n_exact_matches,"/",length(list_countries)," have been matched with EXACT matching\n"))
+    if (fuzzy_match == TRUE) cat(n_matched - n_exact_matches,"/", length(list_countries)," have been matched with FUZZY matching\n")
+    if (n_matched < length(list_countries)) cat(paste0("Unable to find a match for ",length(list_countries)- n_matched, "/",length(list_countries)))
+
+    # Summary statistics on fuzzy matching
     if(fuzzy_match & n_exact_matches<length(list_countries)){
+      dist_summary <- summary(conversion_table$dist[!conversion_table$exact_match], na.rm=TRUE)
       cat(paste0("\n",sum(!conversion_table$exact_match),"/",length(list_countries)," have been matched with FUZZY matching\n"))
       cat("\nFuzzy matching DISTANCE summary:")
       cat("\n | Average: ",mean(conversion_table$dist[!conversion_table$exact_match]))
@@ -167,13 +180,13 @@ match_table <- function(x,
     }
 
     # Message on multiple ids matched to same country
-    if (any(repeated)){
+    if (any(repeated) & n_matched>0){
       cat("\n\nMultiple arguments have been matched to the same country name:")
       cat(paste0("\n  - ", na.omit(conversion_table)[repeated,"list_countries"]," : ",na.omit(conversion_table)[repeated,to[1]]))
     }
 
     #Message on uncertain matches
-    if(length(uncertain_matches)>0 & all(!is.na(uncertain_matches))){
+    if( n_matched > 0 & length(uncertain_matches)>0 & all(!is.na(uncertain_matches))){
       cat("\n\nThe matching for the following countries could be inaccurate:")
       cat(paste0("\n - ", uncertain_matches," : ",uncertain_matches_to))
     }
@@ -182,14 +195,13 @@ match_table <- function(x,
     if (any(no_equiv>0)){
       message("Some country IDs have no match in one or more country naming conventions")
       output_warning <- TRUE}
-    if (any(repeated)){
+    if (any(repeated) & n_matched > 0){
       message("Multiple country IDs have been matched to the same country name")
       output_warning <- TRUE}
-    if (length(uncertain_matches)>0){
+    if (length(uncertain_matches)>0 & n_matched > 0){
       message("There is low confidence on the matching of some country names")
       output_warning <- TRUE}
   }
-
   #___________________________________________________________
 
 

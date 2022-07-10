@@ -22,26 +22,32 @@ find_countrycol <- function(x, return_index=FALSE, allow_NA=FALSE, min_share=0.9
 
   #take sample if table is large
   if (nrow(x)>500){
-    if (nrow(na.omit(x))>500) x <- na.omit(x)   #ensures that at least 500 rows are kept
+    if (nrow(na.omit(x))>500){x <- na.omit(x)}   #ensures that at least 500 rows are kept
     x <- x[sample(1:nrow(x), size= min(500 + sqrt(nrow(x)), nrow(x)) ,replace = FALSE), ]
   }
+
+  #exclude NA columns if requested
+  cols <- colnames(x)
+  if(allow_NA == FALSE){
+    cols <- cols[!apply(is.na(x[,cols]), MARGIN=2,FUN=any, simplify=TRUE)]
+  }
+  x <- x[,cols]
+
+  #transform any factor column to character
+  x[sapply(x, is.factor)] <- lapply(x[sapply(x, is.factor)], as.character)
 
   #initiate empty vector of country indices
   country_cols <- NULL
 
   #loop over all columns
-  if (length(country_cols)==0){
-    for (i in 1:ncol(x)){
-      #exclude NA columns if requested
-      if (!any(is.na(x[,i]))|allow_NA == TRUE) {
-        #convert factors to charachter
-        if (is.factor(x[,i])) x[,i] <- as.character(x[,i])
-        #check if it is a character vector
-        if(is.character(x[,i])){
-          #test if it contains country names
-          if(sum(is_country(x[,i]), na.rm=TRUE) >= min_share * length(x[!is.na(x[,i]),i])) country_cols <- c(country_cols, i)
-        }
-      }
+  for (i in 1:ncol(x)){
+    #check if it is a character vector
+    if(is.character(x[,i])){
+      #if there are too many country names, assume it cannot be a country column
+      #if (length(unique(x[,i]))<=300/min_share){
+        #test if it contains country names
+        if(sum(is_country(x[,i]), na.rm=TRUE) >= min_share * length(x[!is.na(x[,i]),i])) country_cols <- c(country_cols, i)
+      #}
     }
   }
 

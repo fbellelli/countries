@@ -23,9 +23,8 @@ is_country <- function(x, fuzzy_margin=0.1, check_for=NULL){
   if (all(is.na(check_for))&!is.null(check_for)) stop("Function argument - check_for - needs to be a vector of country names.")
   x <- as.character(x)
 
-  #prendere unique e convertire inputs check_for. Dare errore se non riconosciuti.
+  #clean inputs and give error if a country is not recognised exactly
   if (!is.null(check_for)){
-    #clean inputs and give error if a country is not recognised exactly
     temp <- country_name(check_for, to= "name_en", fuzzy_match = FALSE)
     if (any(is.na(temp))) stop(paste0("Unable to recognise the following country name(s): ", paste0(check_for[is.na(temp)], collapse = ", "), "\nPlease try providing an ISO code or a simplified name"))
     check_for <- unique(temp)
