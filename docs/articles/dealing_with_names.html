@@ -93,10 +93,10 @@
 </h2>
 <p>The function <code><a href="../reference/is_country.html">is_country()</a></code> allows to check whether a string is a country name. The argument <code>fuzzy_margin</code> can be used to increase tolerance and allow for small typos in the names. For instance, a value of 0.1 allows up to 10% of the characters in the strings to be wrong.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/is_country.html">is_country</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States"</span>,<span class="st">"Unated States"</span>,<span class="st">"dot"</span>,<span class="st">"DNK"</span>,<span class="fl">123</span><span class="op">)</span>, fuzzy_margin <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="../reference/is_country.html">is_country</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States"</span>,<span class="st">"Unated States"</span>,<span class="st">"dot"</span>,<span class="st">"DNK"</span>,<span class="fl">123</span><span class="op">)</span>, fuzzy_margin <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="co"># 0 is the default</span>
 <span class="co">#&gt; [1]  TRUE FALSE FALSE  TRUE FALSE</span>
 <span class="fu"><a href="../reference/is_country.html">is_country</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States"</span>,<span class="st">"Unated States"</span>,<span class="st">"dot"</span>,<span class="st">"DNK"</span>,<span class="fl">123</span><span class="op">)</span>, fuzzy_margin <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>
-<span class="co">#&gt; [1]  TRUE  TRUE FALSE  TRUE FALSE</span></code></pre></div>
+<span class="co">#&gt; [1] TRUE TRUE TRUE TRUE TRUE</span></code></pre></div>
 <p>Furthermore, <code><a href="../reference/is_country.html">is_country()</a></code> can also be used to check for a specific subset of countries. In the following example, the function is used to test whether the string relates to India or Sri Lanka, while allowing for different naming conventions and languages.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/is_country.html">is_country</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ceylon"</span>,<span class="st">"LKA"</span>,<span class="st">"Indonesia"</span>,<span class="st">"Inde"</span><span class="op">)</span>, check_for<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"India"</span>,<span class="st">"Sri Lanka"</span><span class="op">)</span><span class="op">)</span>
@@ -187,6 +187,7 @@
 
 <span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">fuzzy_example</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN_en"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Multiple country IDs have been matched to the same country name</span>
+<span class="co">#&gt; </span>
 <span class="co">#&gt; Set - verbose - to TRUE for more details</span>
 <span class="co">#&gt; [1] "United States of America"         "Côte d’Ivoire"                   </span>
 <span class="co">#&gt; [3] "Democratic Republic of the Congo" "North Macedonia"                 </span>
@@ -205,12 +206,12 @@
 <span class="co">#&gt; 1/6 have been matched with FUZZY matching</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Fuzzy matching DISTANCE summary:</span>
-<span class="co">#&gt;  | Average:  3</span>
-<span class="co">#&gt;  | Min: 3 </span>
-<span class="co">#&gt;  | Q1: 3 </span>
-<span class="co">#&gt;  | Median: 3 </span>
-<span class="co">#&gt;  | Q3: 3 </span>
-<span class="co">#&gt;  | Max: 3</span>
+<span class="co">#&gt;  | Average:  0.1227106</span>
+<span class="co">#&gt;  | Min: 0.122710622710623 </span>
+<span class="co">#&gt;  | Q1: 0.122710622710623 </span>
+<span class="co">#&gt;  | Median: 0.122710622710623 </span>
+<span class="co">#&gt;  | Q3: 0.122710622710623 </span>
+<span class="co">#&gt;  | Max: 0.122710622710623</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Multiple arguments have been matched to the same country name:</span>
 <span class="co">#&gt;   - Estados Unidos : United States of America </span>
@@ -225,7 +226,7 @@
 <li>
 <code>Some country IDs have no match in one or more country naming conventions</code>: indicates that it is impossible to find an exact match for one or more country names with <code>fuzzy_match=FALSE</code>. The user might consider using <code>fuzzy_match=TRUE</code> or custom tables (refer to the next section).</li>
 <li>
-<code>There is low confidence on the matching of some country names</code>: This warning indicates that some strings have been matched poorly. Thus indicating that the country might have been mididentified. In verbose mode the function will provide a list of problematic strings (see the example below). The user might consider using custom tables to solve this type of issues (refer to the next section).</li>
+<code>There is low confidence on the matching of some country names</code>: This warning indicates that some strings have been matched poorly. Thus indicating that the country might have been misidentified. In verbose mode the function will provide a list of problematic strings (see the example below). The user might consider using custom tables to solve this type of issues (refer to the next section).</li>
 <li>
 <code>Some country IDs have no match in one or more country naming conventions</code>: Conversion is requested to a nomenclature for which there is no information on the country. For instance, in the example below “Taiwan” has no correspondence in the <a href="https://unstats.un.org/unsd/methodology/m49/" class="external-link">UN M49 standard</a>. In verbose mode, the function will print all the country names affected by this problem. The user might consider using custom tables to solve this type of issues (refer to the next section).</li>
 </ul>
@@ -233,6 +234,7 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Taiwan"</span>,<span class="st">"lsajdèd"</span><span class="op">)</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN_en"</span><span class="op">)</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; Some country IDs have no match in one or more country naming conventions</span>
 <span class="co">#&gt; There is low confidence on the matching of some country names</span>
+<span class="co">#&gt; </span>
 <span class="co">#&gt; Set - verbose - to TRUE for more details</span>
 <span class="co">#&gt; [1] NA                                 "Lao People's Democratic Republic"</span></code></pre></div>
 <p>All the information from verbose mode can be accessed by setting ´simplify=FALSE´. This will return a list object containing:</p>
@@ -260,8 +262,11 @@
 <span class="co">#suppose we are unhappy with how "H#@°)Koe2" is interpreted by the function</span>
 <span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">example_custom</span>, to <span class="op">=</span> <span class="st">"name_en"</span><span class="op">)</span>
 <span class="co">#&gt; There is low confidence on the matching of some country names</span>
+<span class="co">#&gt; </span>
 <span class="co">#&gt; Set - verbose - to TRUE for more details</span>
-<span class="co">#&gt; [1] "Thailand"           "Myanmar"            "Korea, Republic of"</span>
+<span class="co">#&gt; [1] "Thailand"                               </span>
+<span class="co">#&gt; [2] "Myanmar"                                </span>
+<span class="co">#&gt; [3] "Korea (Democratic People's Republic of)"</span>
 
 <span class="co">#match_table can be used to generate a table for small adjustments</span>
 <span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/match_table.html">match_table</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">example_custom</span>, to <span class="op">=</span> <span class="st">"name_en"</span><span class="op">)</span>

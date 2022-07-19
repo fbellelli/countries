@@ -55,9 +55,14 @@ match_table <- function(x,
     if (to %in% "all"){to <- c(colnames(custom_table))}
     if (!all(to %in% c("all",colnames(custom_table)) | length(to)<1))  stop("The value provided to the - to - argument is not valid. It needs to be a vector of column names from the table used in the - custom_table - argument or the string `all`.")
 
+    #verify argument to is valid
+    if (!all(to %in% colnames(custom_table))){
+      to <- c(colnames(custom_table))
+      if (to != c("simple","ISO3")){warning("One or more of the - to - arguments cannot be found in the - custom_table - columns. Converting to all table's columns.\n")} #give warning if to is not on default
+    }
 
     #transform to a long format
-    custom_table <- sapply(custom_table, as.character) #transform all columns into character vectors
+    custom_table <- as.data.frame(sapply(custom_table, as.character)) #transform all columns into character vectors
     columns <- colnames(custom_table) #make list of columns to pivot
     custom_table$ID <- row.names(custom_table) #create entry ID number
     custom_table <- tidyr::pivot_longer(custom_table,
@@ -108,7 +113,11 @@ match_table <- function(x,
 
   #find index for closest matches
   if (any(is.na(exact_matches_index)) & fuzzy_match == TRUE){
-
+    #remove stopwords
+    stopwords <- c("of","and","republic","the","islands","de","&","island", "îles","islas", "república","del", "république")
+    conversion_table$simplified[is.na(exact_matches_index)] <- unlist(lapply(strsplit(conversion_table$simplified[is.na(exact_matches_index)], " "),
+                                                                             function(x){paste(x[!x %in% stopwords], collapse = " ")}))
+    #find closest match
     distance_matrix <- stringdistmatrix(conversion_table$simplified[is.na(exact_matches_index)],table_references_short$name_lower, method = "jw")
     fuzzy_matches_index <-apply(distance_matrix, 1, which.min)
   } else {
@@ -152,22 +161,22 @@ match_table <- function(x,
   repeated <- duplicated(na.omit(conversion_table[,to]))|duplicated(na.omit(conversion_table[,to]),fromLast=TRUE)
   n_exact_matches <- sum(conversion_table$exact_match)
   n_matched <- sum(!is.na(conversion_table$closest_match))
-  uncertain_matches <- na.omit(list_countries[conversion_table$dist/nchar(list_countries) > 0.4])
-  uncertain_matches_to <- na.omit(conversion_table[conversion_table$dist/nchar(list_countries) > 0.4, to[1]])
-
+  uncertain_matches <- na.omit(list_countries[conversion_table$dist > 0.2])
+  uncertain_matches_to <- na.omit(conversion_table[conversion_table$dist > 0.2, to[1]])
+  if (matching_info | !simplify){
+    dist_summary <- summary(conversion_table$dist[!conversion_table$exact_match], na.rm=TRUE)
+  }
 
   #issue report
   output_warning <- FALSE
   if (verbose){
     # Number of exact matching and fuzzy matching
     cat(paste0("\nIn total ",length(list_countries)," unique country identifiers have been found\n",n_exact_matches,"/",length(list_countries)," have been matched with EXACT matching\n"))
-    if (fuzzy_match == TRUE) cat(n_matched - n_exact_matches,"/", length(list_countries)," have been matched with FUZZY matching\n")
+    if (fuzzy_match == TRUE) cat(paste0(sum(!conversion_table$exact_match),"/",length(list_countries)," have been matched with FUZZY matching\n"))
     if (n_matched < length(list_countries)) cat(paste0("Unable to find a match for ",length(list_countries)- n_matched, "/",length(list_countries)))
 
     # Summary statistics on fuzzy matching
-    if(fuzzy_match & n_exact_matches<length(list_countries)){
-      dist_summary <- summary(conversion_table$dist[!conversion_table$exact_match], na.rm=TRUE)
-      cat(paste0("\n",sum(!conversion_table$exact_match),"/",length(list_countries)," have been matched with FUZZY matching\n"))
+    if(fuzzy_match & matching_info & n_exact_matches<length(list_countries)){
       cat("\nFuzzy matching DISTANCE summary:")
       cat("\n | Average: ",mean(conversion_table$dist[!conversion_table$exact_match]))
       cat(paste0("\n | ",c("Min: ","Q1: ","Median: ","Q3: ","Max: "),quantile(conversion_table$dist[!conversion_table$exact_match])))

@@ -99,14 +99,10 @@ country_name() can identify countries even when they are provided in mixed forma
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">#Convert country names to a single nomenclatures: (e.g. 3-letters ISO code)</span></span>
 <span class="r-in"><span class="fu">country_name</span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UK"</span>,<span class="st">"Estados Unidos"</span>,<span class="st">"Zaire"</span>,<span class="st">"C#te d^ivoire"</span><span class="op">)</span>, to<span class="op">=</span> <span class="st">"ISO3"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "GBR" "USA" "COD" "CIV"</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">#When multiple arguments are provided to the - to - argument, a data frame is returned:</span></span>
 <span class="r-in"><span class="fu">country_name</span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UK"</span>,<span class="st">"Estados Unidos"</span>,<span class="st">"Zaire"</span>,<span class="st">"C#te d^ivoire"</span><span class="op">)</span>, to<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN_en"</span>,<span class="st">"UN_fr"</span>,<span class="st">"ISO3"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                  UN_en</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 United Kingdom of Great Britain and Northern Ireland</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                             United States of America</span>
@@ -120,8 +116,6 @@ country_name() can identify countries even when they are provided in mixed forma
 <span class="r-in"></span>
 <span class="r-in"><span class="co">#This function can also be used to translate country names: (e.g. translating all to Chinese)</span></span>
 <span class="r-in"><span class="fu">country_name</span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UK"</span>,<span class="st">"Estados Unidos"</span>,<span class="st">"Zaire"</span>,<span class="st">"C#te d^ivoire"</span><span class="op">)</span>, to<span class="op">=</span> <span class="st">"name_zh"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "&lt;U+82F1&gt;&lt;U+56FD&gt;" "&lt;U+7F8E&gt;&lt;U+56FD&gt;" "&lt;U+521A&gt;&lt;U+679C&gt;&lt;U+6C11&gt;&lt;U+4E3B&gt;&lt;U+5171&gt;&lt;U+548C&gt;&lt;U+56FD&gt;" "&lt;U+79D1&gt;&lt;U+7279&gt;&lt;U+8FEA&gt;&lt;U+74E6&gt;"</span>
 </code></pre></div>
     </div>
