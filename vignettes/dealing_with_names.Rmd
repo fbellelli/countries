@@ -18,11 +18,11 @@ library(countries)
 
 ## Identifying country names
 
-The function `is_country()` allows to check whether a string is a country name. The argument `fuzzy_margin` can be used to increase tolerance and allow for small typos in the names. For instance, a value of 0.1 allows up to 10% of the characters in the strings to be wrong. 
+The function `is_country()` allows to check whether a string is a country name. The argument `fuzzy_mmatch` can be used to increase tolerance and allow for small typos in the names.  
 
 ```{r}
-is_country(c("United States","Unated States","dot","DNK",123), fuzzy_margin = 0) # 0 is the default
-is_country(c("United States","Unated States","dot","DNK",123), fuzzy_margin = 0.1)
+is_country(c("United States","Unated States","dot","DNK",123), fuzzy_match = FALSE) # FALSE is the default and will run faster
+is_country(c("United States","Unated States","dot","DNK",123), fuzzy_match = TRUE)
 ```
 
 Furthermore, `is_country()` can also be used to check for a specific subset of countries. In the following example, the function is used to test whether the string relates to India or Sri Lanka, while allowing for different naming conventions and languages.
@@ -92,7 +92,7 @@ More information on the country matching process can be obtained by setting `ver
 
 * The number of unique values provided by the user. In the example below 6 distinct strings have been provided.
 * How many country names correspond exactly to the ones in the function's reference list and how many have been recognised with fuzzy matching. In the example below, `"C@ète d^Ivoire"` is the only name recognised with fuzzy matching. The function's reference table can be accessed with the command `data(country_reference_list)`.
-* The function prints summary statistics on fuzzy matching. The DISTANCE metric refers to the number of insertions, deletions or substitutions necessary to go from the provided string (`"C@ète d^Ivoire"`) to the closest reference (`"Côte d'Ivoire"`). Lower DISTANCE statistics indicate more reliable fuzzy matching.  
+* The function prints summary statistics on fuzzy matching. The DISTANCE metric is the [Jaro-Winkler](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance) distance between the provided string (`"C@ète d^Ivoire"`) and the closest reference (`"Côte d'Ivoire"`). Lower DISTANCE statistics indicate more reliable fuzzy matching.  
 
 
 ```{r}

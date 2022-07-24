@@ -21,9 +21,9 @@ find_countrycol <- function(x, return_index=FALSE, allow_NA=FALSE, min_share=0.9
   if(!is.numeric(min_share)|is.null(min_share)|length(min_share)>1|is.na(min_share)|min_share>1|min_share<0){stop("Argument - min_share - needs to be a numeric value between 0 and 1 indicating the requested minimum share of country names in the output columns")}
 
   #take sample if table is large
-  if (nrow(x)>500){
-    if (nrow(na.omit(x))>500){x <- na.omit(x)}   #ensures that at least 500 rows are kept
-    x <- x[sample(1:nrow(x), size= min(500 + sqrt(nrow(x)), nrow(x)) ,replace = FALSE), ]
+  if (nrow(x)>2000){
+    if (nrow(na.omit(x))>2000){x <- na.omit(x)}   #ensures that at least 500 rows are kept
+    x <- x[sample(1:nrow(x), size= min(2000 + sqrt(nrow(x)), nrow(x)) ,replace = FALSE), ]
   }
 
   #exclude NA columns if requested

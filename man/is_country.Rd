@@ -4,14 +4,14 @@
 \alias{is_country}
 \title{Tests whether a string is a country name}
 \usage{
-is_country(x, fuzzy_margin = 0.1, check_for = NULL)
+is_country(x, check_for = NULL, fuzzy_match = FALSE)
 }
 \arguments{
 \item{x}{A character vector to be tested (also supports UN/ISO country codes)}
 
-\item{fuzzy_margin}{A number between 0 and 1 indicating the margin of error tolerated by the fuzzy matching. 0 indicates that an exact match is requested. Default is 0.1 - i.e. up to 10 percent of the string characters are allowed to be wrong.}
-
 \item{check_for}{A vector of country names to narrow down testing. The function will return \code{TRUE} only if the string relates to a country in this vector. Default is NULL.}
+
+\item{fuzzy_match}{A logical value indicating whether to tolerate small discrepancies in the country name matching. The default and fastest option is \code{FALSE}.}
 }
 \value{
 Returns a logical vector indicating whether the string is a country name

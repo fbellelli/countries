@@ -5,8 +5,8 @@
 #' Alternatively, the argument \code{check_for} allows to narrow down the test to a subset of countries.
 #' Fuzzy matching can be used to allow a small margin of error in the string.
 #' @param x A character vector to be tested (also supports UN/ISO country codes)
-#' @param fuzzy_margin A number between 0 and 1 indicating the margin of error tolerated by the fuzzy matching. 0 indicates that an exact match is requested. Default is 0.1 - i.e. up to 10 percent of the string characters are allowed to be wrong.
 #' @param check_for A vector of country names to narrow down testing. The function will return \code{TRUE} only if the string relates to a country in this vector. Default is NULL.
+#' @param fuzzy_match A logical value indicating whether to tolerate small discrepancies in the country name matching. The default and fastest option is \code{FALSE}.
 #' @return Returns a logical vector indicating whether the string is a country name
 #' @seealso \link[countries]{match_table} \link[countries]{country_name} \link[countries]{find_countrycol}
 #' @export
@@ -16,11 +16,12 @@
 #' is_country(x=c("ITA","Estados Unidos","Estado Unidos","bungalow","dog",542), fuzzy_margin=0.1)
 #' #Checking for a specific subset of countries
 #' is_country(x=c("Ceylon","LKA","Indonesia","Inde"), check_for=c("India","Sri Lanka"))
-is_country <- function(x, fuzzy_margin=0.1, check_for=NULL){
+is_country <- function(x, check_for=NULL, fuzzy_match=FALSE){
 
   #check inputs
-  if (fuzzy_margin>1 | fuzzy_margin<0) stop("Function argument - fuzzy_margin - needs to be a number between 0 and 1.")
+  if (!is.logical(fuzzy_match) | length(fuzzy_match)!=1) stop("Function argument - fuzzy_match - needs to be a logical statement (TRUE/FALSE)")
   if (all(is.na(check_for))&!is.null(check_for)) stop("Function argument - check_for - needs to be a vector of country names.")
+  if (!is.vector(x)) stop("Function argument - x - needs to be a character vector")
   x <- as.character(x)
 
   #clean inputs and give error if a country is not recognised exactly
@@ -31,11 +32,14 @@ is_country <- function(x, fuzzy_margin=0.1, check_for=NULL){
   }
 
   #use match table to test unique values
-  match <- suppressWarnings(suppressMessages(match_table(x, to="name_en", matching_info = TRUE)))
-  match$nchar <- nchar(match$list_countries)
+  match <- suppressWarnings(suppressMessages(match_table(x, to="name_en", fuzzy_match = fuzzy_match, matching_info = TRUE)))
 
-  #test applying calliper
-  match$is_country <- match$dist <= fuzzy_margin * match$nchar
+  #test if string is country by applying a calipper to discrepancy
+  if (fuzzy_match){
+    match$is_country <- match$dist/pmin(sqrt(nchar(match$closest_match)),5) < 0.04
+  } else {
+    match$is_country <- match$exact_match
+  }
 
   #set as FALSE matched entities that are not countries in the ISO standard
   match$is_country[is.na(match$name_en)]<-FALSE

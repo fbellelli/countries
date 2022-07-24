@@ -19,7 +19,7 @@ match_table(
 
 \item{to}{A vector containing one or more desired naming conventions to which \code{x} should be converted to (e.g. \code{"ISO3"}, \code{"name_en"}, \code{"UN_fr"}, ...). For a list of all possible values \href{https://fbellelli.github.io/countries/articles/dealing_with_names.html}{click here} or refer to the vignette on country names \code{vignette("dealing_with_names")}. Default is \code{c("simple", "ISO3")}.}
 
-\item{fuzzy_match}{Logical value indicating whether fuzzy matching of country names should be allowed (\code{TRUE}), or only exact matches are allowed (\code{FALSE}). Default is \code{TRUE}.}
+\item{fuzzy_match}{Logical value indicating whether fuzzy matching of country names should be allowed (\code{TRUE}), or only exact matches are allowed (\code{FALSE}). Default is \code{TRUE}. Switching to \code{FALSE} will result in much faster execution.}
 
 \item{verbose}{Logical value indicating whether the function should print to the console a report on the matching process. Default is \code{FALSE}.}
 

@@ -4,7 +4,7 @@
 #' The use of fuzzy matching allows more flexibility in recognising and identifying country names.
 #' @param x A vector of country names
 #' @param to A vector containing one or more desired naming conventions to which \code{x} should be converted to (e.g. \code{"ISO3"}, \code{"name_en"}, \code{"UN_fr"}, ...). For a list of all possible values \href{https://fbellelli.github.io/countries/articles/dealing_with_names.html}{click here} or refer to the vignette on country names \code{vignette("dealing_with_names")}. Default is \code{c("simple", "ISO3")}.
-#' @param fuzzy_match Logical value indicating whether fuzzy matching of country names should be allowed (\code{TRUE}), or only exact matches are allowed (\code{FALSE}). Default is \code{TRUE}.
+#' @param fuzzy_match Logical value indicating whether fuzzy matching of country names should be allowed (\code{TRUE}), or only exact matches are allowed (\code{FALSE}). Default is \code{TRUE}. Switching to \code{FALSE} will result in much faster execution.
 #' @param verbose Logical value indicating whether the function should print to the console a report on the matching process. Default is \code{FALSE}.
 #' @param matching_info Logical value. If set to true the output match table will include additional information on the matching of \code{x}'s entries. Default is \code{FALSE}.
 #' @param simplify Logical value. If set to \code{TRUE} the function will return the match table as a \code{data.frame} object. If set to \code{FALSE}, the function will return a list object containing the match table and additional details on the country matching process. Default is \code{TRUE}.
@@ -117,8 +117,10 @@ match_table <- function(x,
     stopwords <- c("of","and","republic","the","islands","de","&","island", "îles","islas", "república","del", "république")
     conversion_table$simplified[is.na(exact_matches_index)] <- unlist(lapply(strsplit(conversion_table$simplified[is.na(exact_matches_index)], " "),
                                                                              function(x){paste(x[!x %in% stopwords], collapse = " ")}))
-    #find closest match
-    distance_matrix <- stringdistmatrix(conversion_table$simplified[is.na(exact_matches_index)],table_references_short$name_lower, method = "jw")
+    #Compute distance matrix
+    distance_matrix <- stringdistmatrix(conversion_table$simplified[is.na(exact_matches_index)],table_references_short$name_lower, method = "jw", p=0.2)
+
+    #select first country with the most closest matches
     fuzzy_matches_index <-apply(distance_matrix, 1, which.min)
   } else {
     distance_matrix <- NULL
@@ -135,8 +137,13 @@ match_table <- function(x,
   #fill converted country names in table
   if (any(!is.na(matches_ID))){
     temp<- table_references[table_references$ID %in% matches_ID & table_references$nomenclature %in% to,]
-    temp <- pivot_wider(temp[,c("ID","nomenclature","name")], values_from = name, names_from = nomenclature)
-    conversion_table[,to]<-temp[fmatch(matches_ID, temp$ID),to]
+    if (nrow(temp)>0){
+      temp <- pivot_wider(temp[,c("ID","nomenclature","name")], values_from = name, names_from = nomenclature)
+      conversion_table[,to] <- temp[fmatch(matches_ID, temp$ID),to]
+    } else {
+      conversion_table[,to] <- NA
+    }
+
   }
 
   #FILL MATCHING INFORMATION IN CONVERSION TABLE
@@ -161,8 +168,8 @@ match_table <- function(x,
   repeated <- duplicated(na.omit(conversion_table[,to]))|duplicated(na.omit(conversion_table[,to]),fromLast=TRUE)
   n_exact_matches <- sum(conversion_table$exact_match)
   n_matched <- sum(!is.na(conversion_table$closest_match))
-  uncertain_matches <- na.omit(list_countries[conversion_table$dist > 0.2])
-  uncertain_matches_to <- na.omit(conversion_table[conversion_table$dist > 0.2, to[1]])
+  uncertain_matches <- na.omit(list_countries[conversion_table$dist/pmin(sqrt(nchar(conversion_table$closest_match)),5) > 0.05])
+  uncertain_matches_to <- na.omit(conversion_table[conversion_table$dist/pmin(sqrt(nchar(conversion_table$closest_match)),5) > 0.05, to[1]])
   if (matching_info | !simplify){
     dist_summary <- summary(conversion_table$dist[!conversion_table$exact_match], na.rm=TRUE)
   }

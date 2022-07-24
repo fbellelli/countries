@@ -47,8 +47,8 @@ test_that("country_name seems to correctly deal with NA values", {
 example <- c("ITA","Estados Unidos","Estado Unidos","bungalow","dog",542,NA)
 test_that("output from is_country seems to correspond to expectations", {
   expect_equal(length(is_country(example)), length(example))
-  expect_equal(is_country(example, fuzzy_margin = 0.1), c(TRUE, TRUE, TRUE,FALSE,FALSE,FALSE,NA))
-  expect_equal(is_country(example, fuzzy_margin = 0), c(TRUE, TRUE, FALSE,FALSE,FALSE,FALSE,NA))
+  expect_equal(is_country(example, fuzzy_match = TRUE), c(TRUE, TRUE, TRUE,FALSE,FALSE,FALSE,NA))
+  expect_equal(is_country(example, fuzzy_match = FALSE), c(TRUE, TRUE, FALSE,FALSE,FALSE,FALSE,NA))
   expect_equal(is_country(x=c("Ceylon","LKA","Indonesia","Inde"), check_for=c("India","Sri Lanka")), c(TRUE,TRUE,FALSE,TRUE))
 })
 
