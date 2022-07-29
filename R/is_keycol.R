@@ -1,19 +1,19 @@
-#' Test wheter a set of column could be a data frame key
+#' Test whether a set of column could be a data frame key
 #'
 #' This function takes a data frame and a vector of column names as argument and returns a logical value indicating whether the indicated columns uniquely identify entries in the data frame.
 #' If the output is \code{TRUE}, the indicated columns could be the keys of the table.
 #' @param x A data frame object
 #' @param cols A vector of column names to be tested.
-#' @param allow_NA Logical value indicating whether to allow columns to have \code{NA} values. Default is \code{allow_NA=FALSE}, the function will return \code{FALSE} if any \code{NA} value is present in \code{colnames}.
+#' @param allow_NA Logical value indicating whether to allow key columns to have \code{NA} values. Default is \code{allow_NA=FALSE}, the function will return \code{FALSE} if any \code{NA} value is present in \code{colnames}.
 #' @param verbose Logical value indicating whether messages should be printed on the console. Default is \code{TRUE}.
 #' @return Returns a logical value. If \code{TRUE}, the columns indicated in \code{colnames} uniquely identify the entries in \code{x}.
 #' @seealso \link[countries]{find_countrycol} \link[countries]{find_timecol}
 #' @export
 #' @examples
-#' is_key(data.frame(a=1:10,b=sample(c("a","b","c"),10, replace=TRUE)), cols="a")
-#' is_key(data.frame(a=1:10,b=sample(c("a","b","c"),10, replace=TRUE)), cols="b")
-#' is_key(data.frame(a=c(1:5,1:5),b=sample(c("a","b","c"),10, replace=TRUE), c=c(rep("a",5),rep("b",5))), cols=c("a","c"))
-is_key <- function(x,
+#' is_keycol(data.frame(a=1:10,b=sample(c("a","b","c"),10, replace=TRUE)), cols="a")
+#' is_keycol(data.frame(a=1:10,b=sample(c("a","b","c"),10, replace=TRUE)), cols="b")
+#' is_keycol(data.frame(a=c(1:5,1:5),b=sample(c("a","b","c"),10, replace=TRUE), c=c(rep("a",5),rep("b",5))), cols=c("a","c"))
+is_keycol <- function(x,
                    cols,
                    allow_NA=FALSE,
                    verbose=TRUE){

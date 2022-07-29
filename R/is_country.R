@@ -26,7 +26,7 @@ is_country <- function(x, check_for=NULL, fuzzy_match=FALSE){
 
   #clean inputs and give error if a country is not recognised exactly
   if (!is.null(check_for)){
-    temp <- country_name(check_for, to= "name_en", fuzzy_match = FALSE)
+    temp <- suppressWarnings(suppressMessages(country_name(check_for, to= "name_en", fuzzy_match = FALSE)))
     if (any(is.na(temp))) stop(paste0("Unable to recognise the following country name(s): ", paste0(check_for[is.na(temp)], collapse = ", "), "\nPlease try providing an ISO code or a simplified name"))
     check_for <- unique(temp)
   }

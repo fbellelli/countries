@@ -61,7 +61,7 @@ It can be used to automate the search of date and year columns in data frames.</
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">find_timecol</span><span class="op">(</span><span class="va">x</span>, return_index <span class="op">=</span> <span class="cn">FALSE</span>, allow_NA <span class="op">=</span> <span class="cn">FALSE</span>, regularity <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">find_timecol</span><span class="op">(</span><span class="va">x</span>, return_index <span class="op">=</span> <span class="cn">FALSE</span>, allow_NA <span class="op">=</span> <span class="cn">FALSE</span>, sample_size <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -72,8 +72,6 @@ It can be used to automate the search of date and year columns in data frames.</
 <dd><p>A logical value indicating whether the function should return the index of time columns instead of the column names. Default is <code>FALSE</code>, column names are returned.</p></dd>
 <dt>allow_NA</dt>
 <dd><p>Logical value indicating whether to allow time columns to contain <code>NA</code> values. Default is <code>allow_NA=FALSE</code>, the function will not return time column containing <code>NA</code> values.</p></dd>
-<dt>regularity</dt>
-<dd><p>Logical value indicating whether gaps are allowed in the unique time values of the column. For example, if <code>regularity=TRUE</code>, a column containing the values <code>c(2000, 2005, 2010, 2020)</code> would be ignored because <code>2015</code> is missing. Default is <code>FALSE</code>, regularity is not required.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>

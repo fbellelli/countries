@@ -8,9 +8,9 @@
 #' @return Returns the mode of the vector \code{x}
 #' @export
 #' @examples
-#' get_mode(c("a","a",2,3))
-#' get_mode(c(1,1,2,3,NA,2))
-get_mode <- function(x,
+#' countries::mode(c("a","a",2,3))
+#' countries::mode(c(1,1,2,3,NA,2))
+mode <- function(x,
                      first_only = FALSE) {
   ux <- unique(x)
   if (first_only==TRUE){

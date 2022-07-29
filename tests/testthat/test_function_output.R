@@ -1,11 +1,11 @@
-#GET_MODE ----------------------------------------
+#MODE ----------------------------------------
 test_that("get_mode output has the correct format", {
-  expect_equal(is.numeric(get_mode(c(NA,1,1,2))), TRUE)
-  expect_equal(is.character(get_mode(c(NA,"prova"))), TRUE)
-  expect_equal(is.character(get_mode(c(1,2,1,NA,"prova"))), TRUE)
-  expect_equal(length(get_mode(c(1,2,1,2,3))), 2)
-  expect_equal(length(get_mode(c(1,2,1,2,3), first_only = TRUE)), 1)
-  expect_equal(get_mode(c(1,2,1,NA,"prova","prova")), c("1","prova"))
+  expect_equal(is.numeric(countries::mode(c(NA,1,1,2))), TRUE)
+  expect_equal(is.character(countries::mode(c(NA,"prova"))), TRUE)
+  expect_equal(is.character(countries::mode(c(1,2,1,NA,"prova"))), TRUE)
+  expect_equal(length(countries::mode(c(1,2,1,2,3))), 2)
+  expect_equal(length(countries::mode(c(1,2,1,2,3), first_only = TRUE)), 1)
+  expect_equal(countries::mode(c(1,2,1,NA,"prova","prova")), c("1","prova"))
 })
 
 
@@ -82,9 +82,6 @@ test_that("output from find_timecol seems to correspond to expectations", {
   expect_equal(is.null(find_timecol(example[,2:3], TRUE)), TRUE)
   expect_equal(is.null(find_timecol(example[,2:3], TRUE, TRUE)), FALSE)
   expect_equal(find_timecol(example[,2:3], FALSE, TRUE), "b")
-  expect_equal(find_timecol(example[,-c(1,4,5,6,7)], FALSE, TRUE,FALSE), "a_fct")
-  expect_equal(find_timecol(example[,-c(1,4,5,6,7,9)], FALSE, TRUE,FALSE), "year2")
-  expect_equal(is.null(find_timecol(example[,-c(1,4,5,6,7,9)], FALSE, TRUE,TRUE)), TRUE)
 })
 
 
@@ -110,16 +107,16 @@ test_that("output from is_date seems to correspond to expectations", {
   expect_equal(is_date(c("2020-01-01","test",2020,"March 2030"), allowed_formats = "%Y"), c(TRUE, FALSE, TRUE, FALSE))
 })
 
-# IS_KEY ------------------------------------------------------
+# IS_KEYCOL ------------------------------------------------------
 example <- data.frame(a=c(1:5,1:5),b=sample(c("a","b","c"),10, replace=TRUE), c=as.factor(c(rep("a",5),rep("b",5))))
 example1 <- example
 example1$c[2] <- NA
 test_that("output from is_key seems to correspond to expectations", {
-  expects_equal(is_logical(is_key(example,c("a"))), TRUE)
-  expects_equal(length(is_key(example,c("a"))), 1)
-  expects_equal(is_key(example,c("a")), FALSE)
-  expects_equal(is_key(example,c("a","c")), TRUE)
-  expects_equal(is_key(example1,c("a","c"),allow_NA = FALSE, verbose=FALSE), FALSE)
-  expects_equal(is_key(example1,c("a","c"),allow_NA = TRUE, verbose=FALSE), TRUE)
+  expects_equal(is_logical(is_keycol(example,c("a"))), TRUE)
+  expects_equal(length(is_keycol(example,c("a"))), 1)
+  expects_equal(is_keycol(example,c("a")), FALSE)
+  expects_equal(is_keycol(example,c("a","c")), TRUE)
+  expects_equal(is_keycol(example1,c("a","c"),allow_NA = FALSE, verbose=FALSE), FALSE)
+  expects_equal(is_keycol(example1,c("a","c"),allow_NA = TRUE, verbose=FALSE), TRUE)
 })
 

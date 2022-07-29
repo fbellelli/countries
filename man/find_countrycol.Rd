@@ -4,7 +4,13 @@
 \alias{find_countrycol}
 \title{Finds columns containing country names}
 \usage{
-find_countrycol(x, return_index = FALSE, allow_NA = FALSE, min_share = 0.8)
+find_countrycol(
+  x,
+  return_index = FALSE,
+  allow_NA = FALSE,
+  min_share = 0.8,
+  sample_size = 1000
+)
 }
 \arguments{
 \item{x}{A data frame object}
@@ -13,7 +19,9 @@ find_countrycol(x, return_index = FALSE, allow_NA = FALSE, min_share = 0.8)
 
 \item{allow_NA}{Logical value indicating whether columns containing \code{NA} values are to be considered as country columns. Default is \code{allow_NA=FALSE}, the function will not return country column containing \code{NA} values.}
 
-\item{min_share}{A value between \code{0} and \code{1} indicating the minimum share of country names in columns that are returned. A value of \code{0} will return any column containing a country name. A value of \code{1} will return only column whose entries are all country names. Default is \code{0.9}, i.e. at least 90 percent of the column entries need to be country names.}
+\item{min_share}{A value between \code{0} and \code{1} indicating the minimum share of country names in columns that are returned. A value of \code{0} will return any column containing a country name. A value of \code{1} will return only columns whose entries are all country names. Default is \code{0.9}, i.e. at least 90 percent of the column entries need to be country names.}
+
+\item{sample_size}{An numeric value greater than 0 indicating the sample size used for evaluating columns in large datasets.  Default is \code{1000}. Large sample sizes result in slower execution speed.}
 }
 \value{
 Returns a vector of country names (\code{return_index=FALSE}) or column indices (\code{return_index=TRUE}) of columns containing country names.
@@ -22,7 +30,7 @@ Returns a vector of country names (\code{return_index=FALSE}) or column indices 
 This function takes a data frame as argument and returns the column name (or index) of all columns containing country names.
 It can be used to automate the search of country columns in data frames.
 For the purpose of this function, a country is any of the 249 territories designated in the ISO standard \code{3166}.
-On large datasets (More than 100000 rows) a random sample is used for evaluating the columns.
+On large datasets a random sample is used for evaluating the columns.
 }
 \examples{
 find_countrycol(x=data.frame(a=c("Brésil","Tonga","FRA"), b=c(1,2,3)))

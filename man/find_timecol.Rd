@@ -4,7 +4,7 @@
 \alias{find_timecol}
 \title{Finds columns containing date and year data}
 \usage{
-find_timecol(x, return_index = FALSE, allow_NA = FALSE, regularity = FALSE)
+find_timecol(x, return_index = FALSE, allow_NA = FALSE, sample_size = 1000)
 }
 \arguments{
 \item{x}{A data frame object}
@@ -12,8 +12,6 @@ find_timecol(x, return_index = FALSE, allow_NA = FALSE, regularity = FALSE)
 \item{return_index}{A logical value indicating whether the function should return the index of time columns instead of the column names. Default is \code{FALSE}, column names are returned.}
 
 \item{allow_NA}{Logical value indicating whether to allow time columns to contain \code{NA} values. Default is \code{allow_NA=FALSE}, the function will not return time column containing \code{NA} values.}
-
-\item{regularity}{Logical value indicating whether gaps are allowed in the unique time values of the column. For example, if \code{regularity=TRUE}, a column containing the values \code{c(2000, 2005, 2010, 2020)} would be ignored because \code{2015} is missing. Default is \code{FALSE}, regularity is not required.}
 }
 \value{
 Returns a vector of names (\code{return_index=FALSE}) or indices (\code{return_index=TRUE}) of columns containing date or year information. Only the most likely year column is returned.

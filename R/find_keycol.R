@@ -3,7 +3,7 @@
 #this function is designed for country data: hence, it will first search for column containing country names and dates/years.
 #It also prioritise left-most columns in table
 
-find_key <- function(x,
+find_keycol <- function(x,
                      return_index=FALSE,
                      allow_NA=FALSE){
 
@@ -39,7 +39,7 @@ find_key <- function(x,
     #check all country columns individually to see if they are key, if more than one, select left-most column and terminate search
     i <- 1
     while (i<=length(country_cols) & key_found==FALSE){
-      if (is_key(x,country_cols[i], allow_NA=allow_NA, verbose=FALSE)){
+      if (is_keycol(x,country_cols[i], allow_NA=allow_NA, verbose=FALSE)){
         key <- c("country"=country_cols[i])
         key_found <- TRUE
       }
@@ -59,7 +59,7 @@ find_key <- function(x,
     #check if time cols are key
     if (length(time_cols)>0){
       while (i<=length(time_cols) & key_found==FALSE){
-        if (is_key(x,time_cols[i], allow_NA=allow_NA, verbose=FALSE)){
+        if (is_keycol(x,time_cols[i], allow_NA=allow_NA, verbose=FALSE)){
           key <- c("time"=time_cols[i])
           key_found <- TRUE
         }
