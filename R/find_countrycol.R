@@ -8,7 +8,7 @@
 #' @param return_index A logical value indicating whether the function should return the index of country columns instead of the column names. Default is \code{FALSE}, column names are returned.
 #' @param allow_NA Logical value indicating whether columns containing \code{NA} values are to be considered as country columns. Default is \code{allow_NA=FALSE}, the function will not return country column containing \code{NA} values.
 #' @param min_share A value between \code{0} and \code{1} indicating the minimum share of country names in columns that are returned. A value of \code{0} will return any column containing a country name. A value of \code{1} will return only columns whose entries are all country names. Default is \code{0.9}, i.e. at least 90 percent of the column entries need to be country names.
-#' @param sample_size An numeric value greater than 0 indicating the sample size used for evaluating columns in large datasets.  Default is \code{1000}. Large sample sizes result in slower execution speed.
+#' @param sample_size A numeric value greater than 0 indicating the sample size used for evaluating columns in large datasets.  Default is \code{1000}. Large sample sizes result in slower execution speed.
 #' @return Returns a vector of country names (\code{return_index=FALSE}) or column indices (\code{return_index=TRUE}) of columns containing country names.
 #' @seealso \link[countries]{is_country} \link[countries]{country_name} \link[countries]{find_timecol}
 #' @export
