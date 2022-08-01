@@ -44,5 +44,5 @@ country_name(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= c("UN_en","
 country_name(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= "name_zh")
 }
 \seealso{
-\link[countries]{country_name} \link[countries]{match_table}
+\link[countries]{is_country} \link[countries]{match_table} \link[countries]{find_countrycol}
 }

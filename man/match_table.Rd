@@ -40,5 +40,5 @@ The use of fuzzy matching allows more flexibility in recognising and identifying
 match_table(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= c("UN_en","ISO3"))
 }
 \seealso{
-\link[countries]{country_name}
+\link[countries]{country_name} \link[countries]{is_country}
 }

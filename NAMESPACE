@@ -2,6 +2,7 @@
 
 export(country_name)
 export(find_countrycol)
+export(find_keycol)
 export(find_timecol)
 export(is_country)
 export(is_date)

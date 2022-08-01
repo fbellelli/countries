@@ -21,7 +21,7 @@ find_countrycol(
 
 \item{min_share}{A value between \code{0} and \code{1} indicating the minimum share of country names in columns that are returned. A value of \code{0} will return any column containing a country name. A value of \code{1} will return only columns whose entries are all country names. Default is \code{0.9}, i.e. at least 90 percent of the column entries need to be country names.}
 
-\item{sample_size}{An numeric value greater than 0 indicating the sample size used for evaluating columns in large datasets.  Default is \code{1000}. Large sample sizes result in slower execution speed.}
+\item{sample_size}{A numeric value greater than 0 indicating the sample size used for evaluating columns in large datasets.  Default is \code{1000}. Large sample sizes result in slower execution speed.}
 }
 \value{
 Returns a vector of country names (\code{return_index=FALSE}) or column indices (\code{return_index=TRUE}) of columns containing country names.
@@ -36,5 +36,5 @@ On large datasets a random sample is used for evaluating the columns.
 find_countrycol(x=data.frame(a=c("Brésil","Tonga","FRA"), b=c(1,2,3)))
 }
 \seealso{
-\link[countries]{is_country} \link[countries]{country_name} \link[countries]{find_timecol}
+\link[countries]{is_country} \link[countries]{country_name} \link[countries]{find_keycol} \link[countries]{find_timecol}
 }

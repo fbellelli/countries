@@ -7,7 +7,7 @@
 #' @param allow_NA Logical value indicating whether to allow key columns to have \code{NA} values. Default is \code{allow_NA=FALSE}, the function will return \code{FALSE} if any \code{NA} value is present in \code{colnames}.
 #' @param verbose Logical value indicating whether messages should be printed on the console. Default is \code{TRUE}.
 #' @return Returns a logical value. If \code{TRUE}, the columns indicated in \code{colnames} uniquely identify the entries in \code{x}.
-#' @seealso \link[countries]{find_countrycol} \link[countries]{find_timecol}
+#' @seealso \link[countries]{find_keycol} \link[countries]{find_countrycol} \link[countries]{find_timecol}
 #' @export
 #' @examples
 #' is_keycol(data.frame(a=1:10,b=sample(c("a","b","c"),10, replace=TRUE)), cols="a")

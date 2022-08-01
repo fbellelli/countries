@@ -28,5 +28,5 @@ is_keycol(data.frame(a=1:10,b=sample(c("a","b","c"),10, replace=TRUE)), cols="b"
 is_keycol(data.frame(a=c(1:5,1:5),b=sample(c("a","b","c"),10, replace=TRUE), c=c(rep("a",5),rep("b",5))), cols=c("a","c"))
 }
 \seealso{
-\link[countries]{find_countrycol} \link[countries]{find_timecol}
+\link[countries]{find_keycol} \link[countries]{find_countrycol} \link[countries]{find_timecol}
 }

@@ -10,7 +10,7 @@
 #' @param simplify Logical value. If set to \code{TRUE} the function will return the match table as a \code{data.frame} object. If set to \code{FALSE}, the function will return a list object containing the match table and additional details on the country matching process. Default is \code{TRUE}.
 #' @param custom_table Custom conversion table to be used. This needs to be a data.frame object. Default is \code{NULL}.
 #' @return Returns a conversion table for countries names to the desired naming conventions. If \code{simplify=FALSE} it returns a list object.
-#' @seealso \link[countries]{country_name}
+#' @seealso \link[countries]{country_name} \link[countries]{is_country}
 #' @export
 #' @importFrom stats na.omit quantile
 #' @importFrom fastmatch fmatch

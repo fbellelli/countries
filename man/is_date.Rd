@@ -30,5 +30,5 @@ This function checks if a value is a date by attempting to convert it to a date 
 is_date(c("2020-01-01","test",2020,"March 2030"))
 }
 \seealso{
-\link[countries]{find_timecol} \link[countries]{is_countries}
+\link[countries]{find_timecol} \link[countries]{find_keycol} \link[countries]{is_countries}
 }

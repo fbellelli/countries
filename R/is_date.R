@@ -18,7 +18,7 @@ is.date <- function(x, formats){any(!is.na(as.Date(as.character(x), format = for
 #' @param allowed_formats Date formats to be checked for (expressed in R date notation).
 #' @return Returns a logical vector indicating whether the values can be converted to any of the date formats provided. Notice that unless specified, the default allowed formats do not include simple year numbers (e.g. 2022 or 1993) because number vectors could wrongly be identified as dates. Also, notice that testing \code{NA} values will return \code{FALSE}.
 #' @export
-#' @seealso \link[countries]{find_timecol} \link[countries]{is_countries}
+#' @seealso \link[countries]{find_timecol} \link[countries]{find_keycol} \link[countries]{is_countries}
 #' @examples
 #' is_date(c("2020-01-01","test",2020,"March 2030"))
 is_date <- function(x, allowed_formats=c("%Y-%m-%d",

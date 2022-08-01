@@ -9,7 +9,7 @@
 #' @param simplify Logical value. If set to \code{TRUE} the function will return a vector of converted names. If set to \code{FALSE}, the function will return a list object containing the converted vector and additional details on the country matching process. Default is \code{TRUE}.
 #' @param custom_table Custom conversion table to be used. This needs to be a \code{data.frame} object. Default is \code{NULL}.
 #' @return Returns a vector of converted country names. If multiple nomenclatures are passed to the argument \code{to}, the vectors are arranged in a data frame. If \code{simplify=FALSE}, the function will return a list object.
-#' @seealso \link[countries]{country_name} \link[countries]{match_table}
+#' @seealso \link[countries]{is_country} \link[countries]{match_table} \link[countries]{find_countrycol}
 #' @export
 #' @importFrom dplyr left_join
 #' @examples
