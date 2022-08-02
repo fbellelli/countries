@@ -12,11 +12,14 @@ RoxygenNote: 7.1.2
 Imports: 
     stringdist,
     fastmatch,
-    tidyr
+    tidyr,
+    stringr,
+    dplyr,
+    knitr,
+    rmarkdown,
+    testthat
 Depends: 
     R (>= 2.10)
-Suggests: 
-    dplyr
 VignetteBuilder: knitr
 URL: https://fbellelli.github.io/countries/, https://github.com/fbellelli/countries
 BugReports: https://github.com/fbellelli/countries/issues

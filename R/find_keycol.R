@@ -52,7 +52,7 @@ find_keycol <- function(x,
   } else if (is.character(search_only)){
     #check that all provided names are in the table
     if(!all(search_only %in% colnames(x))){stop("One or more of the names in - search_only - cannot be found among the column names")}
-    cols <- colnames(x)
+    cols <- search_only
   } else {
     #if argument is not NA, character or numeric, give error:
     stop("Argument - only_search - needs to be a numeric vector or a vector containing column names")
@@ -69,7 +69,7 @@ find_keycol <- function(x,
   # --- 1) FIND COUNTRY COLUMN (AND CHECK FOR CROSS-SECTIONAL STRUCTURE)----
 
   #make a list of country columns
-  country_cols <- find_countrycol(x, allow_NA = allow_NA)
+  country_cols <- find_countrycol(x, allow_NA = TRUE)
 
   #check if any of the country column is key of the table
   if (length(country_cols)>0){
@@ -92,7 +92,12 @@ find_keycol <- function(x,
 
   if (length(cols)>0 & key_found == FALSE){
     #find time columns
-    time_cols <- find_timecol(x[,cols], allow_NA = allow_NA)
+    if (length(cols)==1){
+      time_cols <- cols[!is.null(find_timecol(data.frame(x[,cols]), allow_NA = TRUE))] #this conditional statement fixes an issue with naming when there is only one column to evaluate
+    } else {
+      time_cols <- find_timecol(x[,cols], allow_NA = TRUE)
+    }
+
 
     #check if time cols are key
     if (length(time_cols)>0 & length(country_cols)==0){
@@ -199,6 +204,7 @@ find_keycol <- function(x,
         }
 
         # 2) check other columns two by two
+        if (length(cols)>1  & key_found==FALSE){
         grid <- t(combn(cols,2))
         i <- 1
         while (i<=nrow(grid) & key_found==FALSE){
@@ -211,6 +217,7 @@ find_keycol <- function(x,
             key_found <- TRUE
           }
           i<-i+1
+        }
         }
       }
     }
@@ -241,6 +248,7 @@ find_keycol <- function(x,
           }
 
           # 2) check other columns two by two
+          if (length(cols)>1  & key_found==FALSE)
           grid <- t(combn(cols,2))
           i <- 1
           while (i<=nrow(grid) & key_found==FALSE){

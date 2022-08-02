@@ -12,8 +12,8 @@
 #' @export
 #' @examples
 #' #Detect strings that are country names
-#' is_country(x=c("ITA","Estados Unidos","Estado Unidos","bungalow","dog",542), fuzzy_margin=0)
-#' is_country(x=c("ITA","Estados Unidos","Estado Unidos","bungalow","dog",542), fuzzy_margin=0.1)
+#' is_country(x=c("ITA","Estados Unidos","Estado Unidos","bungalow","dog",542), fuzzy_match=FALSE)
+#' is_country(x=c("ITA","Estados Unidos","Estado Unidos","bungalow","dog",542), fuzzy_match=TRUE)
 #' #Checking for a specific subset of countries
 #' is_country(x=c("Ceylon","LKA","Indonesia","Inde"), check_for=c("India","Sri Lanka"))
 is_country <- function(x, check_for=NULL, fuzzy_match=FALSE){

@@ -92,17 +92,17 @@ test_that("output from is_yearcol seems to correspond to expectations", {
   expect_equal(is.yearcol(1990:3000, limit=c(1800,3000)), TRUE)
   expect_equal(is.yearcol(c("a",2)), FALSE)
   expect_equal(is.yearcol(c(NA,2000), allow_NA=FALSE), FALSE)
-  expect_equal(is.yearcol(c(NA,2000), allow_NA=TRUE), FALSE)
+  expect_equal(is.yearcol(c(NA,2000), allow_NA=TRUE), TRUE)
   expect_equal(is.yearcol(c(1998,2000,2002), regularity = TRUE), TRUE)
   expect_equal(is.yearcol(c(1998,2000,2002,2003), regularity = TRUE), FALSE)
 })
 
 # IS_DATE ------------------------------------------------------
 test_that("output from is_date seems to correspond to expectations", {
-  expects_equal(is_date(NA), FALSE)
-  expects_equal(is_date(NA, c("%Y",NA)), FALSE)
-  expects_equal(length(is_date(c("2020-01-01","test",2020,"March 2030"))), 4)
-  expects_equal(is.logical(is_date(c("2020-01-01","test",2020,"March 2030",NA))), TRUE)
+  expect_equal(is_date(NA), FALSE)
+  expect_equal(is_date(NA, c("%Y",NA)), FALSE)
+  expect_equal(length(is_date(c("2020-01-01","test",2020,"March 2030"))), 4)
+  expect_equal(is.logical(is_date(c("2020-01-01","test",2020,"March 2030",NA))), TRUE)
   expect_equal(is_date(c("2020-01-01","test",2020,"March 2030")), c(TRUE, FALSE, FALSE, TRUE))
   expect_equal(is_date(c("2020-01-01","test",2020,"March 2030"), allowed_formats = "%Y"), c(TRUE, FALSE, TRUE, FALSE))
 })
@@ -112,11 +112,25 @@ example <- data.frame(a=c(1:5,1:5),b=sample(c("a","b","c"),10, replace=TRUE), c=
 example1 <- example
 example1$c[2] <- NA
 test_that("output from is_key seems to correspond to expectations", {
-  expects_equal(is_logical(is_keycol(example,c("a"))), TRUE)
-  expects_equal(length(is_keycol(example,c("a"))), 1)
-  expects_equal(is_keycol(example,c("a")), FALSE)
-  expects_equal(is_keycol(example,c("a","c")), TRUE)
-  expects_equal(is_keycol(example1,c("a","c"),allow_NA = FALSE, verbose=FALSE), FALSE)
-  expects_equal(is_keycol(example1,c("a","c"),allow_NA = TRUE, verbose=FALSE), TRUE)
+  expect_equal(is.logical(is_keycol(example,c("a"))), TRUE)
+  expect_equal(length(is_keycol(example,c("a"))), 1)
+  expect_equal(is_keycol(example,c("a")), FALSE)
+  expect_equal(is_keycol(example,c("a","c")), TRUE)
+  expect_equal(is_keycol(example1,c("a","c"),allow_NA = FALSE, verbose=FALSE), FALSE)
+  expect_equal(is_keycol(example1,c("a","c"),allow_NA = TRUE, verbose=FALSE), TRUE)
 })
 
+# FIND_KEYCOL -------------------------------------------------------
+example <-data.frame(nation=c(rep(c("FRA","ALB","JOR"),3),"GBR"),
+                    year=c(rep(2000,3),rep(2005,3),rep(2010,3),NA),
+                    var=runif(10))
+test_that("output from find_keycol seems to correspond to expectations", {
+  expect_equal(length(find_keycol(example))<=ncol(example), TRUE)
+  expect_equal(is.null(find_keycol(example)), TRUE)
+  expect_equal(is.numeric(find_keycol(example, return_index = TRUE)), TRUE)
+  expect_equal(is.character(find_keycol(example, allow_NA=TRUE)), TRUE)
+  expect_equal(all(find_keycol(example, allow_NA = TRUE)== c("nation","year")), TRUE)
+  expect_equal(is.null(find_keycol(example, search_only = 1:2)), TRUE)
+  expect_equal(find_keycol(example, search_only = 1:2, allow_NA = TRUE), c("country"="nation","time"="year"))
+  expect_equal(is.null(find_keycol(example, search_only = "nation", allow_NA = TRUE)), TRUE)
+})

@@ -21,7 +21,7 @@ find_countrycol(
 
 \item{min_share}{A value between \code{0} and \code{1} indicating the minimum share of country names in columns that are returned. A value of \code{0} will return any column containing a country name. A value of \code{1} will return only columns whose entries are all country names. Default is \code{0.9}, i.e. at least 90 percent of the column entries need to be country names.}
 
-\item{sample_size}{A numeric value greater than 0 indicating the sample size used for evaluating columns in large datasets.  Default is \code{1000}. Large sample sizes result in slower execution speed.}
+\item{sample_size}{Either \code{NA} or a numeric value indicating the sample size used for evaluating columns. Default is \code{1000}. If \code{NA} is passed, the function will evaluate the full table. The minimum accepted value is \code{100} (i.e. 100 randomly sampled rows are used to evaluate the columns). This parameter can be tuned to speed up computation on long datasets. Taking a sample could result in inexact identification of key columns, accuracy improves with larger samples.}
 }
 \value{
 Returns a vector of country names (\code{return_index=FALSE}) or column indices (\code{return_index=TRUE}) of columns containing country names.

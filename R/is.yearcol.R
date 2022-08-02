@@ -7,8 +7,8 @@
 #' @return Returns a logical vector indicating whether the vector could be containing year information
 #' @seealso \link[countries]{is_country} \link[countries]{find_countrycol}
 #' @examples
-#' is.yearcol(1990:2020)
-#' is.yearcol(c("a",2000))
+#' countries:::is.yearcol(1990:2020)
+#' countries:::is.yearcol(c("a",2000))
 is.yearcol <- function(x,
                     limit=c(1800,2200),
                     regularity=FALSE,

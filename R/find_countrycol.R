@@ -8,7 +8,7 @@
 #' @param return_index A logical value indicating whether the function should return the index of country columns instead of the column names. Default is \code{FALSE}, column names are returned.
 #' @param allow_NA Logical value indicating whether columns containing \code{NA} values are to be considered as country columns. Default is \code{allow_NA=FALSE}, the function will not return country column containing \code{NA} values.
 #' @param min_share A value between \code{0} and \code{1} indicating the minimum share of country names in columns that are returned. A value of \code{0} will return any column containing a country name. A value of \code{1} will return only columns whose entries are all country names. Default is \code{0.9}, i.e. at least 90 percent of the column entries need to be country names.
-#' @param sample_size A numeric value greater than 0 indicating the sample size used for evaluating columns in large datasets.  Default is \code{1000}. Large sample sizes result in slower execution speed.
+#' @param sample_size Either \code{NA} or a numeric value indicating the sample size used for evaluating columns. Default is \code{1000}. If \code{NA} is passed, the function will evaluate the full table. The minimum accepted value is \code{100} (i.e. 100 randomly sampled rows are used to evaluate the columns). This parameter can be tuned to speed up computation on long datasets. Taking a sample could result in inexact identification of key columns, accuracy improves with larger samples.
 #' @return Returns a vector of country names (\code{return_index=FALSE}) or column indices (\code{return_index=TRUE}) of columns containing country names.
 #' @seealso \link[countries]{is_country} \link[countries]{country_name} \link[countries]{find_keycol} \link[countries]{find_timecol}
 #' @export
@@ -21,21 +21,23 @@ find_countrycol <- function(x, return_index=FALSE, allow_NA=FALSE, min_share=0.8
   if(!is.logical(return_index)|is.null(return_index)|length(return_index)>1|is.na(return_index)){stop("Argument - return_index - needs to be a logical value (TRUE/FALSE)")}
   if(!is.logical(allow_NA)|is.null(allow_NA)|length(allow_NA)>1|is.na(allow_NA)){stop("Argument - allow_NA - needs to be a logical value (TRUE/FALSE)")}
   if(!is.numeric(min_share)|is.null(min_share)|length(min_share)>1|is.na(min_share)|min_share>1|min_share<0){stop("Argument - min_share - needs to be a numeric value between 0 and 1 indicating the requested minimum share of country names in the output columns")}
-  if(!is.numeric(sample_size)|is.null(sample_size)|length(sample_size)>1|is.na(sample_size)|round(sample_size)<=0){stop("Argument - sample_size - needs to be a numeric value greater than 0")}
+  if(!is.numeric(sample_size)&!is.na(sample_size)|length(sample_size)>1){stop("Argument - sample_size - needs to be a numeric value greater or equal to 100")}
+  if(is.numeric(sample_size)&round(sample_size)<100){stop("Argument - sample_size - needs to be a numeric value greater or equal to 100")}
   sample_size <- round(sample_size)
 
   #initiate empty vector of country indices
   country_cols <- NULL
 
   # extract all column names
+  x <- as.data.frame(x)
   cols <- colnames(x)
 
   #proceed only if there is at least one column to check
   if (length(cols)>0){
 
-    #take sample if table is large
-    if (nrow(x)>sample_size){
-      x <- x[sample(1:nrow(x), size= min(nrow(x),sample_size), replace = FALSE), ]
+    #take sample if table is large and sample is requested
+    if (!is.na(sample_size)){
+      x <- x[sample(1:nrow(x), min(round(sample_size), nrow(x))),]
     }
 
     #loop over all columns
