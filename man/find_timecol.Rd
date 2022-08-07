@@ -4,7 +4,7 @@
 \alias{find_timecol}
 \title{Finds columns containing date and year data}
 \usage{
-find_timecol(x, return_index = FALSE, allow_NA = FALSE, sample_size = 1000)
+find_timecol(x, return_index = FALSE, allow_NA = TRUE, sample_size = 1000)
 }
 \arguments{
 \item{x}{A data frame object}

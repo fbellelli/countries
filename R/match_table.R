@@ -75,8 +75,9 @@ match_table <- function(x,
   #change to lower case to facilitate matching
   table_references$name_lower <- tolower(table_references$name)
 
-  #create a shorter version of the reference table by eliminating stopwords and duplicated entries
-  table_references_short <- table_references[!duplicated(table_references$name_lower),]
+  #create a shorter version of the reference table by eliminating stopwords, duplicated entries and numeric country codes to avoid mismatches
+  table_references_short <- table_references[!duplicated(table_references$name_lower) & table_references$nomenclature != "ISO_code",]
+
   #_________________________________________________________
 
 
@@ -95,7 +96,6 @@ match_table <- function(x,
 
   #create table adding conversion columns for each of the desired naming conventions
   conversion_table <- data.frame(list_countries, simplified = str_trim(tolower(list_countries), side = "both"), exact_match=NA, closest_match=NA, dist=NA, setNames(rep(list(NA), length(to)),to))
-
 
 
   ##########################################################

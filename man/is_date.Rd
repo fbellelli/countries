@@ -6,7 +6,7 @@
 \usage{
 is_date(
   x,
-  allowed_formats = c("\%Y-\%m-\%d", "\%y-\%m-\%d", "\%m-\%d-\%Y", "\%m-\%d-\%y",
+  formats = c("\%Y-\%m-\%d", "\%y-\%m-\%d", "\%m-\%d-\%Y", "\%m-\%d-\%y",
     "\%d-\%m-\%Y", "\%d-\%m-\%y", "\%Y/\%m/\%d", "\%y/\%m/\%d", "\%m/\%d/\%Y",
     "\%m/\%d/\%y", "\%d/\%m/\%Y", "\%d/\%m/\%y", "\%Y.\%m.\%d", "\%y.\%m.\%d",
     "\%m.\%d.\%Y", "\%m.\%d.\%y", "\%d.\%m.\%Y", "\%d.\%m.\%y", "\%d \%b \%Y",
@@ -18,13 +18,13 @@ is_date(
 \arguments{
 \item{x}{A vector of values to be tested}
 
-\item{allowed_formats}{Date formats to be checked for (expressed in R date notation).}
+\item{formats}{Date formats to be checked for (expressed in R date notation).}
 }
 \value{
 Returns a logical vector indicating whether the values can be converted to any of the date formats provided. Notice that unless specified, the default allowed formats do not include simple year numbers (e.g. 2022 or 1993) because number vectors could wrongly be identified as dates. Also, notice that testing \code{NA} values will return \code{FALSE}.
 }
 \description{
-This function checks if a value is a date by attempting to convert it to a date format. The user can specify which date formats should be tested with the argument \code{allowed_formats}.
+This function checks if a value is a date by attempting to convert it to a date format. The user can specify which date formats should be tested with the argument \code{formats}.
 }
 \examples{
 is_date(c("2020-01-01","test",2020,"March 2030"))

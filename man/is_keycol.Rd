@@ -9,7 +9,7 @@ is_keycol(x, cols, allow_NA = FALSE, verbose = TRUE)
 \arguments{
 \item{x}{A data frame object}
 
-\item{cols}{A vector of column names to be tested.}
+\item{cols}{A vector of column names or indices to be tested.}
 
 \item{allow_NA}{Logical value indicating whether to allow key columns to have \code{NA} values. Default is \code{allow_NA=FALSE}, the function will return \code{FALSE} if any \code{NA} value is present in \code{colnames}.}
 

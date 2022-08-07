@@ -13,7 +13,7 @@
 #' find_timecol(x=data.frame(a=1970:2020, year=1970:2020, b=rep("2020-01-01",51),c=sample(1:1000,51)))
 find_timecol <- function(x,
                          return_index = FALSE,
-                         allow_NA = FALSE,
+                         allow_NA = TRUE,
                          sample_size = 1000){
 
   #----------- CHECK INPUT VALIDITY ---------------
@@ -97,7 +97,7 @@ find_timecol <- function(x,
       } else {
         # otherwise check for dates formats
         #test if column contains dates
-        if(sum(is_date(x[,i])) >= 0.90 * nrow(x)){
+        if(sum(is_date(x[,i], formats)) >= 0.90 * nrow(x)){
           #check for NA (if requested or more than one column)
           if (!any(is.na(x[,i]))|allow_NA == TRUE) {
             #add to list of candidates

@@ -1,14 +1,14 @@
 #' Test whether the input is a date
 #'
-#' This function checks if a value is a date by attempting to convert it to a date format. The user can specify which date formats should be tested with the argument \code{allowed_formats}.
+#' This function checks if a value is a date by attempting to convert it to a date format. The user can specify which date formats should be tested with the argument \code{formats}.
 #' @param x A vector of values to be tested
-#' @param allowed_formats Date formats to be checked for (expressed in R date notation).
+#' @param formats Date formats to be checked for (expressed in R date notation).
 #' @return Returns a logical vector indicating whether the values can be converted to any of the date formats provided. Notice that unless specified, the default allowed formats do not include simple year numbers (e.g. 2022 or 1993) because number vectors could wrongly be identified as dates. Also, notice that testing \code{NA} values will return \code{FALSE}.
 #' @export
 #' @seealso \link[countries]{find_timecol} \link[countries]{find_keycol} \link[countries]{is_country}
 #' @examples
 #' is_date(c("2020-01-01","test",2020,"March 2030"))
-is_date <- function(x, allowed_formats=c("%Y-%m-%d",
+is_date <- function(x, formats=c("%Y-%m-%d",
                                          "%y-%m-%d",
                                          "%m-%d-%Y",
                                          "%m-%d-%y",
@@ -46,16 +46,16 @@ is_date <- function(x, allowed_formats=c("%Y-%m-%d",
                                          "%Y/%m")){
 
   #check that - allowed formats - is not empty
-  if (!is.character(allowed_formats)) stop("Value provided to argument - allowed_formats - is not valid. It needs to be a character vector.")
-  if (is.null(allowed_formats)|all(is.na(allowed_formats))){stop("Value provided to argument - allowed_formats - is empty or NA")}
-  allowed_formats <- na.omit(allowed_formats)
+  if (!is.character(formats)) stop("Value provided to argument - formats - is not valid. It needs to be a character vector.")
+  if (is.null(formats)|all(is.na(formats))){stop("Value provided to argument - formats - is empty or NA")}
+  formats <- na.omit(formats)
 
   #check that input is a vector
   if (length(x)==0) stop("The argument - x - is empty")
   if (is.data.frame(x)) stop("The input - x - needs to be a vector")
 
   #check all possible formats for a match
-  return(sapply(x, function(x, formats){any(!is.na(as.Date(as.character(x), format = formats)))}, formats=allowed_formats, USE.NAMES = FALSE))
+  return(sapply(x, function(x, formats){any(!is.na(as.Date(as.character(x), format = formats)))}, formats=formats, USE.NAMES = FALSE))
 }
 
 

@@ -14,7 +14,7 @@
 #' @export
 #' @examples
 #' find_countrycol(x=data.frame(a=c("Brésil","Tonga","FRA"), b=c(1,2,3)))
-find_countrycol <- function(x, return_index=FALSE, allow_NA=FALSE, min_share=0.8, sample_size=1000){
+find_countrycol <- function(x, return_index=FALSE, allow_NA=TRUE, min_share=0.8, sample_size=1000){
 
   #check inputs
   if(!is.data.frame(as.data.frame(x))|is.null(x)){stop("Argument - x - needs to be a dataframe")}
@@ -39,6 +39,9 @@ find_countrycol <- function(x, return_index=FALSE, allow_NA=FALSE, min_share=0.8
     if (!is.na(sample_size)){
       x <- x[sample(1:nrow(x), min(round(sample_size), nrow(x))),]
     }
+
+    #adjust min_share value
+    if (min_share==0){min_share <- 1/nrow(x)}
 
     #loop over all columns
     for (i in cols){

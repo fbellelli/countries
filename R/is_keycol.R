@@ -3,7 +3,7 @@
 #' This function takes a data frame and a vector of column names as argument and returns a logical value indicating whether the indicated columns uniquely identify entries in the data frame.
 #' If the output is \code{TRUE}, the indicated columns could be the keys of the table.
 #' @param x A data frame object
-#' @param cols A vector of column names to be tested.
+#' @param cols A vector of column names or indices to be tested.
 #' @param allow_NA Logical value indicating whether to allow key columns to have \code{NA} values. Default is \code{allow_NA=FALSE}, the function will return \code{FALSE} if any \code{NA} value is present in \code{colnames}.
 #' @param verbose Logical value indicating whether messages should be printed on the console. Default is \code{TRUE}.
 #' @return Returns a logical value. If \code{TRUE}, the columns indicated in \code{colnames} uniquely identify the entries in \code{x}.
@@ -25,8 +25,12 @@ is_keycol <- function(x,
   if(!is.character(cols)) stop("The argument - cols - needs to be a character vector containing column names")
   if(!all(cols %in% colnames(x))) stop(paste0("The following column names cannot be found in - x - make sure the spelling is correct: ",paste(cols[!cols %in% colnames(x)], collapse=", ")))
 
-  #------- INITIATE VARS ---------------
+  #------- INITIATE VARS AND PREP INPUTS---------------
   output <- TRUE
+  if (is.numeric(cols) | any(is.na(cols))){
+    if(any(is.na(cols)) | any(cols<0) | any(cols>ncol(x))){stop("The argument - cols - need to be a valud column name or index")}
+    cols <- colnames(x)[cols]
+  }
 
   #------- CHECK FOR NA ----------------
   if (any(is.na(x[,cols]))){

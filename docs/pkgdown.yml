@@ -2,9 +2,10 @@ pandoc: 2.14.0.3
 pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
+  data_structure: data_structure.html
   dealing_with_names: dealing_with_names.html
   package_intro: package_intro.html
-last_built: 2022-08-02T17:28Z
+last_built: 2022-08-07T10:24Z
 urls:
   reference: https://fbellelli.github.io/countries/reference
   article: https://fbellelli.github.io/countries/articles

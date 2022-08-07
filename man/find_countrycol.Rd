@@ -7,7 +7,7 @@
 find_countrycol(
   x,
   return_index = FALSE,
-  allow_NA = FALSE,
+  allow_NA = TRUE,
   min_share = 0.8,
   sample_size = 1000
 )

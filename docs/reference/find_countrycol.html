@@ -30,6 +30,7 @@ On large datasets a random sample is used for evaluating the columns."><meta pro
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/data_structure.html">Data structure</a>
     <a class="dropdown-item" href="../articles/dealing_with_names.html">Dealing with country names</a>
     <a class="dropdown-item" href="../articles/package_intro.html">Getting started</a>
   </div>
@@ -70,7 +71,7 @@ On large datasets a random sample is used for evaluating the columns.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">find_countrycol</span><span class="op">(</span>
   <span class="va">x</span>,
   return_index <span class="op">=</span> <span class="cn">FALSE</span>,
-  allow_NA <span class="op">=</span> <span class="cn">FALSE</span>,
+  allow_NA <span class="op">=</span> <span class="cn">TRUE</span>,
   min_share <span class="op">=</span> <span class="fl">0.8</span>,
   sample_size <span class="op">=</span> <span class="fl">1000</span>
 <span class="op">)</span></code></pre></div>
@@ -87,7 +88,7 @@ On large datasets a random sample is used for evaluating the columns.</p>
 <dt>min_share</dt>
 <dd><p>A value between <code>0</code> and <code>1</code> indicating the minimum share of country names in columns that are returned. A value of <code>0</code> will return any column containing a country name. A value of <code>1</code> will return only columns whose entries are all country names. Default is <code>0.9</code>, i.e. at least 90 percent of the column entries need to be country names.</p></dd>
 <dt>sample_size</dt>
-<dd><p>A numeric value greater than 0 indicating the sample size used for evaluating columns in large datasets.  Default is <code>1000</code>. Large sample sizes result in slower execution speed.</p></dd>
+<dd><p>Either <code>NA</code> or a numeric value indicating the sample size used for evaluating columns. Default is <code>1000</code>. If <code>NA</code> is passed, the function will evaluate the full table. The minimum accepted value is <code>100</code> (i.e. 100 randomly sampled rows are used to evaluate the columns). This parameter can be tuned to speed up computation on long datasets. Taking a sample could result in inexact identification of key columns, accuracy improves with larger samples.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
