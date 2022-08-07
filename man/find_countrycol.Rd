@@ -36,5 +36,5 @@ On large datasets a random sample is used for evaluating the columns.
 find_countrycol(x=data.frame(a=c("Brésil","Tonga","FRA"), b=c(1,2,3)))
 }
 \seealso{
-\link[countries]{is_country} \link[countries]{country_name} \link[countries]{find_keycol} \link[countries]{find_timecol}
+\link[countries]{is_country}, \link[countries]{country_name}, \link[countries]{find_keycol}, \link[countries]{find_timecol}
 }

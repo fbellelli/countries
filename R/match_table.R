@@ -10,7 +10,7 @@
 #' @param simplify Logical value. If set to \code{TRUE} the function will return the match table as a \code{data.frame} object. If set to \code{FALSE}, the function will return a list object containing the match table and additional details on the country matching process. Default is \code{TRUE}.
 #' @param custom_table Custom conversion table to be used. This needs to be a data.frame object. Default is \code{NULL}.
 #' @return Returns a conversion table for countries names to the desired naming conventions. If \code{simplify=FALSE} it returns a list object.
-#' @seealso \link[countries]{country_name} \link[countries]{is_country}
+#' @seealso \link[countries]{country_name}, \link[countries]{is_country}
 #' @export
 #' @importFrom stats na.omit quantile
 #' @importFrom fastmatch fmatch
@@ -29,7 +29,7 @@ match_table <- function(x,
 
   #CHECK VALIDITY OF FUNCTION ARGUMENTS :-------------------
   if (is.factor(x)) x <- as.character(x)
-  if (!is.vector(x)) stop("The function argument - x - needs to be a vector")
+  if (!is.atomic(x)) stop("The function argument - x - needs to be a vector")
   if (all(is.na(x))) stop("All values in argument - x - are NA")
   if (is.null(x)) stop("No value provided in argument - x")
   if (!is.logical(fuzzy_match) | length(fuzzy_match)!=1) stop("Function argument - fuzzy_match - needs to be a logical statement (TRUE/FALSE)")

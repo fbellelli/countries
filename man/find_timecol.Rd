@@ -26,5 +26,5 @@ It can be used to automate the search of date and year columns in data frames.
 find_timecol(x=data.frame(a=1970:2020, year=1970:2020, b=rep("2020-01-01",51),c=sample(1:1000,51)))
 }
 \seealso{
-\link[countries]{is_date} \link[countries]{find_countrycol}
+\link[countries]{is_date}, \link[countries]{find_countrycol}
 }

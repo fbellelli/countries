@@ -5,7 +5,7 @@
 #' @param formats Date formats to be checked for (expressed in R date notation).
 #' @return Returns a logical vector indicating whether the values can be converted to any of the date formats provided. Notice that unless specified, the default allowed formats do not include simple year numbers (e.g. 2022 or 1993) because number vectors could wrongly be identified as dates. Also, notice that testing \code{NA} values will return \code{FALSE}.
 #' @export
-#' @seealso \link[countries]{find_timecol} \link[countries]{find_keycol} \link[countries]{is_country}
+#' @seealso \link[countries]{find_timecol}, \link[countries]{find_keycol}, \link[countries]{is_country}
 #' @examples
 #' is_date(c("2020-01-01","test",2020,"March 2030"))
 is_date <- function(x, formats=c("%Y-%m-%d",

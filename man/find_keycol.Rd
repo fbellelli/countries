@@ -38,5 +38,5 @@ example <-data.frame(nation=rep(c("FRA","ALB","JOR"),3),
 find_keycol(x=example)
 }
 \seealso{
-\link[countries]{find_timecol} \link[countries]{find_countrycol} \link[countries]{is_keycol}
+\link[countries]{find_timecol}, \link[countries]{find_countrycol}, \link[countries]{is_keycol}
 }

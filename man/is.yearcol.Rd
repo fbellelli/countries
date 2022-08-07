@@ -26,5 +26,5 @@ countries:::is.yearcol(1990:2020)
 countries:::is.yearcol(c("a",2000))
 }
 \seealso{
-\link[countries]{is_country} \link[countries]{find_countrycol}
+\link[countries]{is_country}, \link[countries]{find_countrycol}
 }

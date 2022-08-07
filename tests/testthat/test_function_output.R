@@ -77,11 +77,11 @@ example$year2 <- sample(example$year,100,replace=TRUE)
 example$a_fct <- as.factor(example$a)
 example$year2_fct <- as.factor(example$year2)
 test_that("output from find_timecol seems to correspond to expectations", {
-  expect_equal(find_timecol(example), c("d","e","year"))
-  expect_equal(find_timecol(example, TRUE), c(4,5,7))
-  expect_equal(is.null(find_timecol(example[,2:3], TRUE)), TRUE)
-  expect_equal(is.null(find_timecol(example[,2:3], TRUE, TRUE)), FALSE)
-  expect_equal(find_timecol(example[,2:3], FALSE, TRUE), "b")
+  expect_equal(find_timecol(example), c("d","e","f","year"))
+  expect_equal(find_timecol(example, return_index = TRUE), c(4,5,6,7))
+  expect_equal(is.null(find_timecol(example[,2:3], allow_NA = TRUE)), FALSE)
+  expect_equal(is.null(find_timecol(example[,2:3],allow_NA = FALSE)), TRUE)
+  expect_equal(find_timecol(example[,2:3], return_index=TRUE, allow_NA=TRUE), 1)
 })
 
 
@@ -104,7 +104,7 @@ test_that("output from is_date seems to correspond to expectations", {
   expect_equal(length(is_date(c("2020-01-01","test",2020,"March 2030"))), 4)
   expect_equal(is.logical(is_date(c("2020-01-01","test",2020,"March 2030",NA))), TRUE)
   expect_equal(is_date(c("2020-01-01","test",2020,"March 2030")), c(TRUE, FALSE, FALSE, TRUE))
-  expect_equal(is_date(c("2020-01-01","test",2020,"March 2030"), allowed_formats = "%Y"), c(TRUE, FALSE, TRUE, FALSE))
+  expect_equal(is_date(c("2020-01-01","test",2020,"March 2030"), formats = "%Y"), c(TRUE, FALSE, TRUE, FALSE))
 })
 
 # IS_KEYCOL ------------------------------------------------------
@@ -134,3 +134,15 @@ test_that("output from find_keycol seems to correspond to expectations", {
   expect_equal(find_keycol(example, search_only = 1:2, allow_NA = TRUE), c("country"="nation","time"="year"))
   expect_equal(is.null(find_keycol(example, search_only = "nation", allow_NA = TRUE)), TRUE)
 })
+
+
+# WHICH_ -------------------------------------------------------
+
+example <- c(1,2,3,3,4,NA)
+test_that("output from which_min, which_max and which_mode are as expected", {
+  expect_equal(which_min(example), 1)
+  expect_equal(which_max(example), 5)
+  expect_equal(which_mode(example), c(3,4))
+  expect_equal(which_mode(example, first_only = TRUE), 3)
+})
+

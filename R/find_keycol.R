@@ -9,7 +9,7 @@
 #' @param sample_size Either \code{NA} or a numeric value indicating the sample size used for evaluating columns. Default is \code{1000}. If \code{NA} is passed, the function will evaluate the full table. The minimum accepted value is \code{100} (i.e. 100 randomly sampled rows are used to evaluate the columns). This parameter can be tuned to speed up computation on long datasets. Taking a sample could result in inexact identification of key columns, accuracy improves with larger samples.
 #' @param allow_NA Logical value indicating whether to allow key columns to have \code{NA} values. Default is \code{allow_NA=FALSE}. If set to \code{TRUE}, \code{NA} is considered as a distinct value.
 #' @return Returns a vector of column names (or indices) that uniquely identify the entries in the table. If no key is found, the function will return \code{NULL}. The output is a named vector indicating whether the identified key columns contain country names (\code{"country"}), year and dates (\code{"time"}), or other type of information (\code{"other"}).
-#' @seealso \link[countries]{find_timecol} \link[countries]{find_countrycol} \link[countries]{is_keycol}
+#' @seealso \link[countries]{find_timecol}, \link[countries]{find_countrycol}, \link[countries]{is_keycol}
 #' @export
 #' @examples
 #' example <-data.frame(nation=rep(c("FRA","ALB","JOR"),3),
