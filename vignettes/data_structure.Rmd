@@ -35,6 +35,11 @@ example <- read.csv(
   stringsAsFactors=FALSE)
 ```
 
+```{r include=FALSE}
+#Delete downloaded data from disk
+unlink("Extended EDB by measure-country-HS chapter", recursive = TRUE)
+
+```
 
 
 ## Finding columns containing country and time information

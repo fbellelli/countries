@@ -2,7 +2,7 @@
 title: "Dealing with country names"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{dealing_with_names}
+  %\VignetteIndexEntry{Dealing with country names}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
