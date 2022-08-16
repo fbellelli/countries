@@ -24,7 +24,7 @@ which_min <- function(x, first_only=FALSE){
     if (first_only == TRUE){
       return(which.min(x))
     } else {
-      minimum <- min(x, na.rm=TRUE)
+      minimum <- suppressWarnings(min(x, na.rm=TRUE))
       return(as.vector(na.omit(c(1:length(x))[x==minimum])))
     }
   }
@@ -44,7 +44,7 @@ which_max <- function(x, first_only=FALSE){
     if (first_only == TRUE){
       return(which.max(x))
     } else {
-      maximum <- max(x, na.rm=TRUE)
+      maximum <- suppressWarnings(max(x, na.rm=TRUE))
       return(as.vector(na.omit(c(1:length(x))[x==maximum])))
     }
   }

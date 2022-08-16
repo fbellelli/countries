@@ -85,7 +85,7 @@ match_table <- function(x,
   # PREPARING CONVERSION TABLE:
   ##########################################################
 
-  #extract list of countries from file
+  #extract list of countries
   list_countries <- sort(unique(x))
   if (length(list_countries)>500) warning(paste("Your data contains",length(list_countries), "unique country identifiers. That's a lot! Are you sure it contains only country names? You should check the conversion table."),call. = FALSE)
 
