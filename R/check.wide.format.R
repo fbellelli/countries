@@ -1,13 +1,14 @@
 #' Internal function - Check for wide country data formats
 #'
 #' The function looks for country names or year information in the column names. This function is designed for simple panel country data, in which countries' time series are arranged side by side on columns or stacked on rows.
+#' The function will only return year/country column names if at least 3 country/year column names are detected.
 #' @param x A dataframe
 #' @param adjacency Logical value indicating whether column names containing country or year information need to be adjacent to each other. Default is \code{TRUE}
-#' @return Returns a vector of column names that contain country names or time information
+#' @return Returns a data.frame identifying the columns names that contain country or year information.
 #' @seealso \link[countries]{find_keycol}, \link[countries]{find_countrycol}, \link[countries]{find_timecol}
-#' @examples
 #' @import stringr fastmatch
-#' example <- data.frame(Year=2000:2010,China=0:10,US=10:20)
+#' @examples
+#' example <- data.frame(Year=2000:2010, China=0:10, US=10:20, Vietnam=30:40)
 #' countries:::check.wide.format(x=example)
 check.wide.format <- function(x,
                               adjacency = TRUE){

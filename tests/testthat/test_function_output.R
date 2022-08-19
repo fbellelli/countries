@@ -146,3 +146,13 @@ test_that("output from which_min, which_max and which_mode are as expected", {
   expect_equal(which_mode(example, first_only = TRUE), 3)
 })
 
+# CHECK.WIDE.FORMAT --------------------------------------------
+
+example <- data.frame(a=1,FRA=2,USA=3,osadk=4,KOR=5)
+test_that("output from check.wide.format are as expected", {
+  expect_equal(is.null(check.wide.format(example)), TRUE)
+  expect_equal(is.null(check.wide.format(example, adjacency = FALSE)), FALSE)
+  expect_equal(ncol(check.wide.format(example, adjacency = FALSE)), 3)
+  expect_equal(nrow(check.wide.format(example, adjacency = FALSE)), 3)
+  expect_equal(check.wide.format(example, adjacency = FALSE)[,"col_indx"], c(2,3,5))
+})
