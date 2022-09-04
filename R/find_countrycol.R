@@ -37,7 +37,8 @@ find_countrycol <- function(x, return_index=FALSE, allow_NA=TRUE, min_share=0.8,
 
     #take sample if table is large and sample is requested
     if (!is.na(sample_size)){
-      x <- x[sample(1:nrow(x), min(round(sample_size), nrow(x))),]
+      x <- as.data.frame(x[sample(1:nrow(x), min(round(sample_size), nrow(x))),])
+      colnames(x)<-cols
     }
 
     #adjust min_share value

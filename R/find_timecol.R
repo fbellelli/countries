@@ -32,7 +32,9 @@ find_timecol <- function(x,
   #take sample if table is large and requested
   if (ncol(x)>0){
     if (!is.na(sample_size)){
+      temp <- colnames(x)
       x <- as.data.frame(x[sample(1:nrow(x), min(round(sample_size), nrow(x))),])
+      colnames(x) <- temp
     }
 
     #initiate empty variable to store column indices

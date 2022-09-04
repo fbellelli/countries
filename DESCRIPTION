@@ -1,7 +1,7 @@
 Package: countries
 Type: Package
 Title: A package to deal with country data in a quick and easy way
-Version: 0.2
+Version: 0.3
 Authors@R: 
     person("Francesco Saverio", "Bellelli", , "fsabellelli@gmail.com", role = c("aut", "cre"),
            comment = c(Website = "https://fbellelli.com/"))
@@ -17,7 +17,8 @@ Imports:
     dplyr,
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    utils
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr
