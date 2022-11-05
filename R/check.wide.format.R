@@ -120,7 +120,7 @@ check.wide.format <- function(x,
 
       #prepare dataframe output
       if (adjacency_country & no_duplicated_country & multiple_countries){
-        output<- data.frame(countries = suppressWarnings(suppressMessages(country_name(cols[col_indx], to="ISO3"))),
+        output<- data.frame(countries = suppressWarnings(suppressMessages(country_name(cols[col_indx], to="ISO3", poor_matches=TRUE))),
                             col_indx = col_indx,
                             col_name = cols[col_indx])
       }

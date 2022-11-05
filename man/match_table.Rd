@@ -11,6 +11,7 @@ match_table(
   verbose = FALSE,
   matching_info = FALSE,
   simplify = TRUE,
+  poor_matches = TRUE,
   custom_table = NULL
 )
 }
@@ -26,6 +27,8 @@ match_table(
 \item{matching_info}{Logical value. If set to true the output match table will include additional information on the matching of \code{x}'s entries. Default is \code{FALSE}.}
 
 \item{simplify}{Logical value. If set to \code{TRUE} the function will return the match table as a \code{data.frame} object. If set to \code{FALSE}, the function will return a list object containing the match table and additional details on the country matching process. Default is \code{TRUE}.}
+
+\item{poor_matches}{Logical value. If set to \code{TRUE} (the default option), the function will always return the closest matching country name, even if the matching is poor. If set to \code{FALSE}, the function will return \code{NA} in case of poor matching.}
 
 \item{custom_table}{Custom conversion table to be used. This needs to be a data.frame object. Default is \code{NULL}.}
 }

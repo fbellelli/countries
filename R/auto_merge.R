@@ -6,7 +6,7 @@
 #' @param country_to Nomenclature to which country names should be converted to in the output. Default is \code{simple}. For a description of possible options, refer to the table in the vignette \href{https://fbellelli.github.io/countries/articles/dealing_with_names.html}{Dealing with country names}.
 #' @param inner_join Logical value indicating whether to perform an inner join. The default is \code{FALSE}, which results in a full join of the provided tables.
 #' @param verbose Logical value indicating if status messages should be printed to the console. Default is \code{TRUE}.
-#' @param merging_info Logical value. If \code{TRUE}, the function will output a list containing the merged data and all the information generated during the merging process, such as the conversion table used for country names or information on table variables.
+#' @param merging_info Logical value. If \code{TRUE}, the function will output a list containing the merged data and information generated during the merging process, such as the conversion table used for country names or information on table variables.
 #' @import tidyr dplyr fastmatch utils stringr
 auto_join <- function(... , by=NULL, country_to="ISO3", coalesce=FALSE, inner_join = FALSE , verbose=TRUE, merging_info = TRUE){
 

@@ -148,7 +148,7 @@ find_keycol <- function(x,
     i <- 1
     while (i<=nrow(grid_dyad) & key_found==FALSE){
       #check if sample country pair is identical, proceed only if not identical
-      if (suppressMessages(suppressWarnings(any(country_name(x[sample_countries,grid_dyad[i,1]]) != country_name(x[sample_countries, grid_dyad[i,2]]))))){
+      if (suppressMessages(suppressWarnings(any(country_name(x[sample_countries,grid_dyad[i,1]], poor_matches=TRUE) != country_name(x[sample_countries, grid_dyad[i,2]], poor_matches=TRUE))))){
 
         #mark that this country pair is distinct
         grid_dyad$is_different[i] <- TRUE

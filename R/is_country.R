@@ -32,7 +32,7 @@ is_country <- function(x, check_for=NULL, fuzzy_match=FALSE){
   }
 
   #use match table to test unique values
-  match <- suppressWarnings(suppressMessages(match_table(x, to="name_en", fuzzy_match = fuzzy_match, matching_info = TRUE)))
+  match <- suppressWarnings(suppressMessages(match_table(x, to="name_en", fuzzy_match = fuzzy_match, matching_info = TRUE, poor_matches = TRUE)))
 
   #test if string is country by applying a calipper to discrepancy
   if (fuzzy_match){

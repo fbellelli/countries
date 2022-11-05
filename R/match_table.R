@@ -8,6 +8,7 @@
 #' @param verbose Logical value indicating whether the function should print to the console a report on the matching process. Default is \code{FALSE}.
 #' @param matching_info Logical value. If set to true the output match table will include additional information on the matching of \code{x}'s entries. Default is \code{FALSE}.
 #' @param simplify Logical value. If set to \code{TRUE} the function will return the match table as a \code{data.frame} object. If set to \code{FALSE}, the function will return a list object containing the match table and additional details on the country matching process. Default is \code{TRUE}.
+#' @param poor_matches Logical value. If set to \code{TRUE} (the default option), the function will always return the closest matching country name, even if the matching is poor. If set to \code{FALSE}, the function will return \code{NA} in case of poor matching.
 #' @param custom_table Custom conversion table to be used. This needs to be a data.frame object. Default is \code{NULL}.
 #' @return Returns a conversion table for countries names to the desired naming conventions. If \code{simplify=FALSE} it returns a list object.
 #' @seealso \link[countries]{country_name}, \link[countries]{is_country}
@@ -25,6 +26,7 @@ match_table <- function(x,
                         verbose = FALSE,
                         matching_info = FALSE,
                         simplify = TRUE,
+                        poor_matches = TRUE,
                         custom_table = NULL){
 
   #CHECK VALIDITY OF FUNCTION ARGUMENTS :-------------------
@@ -36,6 +38,7 @@ match_table <- function(x,
   if (!is.logical(verbose) | length(verbose)!=1) stop("Function argument - verbose - needs to be a logical statement (TRUE/FALSE)")
   if (!is.logical(matching_info) & length(matching_info)!=1) stop("Function argument - matching_info - needs to be a logical statement (TRUE/FALSE)")
   if (!is.logical(simplify) | length(simplify)!=1) stop("Function argument - simplify - needs to be a logical statement (TRUE/FALSE)")
+  if (!is.logical(poor_matches) | length(poor_matches)!=1) stop("Function argument - poor_matches - needs to be a logical statement (TRUE/FALSE)")
   #_________________________________________________________
 
 
@@ -157,6 +160,13 @@ match_table <- function(x,
   conversion_table$closest_match[is.na(exact_matches_index)] <- if (!is.null(fuzzy_matches_index)){table_references_short$name_lower[fuzzy_matches_index]} else {NA}
   conversion_table$dist[is.na(exact_matches_index)] <- if (!is.null(distance_matrix)){apply(distance_matrix, 1, min)} else {NA}
 
+  #eliminate poor matches if requested
+  if (poor_matches == FALSE){
+    for (i in to){
+      conversion_table[conversion_table$dist/pmin(sqrt(nchar(conversion_table$closest_match)),5) > 0.05, i] <- NA
+    }
+  }
+
 
 
   ##########################################################
@@ -178,46 +188,58 @@ match_table <- function(x,
   output_warning <- FALSE
   if (verbose){
     # Number of exact matching and fuzzy matching
-    cat(paste0("\nIn total ",length(list_countries)," unique country identifiers have been found\n",n_exact_matches,"/",length(list_countries)," have been matched with EXACT matching\n"))
+    cat(paste0("\nIn total ",length(list_countries)," unique country names were provided\n",n_exact_matches,"/",length(list_countries)," have been matched with EXACT matching\n"))
     if (fuzzy_match == TRUE) cat(paste0(sum(!conversion_table$exact_match),"/",length(list_countries)," have been matched with FUZZY matching\n"))
     if (n_matched < length(list_countries)) cat(paste0("Unable to find a match for ",length(list_countries)- n_matched, "/",length(list_countries)))
 
     # Summary statistics on fuzzy matching
-    if(fuzzy_match & matching_info & n_exact_matches<length(list_countries)){
-      cat("\nFuzzy matching DISTANCE summary:")
-      cat("\n | Average: ",mean(conversion_table$dist[!conversion_table$exact_match]))
-      cat(paste0("\n | ",c("Min: ","Q1: ","Median: ","Q3: ","Max: "),quantile(conversion_table$dist[!conversion_table$exact_match])))
-    }
+    # if(fuzzy_match & matching_info & n_exact_matches<length(list_countries)){
+    #   cat("\nFuzzy matching DISTANCE summary:")
+    #   cat("\n | Average: ",mean(conversion_table$dist[!conversion_table$exact_match]))
+    #   cat(paste0("\n | ",c("Min: ","Q1: ","Median: ","Q3: ","Max: "),quantile(conversion_table$dist[!conversion_table$exact_match])))
+    # }
+  }
 
-    # Message on missing conversion
-    if (any(no_equiv>0)){
+  # Message on missing conversion
+  if (any(no_equiv>0)){
+    output_warning <- TRUE
+    if (verbose){
       cat("\n\nThe following country IDs do not have a match in one or more of the naming conventions:")
       cat(paste0("\n  - ", conversion_table$list_countries[no_equiv>0]))
+    } else {
+      message("Some country IDs have no match in one or more country naming conventions")
     }
+  }
 
-    # Message on multiple ids matched to same country
-    if (any(repeated) & n_matched>0){
+  # Message on multiple ids matched to same country
+  if (any(repeated) & n_matched>0){
+    output_warning <- TRUE
+    if (verbose){
       cat("\n\nMultiple arguments have been matched to the same country name:")
       cat(paste0("\n  - ", na.omit(conversion_table)[repeated,"list_countries"]," : ",na.omit(conversion_table)[repeated,to[1]]))
-    }
-
-    #Message on uncertain matches
-    if( n_matched > 0 & length(uncertain_matches)>0 & all(!is.na(uncertain_matches))){
-      cat("\n\nThe matching for the following countries could be inaccurate:")
-      cat(paste0("\n - ", uncertain_matches," : ",uncertain_matches_to))
-    }
-    cat("\n\n")
-  } else {
-    if (any(no_equiv>0)){
-      message("Some country IDs have no match in one or more country naming conventions")
-      output_warning <- TRUE}
-    if (any(repeated) & n_matched > 0){
+    } else {
       message("Multiple country IDs have been matched to the same country name")
-      output_warning <- TRUE}
-    if (length(uncertain_matches)>0 & n_matched > 0){
-      message("There is low confidence on the matching of some country names")
-      output_warning <- TRUE}
+    }
   }
+
+  #Message on uncertain matches
+  if( n_matched > 0 & length(uncertain_matches)>0 & all(!is.na(uncertain_matches))){
+    output_warning <- TRUE
+
+    if (verbose){
+      if (poor_matches == TRUE){
+        cat("\n\nThe matching for the following countries could be inaccurate:")
+        cat(paste0("\n - ", uncertain_matches," : ",uncertain_matches_to))
+      } else {
+        cat("\n\nNo close match found for the following countries, NA returned:")
+        cat(paste0("\n - ", uncertain_matches))
+      }
+    } else {
+      message("There is low confidence on the matching of some country names")
+    }
+  }
+
+  if (verbose){cat("\n\n")}
   #___________________________________________________________
 
 
@@ -242,7 +264,8 @@ match_table <- function(x,
                                n_fuzzy_matches = if (fuzzy_match) length(list_countries) - n_exact_matches else NULL,
                                dist_summary = if (fuzzy_match & n_exact_matches < length(list_countries)) dist_summary else NULL,
                                ids_no_equiv = if (any(no_equiv>0)) conversion_table$list_countries[no_equiv>0] else NULL,
-                               ids_confluent = if (any(repeated)) data.frame(ID = na.omit(conversion_table)[repeated,"list_countries"], to = na.omit(conversion_table)[repeated,to[1]]) else NULL),
+                               ids_confluent = if (any(repeated)) data.frame(ID = na.omit(conversion_table)[repeated,"list_countries"], to = na.omit(conversion_table)[repeated,to[1]]) else NULL,
+                               ids_uncertain = if (n_matched > 0 & length(uncertain_matches)>0 & all(!is.na(uncertain_matches))) data.frame(uncertain_matches, uncertain_matches_to) else NULL),
                 warning = output_warning,
                 call = list(data = x,
                             to = to,     # ISO3 ISO2 M49_name M49_code WB IMF WTO ...
