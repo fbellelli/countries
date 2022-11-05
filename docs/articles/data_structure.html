@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Data structure">
 <meta property="og:description" content="countries">
@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">countries</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,7 +79,7 @@
 
 
 <div class="row">
-  <main id="main"><div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Data structure</h1>
             
       
@@ -95,14 +95,14 @@
 </h2>
 <p>In this vignette we will use <a href="https://fbellelli.com/EDB-data.html" class="external-link">a dataset of country policies</a> as an example for the functions in the package. This dataset contains 41 columns and has a rather complex strutcture. Every row is identified by a combination of Country name (column 21), Year (Column 9), Policy measure number (column 1), and HS code (column 39) — which is a code identifying traded commodities. This dataset is an extension based on the <a href="https://edb.wto.org/" class="external-link">WTO environmental databse (EDB)</a>. More information on the dataset can be found <a href="https://www.wto.org/english/res_e/reser_e/ersd202203_e.pdf" class="external-link">here</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#download data</span>
-<span class="va">temp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span><span class="st">"https://fbellelli.com/data%20files/Extended%20EDB%20by%20measure-country-HS%20chapter.zip"</span>, <span class="va">temp</span>, mode<span class="op">=</span><span class="st">"wb"</span><span class="op">)</span>
-
-<span class="co">#unzip and load it in R</span>
-<span class="va">example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="va">temp</span>,<span class="st">"Extended EDB by measure-country-HS chapter/Extended EDB (by measure-country-HS chapter).csv"</span><span class="op">)</span>,
-  stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#download data</span></span>
+<span><span class="va">temp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span><span class="st">"https://fbellelli.com/data%20files/Extended%20EDB%20by%20measure-country-HS%20chapter.zip"</span>, <span class="va">temp</span>, mode<span class="op">=</span><span class="st">"wb"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#unzip and load it in R</span></span>
+<span><span class="va">example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="va">temp</span>,<span class="st">"Extended EDB by measure-country-HS chapter/Extended EDB (by measure-country-HS chapter).csv"</span><span class="op">)</span>,</span>
+<span>  stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="finding-columns-containing-country-and-time-information">Finding columns containing country and time information<a class="anchor" aria-label="anchor" href="#finding-columns-containing-country-and-time-information"></a>
@@ -110,24 +110,24 @@
 <p>The functions <code><a href="../reference/find_countrycol.html">find_countrycol()</a></code> and <code><a href="../reference/find_timecol.html">find_timecol()</a></code> can be used to return respectively all columns containing country names and date/year information.</p>
 <p>In the example below, the function <code><a href="../reference/find_countrycol.html">find_countrycol()</a></code> is used to examine our example dataset. The argument <code>min_share</code> is used to indicate whether to look for an entire column of Country names or any column that contains Country names. This is a numeric value indicating the minimum share of entries in the column that are country names.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Columns of country names</span>
-<span class="fu"><a href="../reference/find_countrycol.html">find_countrycol</a></span><span class="op">(</span><span class="va">example</span><span class="op">)</span>  
-<span class="co">#&gt; [1] "COUNTRIES"</span>
-
-<span class="co">#Return any column containing a country name</span>
-<span class="fu"><a href="../reference/find_countrycol.html">find_countrycol</a></span><span class="op">(</span><span class="va">example</span>, min_share<span class="op">=</span><span class="fl">0</span><span class="op">)</span> 
-<span class="co">#&gt; [1] "Notifying.Member" "COUNTRIES"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#Columns of country names</span></span>
+<span><span class="fu"><a href="../reference/find_countrycol.html">find_countrycol</a></span><span class="op">(</span><span class="va">example</span><span class="op">)</span>  </span>
+<span><span class="co">#&gt; [1] "COUNTRIES"</span></span>
+<span></span>
+<span><span class="co">#Return any column containing a country name</span></span>
+<span><span class="fu"><a href="../reference/find_countrycol.html">find_countrycol</a></span><span class="op">(</span><span class="va">example</span>, min_share<span class="op">=</span><span class="fl">0</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; [1] "Notifying.Member" "COUNTRIES"</span></span></code></pre></div>
 <p>Similarly, we can look for time columns in the following way:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Date and year columns</span>
-<span class="fu"><a href="../reference/find_timecol.html">find_timecol</a></span><span class="op">(</span><span class="va">example</span><span class="op">)</span>  
-<span class="co">#&gt; [1] "Year"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Date and year columns</span></span>
+<span><span class="fu"><a href="../reference/find_timecol.html">find_timecol</a></span><span class="op">(</span><span class="va">example</span><span class="op">)</span>  </span>
+<span><span class="co">#&gt; [1] "Year"</span></span></code></pre></div>
 <p>By default, the function will return the name of the column. However, the argument <code>return_index</code> can be used to get the indices of the column in the table.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/find_countrycol.html">find_countrycol</a></span><span class="op">(</span><span class="va">example</span>, return_index <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; [1] 21</span>
-<span class="fu"><a href="../reference/find_timecol.html">find_timecol</a></span><span class="op">(</span><span class="va">example</span>, return_index <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>  
-<span class="co">#&gt; [1] 9</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/find_countrycol.html">find_countrycol</a></span><span class="op">(</span><span class="va">example</span>, return_index <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 21</span></span>
+<span><span class="fu"><a href="../reference/find_timecol.html">find_timecol</a></span><span class="op">(</span><span class="va">example</span>, return_index <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>  </span>
+<span><span class="co">#&gt; [1] 9</span></span></code></pre></div>
 <p>Computations may take long on large tables with many columns. To speed up operations, these functions operate by evaluating the table on a random sample of rows. The sample size can be adjusted with the argument <code>sample_size</code>. It also possible to request to use the entire table by passing the value <code>NA</code>. Finally, it is also possible to request not to return columns containing <code>NA</code> values by specifying: <code>allow_NA = FALSE</code>.</p>
 <p>These two functions are based on <code><a href="../reference/is_country.html">is_country()</a></code> and <code><a href="../reference/is_date.html">is_date()</a></code>, which can be used to test if a string is a Country name and a date. An overview of the first function is provided in the vignette <em><a href="https://fbellelli.github.io/countries/articles/dealing_with_names.html">Dealing with country names</a></em>, here we have a look at `is_date()´.</p>
 </div>
@@ -136,12 +136,12 @@
 </h2>
 <p><code><a href="../reference/is_date.html">is_date()</a></code> takes a string vector as argument and outputs a boolean vector indicating whether the strings are dates. The argument <code>formats</code> can be used to specify the formats to be checked. Standard R notation can be used for date elements (see the table below).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"December 2022"</span>, <span class="st">"20/01/1970"</span>, <span class="st">"Banana"</span>, <span class="st">"12.13.2000"</span><span class="op">)</span> 
-
-<span class="fu"><a href="../reference/is_date.html">is_date</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span>
-<span class="co">#&gt; [1]  TRUE  TRUE FALSE  TRUE</span>
-<span class="fu"><a href="../reference/is_date.html">is_date</a></span><span class="op">(</span><span class="va">test</span>, formats<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"%d/%m/%Y"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] FALSE  TRUE FALSE FALSE</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"December 2022"</span>, <span class="st">"20/01/1970"</span>, <span class="st">"Banana"</span>, <span class="st">"12.13.2000"</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="fu"><a href="../reference/is_date.html">is_date</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  TRUE  TRUE FALSE  TRUE</span></span>
+<span><span class="fu"><a href="../reference/is_date.html">is_date</a></span><span class="op">(</span><span class="va">test</span>, formats<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"%d/%m/%Y"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] FALSE  TRUE FALSE FALSE</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Symbol</th>
@@ -198,30 +198,30 @@
 <p><code><a href="../reference/find_keycol.html">find_keycol()</a></code> is a function that can be used to automate the search of key columns in datasets. A table key is a column or set of columns that uniquely identifies the entries in the table. This function was specifically designed for country data, so it will prioritise the search of country and time columns, which are often keys in country data.</p>
 <p>As shown below, the function correctly identifies the keys for the complex dataset introduced at the beginning of this article.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/find_keycol.html">find_keycol</a></span><span class="op">(</span><span class="va">example</span>, allow_NA <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt;                       country                          time </span>
-<span class="co">#&gt;                   "COUNTRIES"                        "Year" </span>
-<span class="co">#&gt;                         other                         other </span>
-<span class="co">#&gt;                          "Nr" "Tentative.HS.chapters.match"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/find_keycol.html">find_keycol</a></span><span class="op">(</span><span class="va">example</span>, allow_NA <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                       country                          time </span></span>
+<span><span class="co">#&gt;                   "COUNTRIES"                        "Year" </span></span>
+<span><span class="co">#&gt;                         other                         other </span></span>
+<span><span class="co">#&gt;                          "Nr" "Tentative.HS.chapters.match"</span></span></code></pre></div>
 <p>The function outputs a vector of column names that uniquely identifies the entries in the table. In addition, it also indicates whether the column contains <em>country</em>, <em>time</em> or <em>other</em> information. Just like the other <em>find</em> function in this page, it is possible to request the column index instead of the name by passing <code>return_index = TRUE</code>.</p>
 <p>Due to the potentially very high number of column combinations in a table, the function only tests the more likely options. The function will first check country and time columns. Next, left-most columns are prioritised. Also, the function will only look for the most common country data formats (e.g. cross-sectional, time-series, panel data, dyadic, etc.) and only searches for up to two additional key columns of type <code>other</code>. If no key is found at the end of the search, the function returns a <code>NULL</code> value.</p>
 <p>Computation can be slow on large datasets. Therfore, the function relies on a sample of row. The sample size can be controlled with <code>sample_size</code>. Moreover, it is also possible to restrict the search to a subset of columns by providing a vector of column names or indices in the argument <code>search_only</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#This will only check if a key is found among the first three columns</span>
-<span class="fu"><a href="../reference/find_keycol.html">find_keycol</a></span><span class="op">(</span><span class="va">example</span>, allow_NA <span class="op">=</span> <span class="cn">TRUE</span>, search_only <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
-<span class="co">#&gt; NULL</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#This will only check if a key is found among the first three columns</span></span>
+<span><span class="fu"><a href="../reference/find_keycol.html">find_keycol</a></span><span class="op">(</span><span class="va">example</span>, allow_NA <span class="op">=</span> <span class="cn">TRUE</span>, search_only <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt; NULL</span></span></code></pre></div>
 <p>Finally, the function also permits the user to specify whether columns containing <code>NA</code> values are allowed to be considered as table keys. The default is <code>allow_NA = FALSE</code> because keys should typically not contain missing values. However, in our example dataset the column <code>Tentative.HS.chapters.match</code> contains blank entries which are read in R as <code>NA</code>, therefore the default would return <code>NULL</code>. The argument <code>allow_NA</code> is present to deal with these edge cases.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/find_keycol.html">find_keycol</a></span><span class="op">(</span><span class="va">example</span>, allow_NA <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt; NULL</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/find_keycol.html">find_keycol</a></span><span class="op">(</span><span class="va">example</span>, allow_NA <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; NULL</span></span></code></pre></div>
 <p>If the user wants to test a specific set of columns, the package also provides the function <code><a href="../reference/is_keycol.html">is_keycol()</a></code> to check whether the provided columns uniquely identify the entries in the dataset.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/is_keycol.html">is_keycol</a></span><span class="op">(</span><span class="va">example</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"COUNTRIES"</span>,<span class="st">"Year"</span><span class="op">)</span>, allow_NA <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; [1] FALSE</span>
-<span class="fu"><a href="../reference/is_keycol.html">is_keycol</a></span><span class="op">(</span><span class="va">example</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"COUNTRIES"</span>,<span class="st">"Year"</span>, <span class="st">"Nr"</span>,<span class="st">"Tentative.HS.chapters.match"</span><span class="op">)</span>, allow_NA <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Found NA values in: Tentative.HS.chapters.match</span>
-<span class="co">#&gt; [1] TRUE</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/is_keycol.html">is_keycol</a></span><span class="op">(</span><span class="va">example</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"COUNTRIES"</span>,<span class="st">"Year"</span><span class="op">)</span>, allow_NA <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] FALSE</span></span>
+<span><span class="fu"><a href="../reference/is_keycol.html">is_keycol</a></span><span class="op">(</span><span class="va">example</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"COUNTRIES"</span>,<span class="st">"Year"</span>, <span class="st">"Nr"</span>,<span class="st">"Tentative.HS.chapters.match"</span><span class="op">)</span>, allow_NA <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Found NA values in: Tentative.HS.chapters.match</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
@@ -236,7 +236,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer>

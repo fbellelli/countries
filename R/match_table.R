@@ -179,7 +179,7 @@ match_table <- function(x,
   n_exact_matches <- sum(conversion_table$exact_match)
   n_matched <- sum(!is.na(conversion_table$closest_match))
   uncertain_matches <- na.omit(list_countries[conversion_table$dist/pmin(sqrt(nchar(conversion_table$closest_match)),5) > 0.05])
-  uncertain_matches_to <- na.omit(conversion_table[conversion_table$dist/pmin(sqrt(nchar(conversion_table$closest_match)),5) > 0.05, to[1]])
+  uncertain_matches_to <- if (poor_matches) na.omit(conversion_table[conversion_table$dist/pmin(sqrt(nchar(conversion_table$closest_match)),5) > 0.05, to[1]]) else NA
   if (matching_info | !simplify){
     dist_summary <- summary(conversion_table$dist[!conversion_table$exact_match], na.rm=TRUE)
   }
@@ -201,11 +201,11 @@ match_table <- function(x,
   }
 
   # Message on missing conversion
-  if (any(no_equiv>0)){
+  if (any((no_equiv>0)&(conversion_table$list_countries!= uncertain_matches))){
     output_warning <- TRUE
     if (verbose){
       cat("\n\nThe following country IDs do not have a match in one or more of the naming conventions:")
-      cat(paste0("\n  - ", conversion_table$list_countries[no_equiv>0]))
+      cat(paste0("\n  - ", conversion_table$list_countries[(no_equiv>0)&(conversion_table$list_countries!= uncertain_matches)]))
     } else {
       message("Some country IDs have no match in one or more country naming conventions")
     }
@@ -263,7 +263,7 @@ match_table <- function(x,
                                n_exact_matches = n_exact_matches,
                                n_fuzzy_matches = if (fuzzy_match) length(list_countries) - n_exact_matches else NULL,
                                dist_summary = if (fuzzy_match & n_exact_matches < length(list_countries)) dist_summary else NULL,
-                               ids_no_equiv = if (any(no_equiv>0)) conversion_table$list_countries[no_equiv>0] else NULL,
+                               ids_no_equiv = if (any((no_equiv>0)&(conversion_table$list_countries!= uncertain_matches))) conversion_table$list_countries[(no_equiv>0) & (conversion_table$list_countries!= uncertain_matches)] else NULL,
                                ids_confluent = if (any(repeated)) data.frame(ID = na.omit(conversion_table)[repeated,"list_countries"], to = na.omit(conversion_table)[repeated,to[1]]) else NULL,
                                ids_uncertain = if (n_matched > 0 & length(uncertain_matches)>0 & all(!is.na(uncertain_matches))) data.frame(uncertain_matches, uncertain_matches_to) else NULL),
                 warning = output_warning,

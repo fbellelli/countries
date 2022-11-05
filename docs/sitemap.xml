@@ -25,6 +25,9 @@
     <loc>https://fbellelli.github.io/countries/news/index.html</loc>
   </url>
   <url>
+    <loc>https://fbellelli.github.io/countries/reference/auto_join.html</loc>
+  </url>
+  <url>
     <loc>https://fbellelli.github.io/countries/reference/check.wide.format.html</loc>
   </url>
   <url>
@@ -74,6 +77,9 @@
   </url>
   <url>
     <loc>https://fbellelli.github.io/countries/reference/mode.html</loc>
+  </url>
+  <url>
+    <loc>https://fbellelli.github.io/countries/reference/parse.by.order.html</loc>
   </url>
   <url>
     <loc>https://fbellelli.github.io/countries/reference/which_min.html</loc>
