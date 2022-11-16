@@ -2,7 +2,7 @@
 #'
 #' The aim of this function is to simplify country data merging. The function performs merging of multiple data tables at once and is able to automatically detect country and time columns.  It can further simplify merging by handling differing country naming conventions and date formats.
 #' @param ... Data to be merged. Inputs need to be data frames or coercible to data frames
-#' @param by A list or a vector indicating the columns to be used for merging the data. If not provided, the function will automatically detect country and time columns and attempt to merge them. Other columns will be merged only if they share the same name. First time column and first two distinct country columns.
+#' @param by A list or a vector indicating the columns to be used for merging the data. If not provided, the function will automatically detect country and time columns and attempt to merge them. Other columns will be merged only if they share the same name. First time column and first two distinct country columns. Vector of regex, or list of column names, name of element in vector or list can be used to decide name in destination table. e.g. c("countries"="(Nation)|(COUNTRY)", "sector"="[Ii]ndustry") or alternatively list("countries"=c("Nation",NA,"COUNTRY","Nation",NA), "sector"=c("Industry","industry",NA,NA,NA)). In case of list the arguments must be of the same length of data tables to merge and names order must correspond to order of datasets. In case of Regex, it matches with first one.
 #' @param country_to Nomenclature to which country names should be converted to in the output. Default is \code{simple}. For a description of possible options, refer to the table in the vignette \href{https://fbellelli.github.io/countries/articles/dealing_with_names.html}{Dealing with country names}.
 #' @param inner_join Logical value indicating whether to perform an inner join. The default is \code{FALSE}, which results in a full join of the provided tables.
 #' @param verbose Logical value indicating if status messages should be printed to the console. Default is \code{TRUE}.
@@ -31,8 +31,10 @@ auto_join <- function(... , by=NULL, country_to="ISO3", coalesce=FALSE, inner_jo
     if (sapply(by,length)) stop("Function argument - by - is invalid. Length of name vectors differ from the number of provided tables.")
   }
   if (!is.character(country_to)|length(country_to)!=1|!(country_to %in% colnames(country_reference_list)))stop("The argument - country_to - is invalid. It needs to be one of the nomenclatures names recognised by the function country_name (e.g. ISO3, UN_en, simple, etc...). Refer to the documentation for more information.")
-  if (!is.logical(simplify) | length(simplify)!=1) stop("Function argument - simplify - needs to be a logical statement (TRUE/FALSE)")
-
+  if (!is.logical(coalesce) | length(coealesce)!=1) stop("Function argument - coalesce - needs to be a logical statement (TRUE/FALSE)")
+  if (!is.logical(inner_join) | length(inner_join)!=1) stop("Function argument - inner_join - needs to be a logical statement (TRUE/FALSE)")
+  if (!is.logical(verbose) | length(verbose)!=1) stop("Function argument - verbose - needs to be a logical statement (TRUE/FALSE)")
+  if (!is.logical(merging_info) | length(merging_info)!=1) stop("Function argument - merging_info - needs to be a logical statement (TRUE/FALSE)")
 
   ############################################################
   # CHECK WIDE FORMAT AND PIVOT IF NECESSARY ------------------
@@ -60,7 +62,7 @@ auto_join <- function(... , by=NULL, country_to="ISO3", coalesce=FALSE, inner_jo
   ############################################################
   #PREPARE FOR MERGING ---------------------------------------
 
-  #CONVERT COLUMN NAME TO DESTINATION NAME ----
+  #CONVERT COLUMN NAMES TO DESTINATION NAME ----
 
   by_table <- as.data.frame(by)
 
@@ -79,20 +81,53 @@ auto_join <- function(... , by=NULL, country_to="ISO3", coalesce=FALSE, inner_jo
   }
 
 
-  #CONVERT COUNTRY NOMENCLATURE IF REQUESTED ----
+  #CREATE A CONVERSION TABLE FOR COUNTRY NAMES ----
 
-  #OBBIETTIVO FINALE: UNA TABELLA
+  #make a list of all unique country names
+  country_names <- NULL
+  if ("country" %in% by_types){
 
-  #CREATE SUPPORT FOR COUNTRIES
-  #convert country names and make a list of all country names (merging support for country data)
-  #trovare un modo per consentire a utente di forzare a non cambiare nomi paesi: esempio inserendo NA/NULL in country_to
-  #invece di convertire country name on the spot, forse meglio aggiungere colonna con nome convertito e usare quello per merging? oppure rischio di trovarmi con troppe colonne di paesi?
+    #extract data in country columns
+    for (i in which(!is.na(by_table$country))){
+      country_names <- unique(append(country_names, unlist(data[[i]]["country"])))
+    }
 
-  #convert country names, if requested save match tables and merge in one table, then include in output
-  #- Think of how to deal with non-recognised countries or entities that are not ISO countries.
-  #- think of how to deal with matching with low confidence
+    #check second country column, if present
+    if (any("country2" %in% colnames(by_table))){
+      for (i in which(!is.na(by_table$country2))){
+        country_names <- unique(append(country_names, unlist(data[[i]]["country2"])))
+      }
+    }
 
-  #CREATE SUPPORT FOR TIME
+    #Prepare the conversion table with the final country names nomenclature
+    country_names <- sort(country_names)
+    temp <- suppressMessages(suppressWarnings(country_name(country_names, to=c("simple", country_to))))
+    country_conversion <- data.frame(original=country_names,
+                                     simple = temp[,1],
+                                     final = temp[,2])
+
+    #add flags in conversion table and format final name
+    country_conversion$note <- ifelse(!is.na(country_conversion$final), "-",
+                                      ifelse(is.na(country_conversion$simple), "name not recognised", paste0("this country has no name in ",country_to," nomenclature")))
+    country_conversion$final[is.na(country_conversion$final)] <- country_conversion$original[is.na(country_conversion$final)]
+
+    } else {
+    #if there is no country column in the data, then save a blank conversion table
+    country_conversion <- NULL
+  }
+
+
+
+  #CONVERT COUNTRY NAMES ----
+
+
+
+
+  #UNIFY FORMAT OF TIME COLUMNS ----
+
+
+
+
 
 
   ############################################################
@@ -101,11 +136,12 @@ auto_join <- function(... , by=NULL, country_to="ISO3", coalesce=FALSE, inner_jo
   #allow for inner / full merging
 
 
+
+
   ############################################################
   #PREPARE OUTPUT --------------------------------------------
 
-  #dare opzione una tabella sola?
-  #simplify -> rinominare in "coalesce"
+  #dare opzione una tabella sola? "COALESCE"? O forse
   #in tal caso dare opzione scelta livello aggregation?
 
   #se merging_info TRUE, append:
@@ -113,6 +149,7 @@ auto_join <- function(... , by=NULL, country_to="ISO3", coalesce=FALSE, inner_jo
   #key_cols (generato se - by - non fornito)
   #by iniziale/finale usato per il merging
   #by_types
+  #country_conversion
   #info su paesi/time?
   #warnings?
 
