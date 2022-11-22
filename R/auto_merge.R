@@ -122,12 +122,12 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
 
   #country columns
   for (i in which(!is.na(by_table$country))){
-    data[[i]]$country <- country_name(data[[i]]$country, to = "final", custom_table = country_conversion)
+    data[[i]]$country <- country_name(data[[i]]$country, to = "final", custom_table = country_conversion[,c("original","final")])
   }
   #country2 columns
   if (any("country2" %in% colnames(by_table))){
     for (i in which(!is.na(by_table$country2))){
-      data[[i]]$country2 <- country_name(data[[i]]$country2, to = "final", custom_table = country_conversion)
+      data[[i]]$country2 <- country_name(data[[i]]$country2, to = "final", custom_table = country_conversion[,c("original","final")])
     }
   }
 
@@ -181,7 +181,8 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
   }
 
   #TODO:
-  # somehow, save the "by" used in the dplyr merging
+  # somehow, save the keys used in the dplyr merging -> maybe compare names in common in the two tables before merging
+  # make sure that function works well with destination names provided by user in "by". run tests!
   # improve output function (opzione merging_info / simplify)
   # improve message on status merging (maybe make progress bar) / calculations -> introduce a verbose setting?
 
