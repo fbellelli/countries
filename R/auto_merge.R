@@ -50,8 +50,8 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
     #check format of table and pivot if necessary
     temp <- check.wide.format(data[[i]])
     if (!is.null(temp)){
-      data[[i]] <- pivot_longer(data[[i]], all_of(temp$col_name), names_to = "column_name")
-      data[[i]][,paste0("detected_",colnames(temp)[1])] <- temp[fmatch(data[[i]]$column_name, temp$col_name), 1]
+      data[[i]] <- pivot_longer(data[[i]], all_of(temp$col_name), names_to = paste0("Table",i,"_pivoted_column_name"), values_to = paste0("Table",i,"_pivoted_column_value"))
+      data[[i]][,paste0("detected_",colnames(temp)[1])] <- temp[fmatch(data[[i]][,paste0("Table",i,"_pivoted_column_name")], temp$col_name), 1]
     }
   }
 
@@ -127,12 +127,12 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
 
   #country columns
   for (i in which(!is.na(by_table$country))){
-    data[[i]]$country <- country_name(data[[i]]$country, to = "final", custom_table = country_conversion[,c("original","final")])
+    data[[i]]$country <- suppressMessages(suppressWarnings(country_name(data[[i]]$country, to = "final", custom_table = country_conversion[,c("original","final")])))
   }
   #country2 columns
   if (any("country2" %in% colnames(by_table))){
     for (i in which(!is.na(by_table$country2))){
-      data[[i]]$country2 <- country_name(data[[i]]$country2, to = "final", custom_table = country_conversion[,c("original","final")])
+      data[[i]]$country2 <- suppressMessages(suppressWarnings(country_name(data[[i]]$country2, to = "final", custom_table = country_conversion[,c("original","final")])))
     }
   }
 
@@ -237,8 +237,8 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
   if (verbose){
     temp <- by_table
     temp[is.na(temp)] <- ""
-    cat(paste0("Merge complete - the following columns were merged:\n",ifelse(merging_info,"","(Set merging_info to TRUE to save details)\n"),"\n"))
-    knitr::kable(by_table, "rst")
+    cat(paste0("\rMerge complete - the following columns were merged:",ifelse(merging_info,"","\n(Set merging_info to TRUE to save details)")))
+    print(knitr::kable(temp, "rst"))
   }
 
 
@@ -257,7 +257,4 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
 
 
 
-#TODO:
-# AGGIUNGERE INFO
-# make sure that function works well with destination names provided by user in "by". run tests!
-# introduce support for other types of columns by checking if values are the same. (will require find_keycols)
+
