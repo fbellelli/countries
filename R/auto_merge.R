@@ -6,9 +6,11 @@
 #' @param country_to Nomenclature to which country names should be converted to in the output. Default is \code{simple}. For a description of possible options, refer to the table in the vignette \href{https://fbellelli.github.io/countries/articles/dealing_with_names.html}{Dealing with country names}.
 #' @param inner_join Logical value indicating whether to perform an inner join. The default is \code{FALSE}, which results in a full join of the provided tables.
 #' @param merging_info Logical value. If \code{TRUE}, the function will output a list containing the merged data and information generated during the merging process, such as the conversion table used for country names or information on table variables.
+#' @param verbose Logical value. Print status messages on the console. Default is \code{TRUE}.
 #' @import tidyr dplyr fastmatch utils stringr
 #' @importFrom lubridate parse_date_time
-auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , merging_info = TRUE){
+#' @importFrom knitr kable
+auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , merging_info = FALSE, verbose=TRUE){
 
   ############################################################
   #CAPTURE INPUT DATA ----------------------------------------
@@ -38,6 +40,9 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
 
   ############################################################
   # CHECK WIDE FORMAT AND PIVOT IF NECESSARY ------------------
+
+  #output status to console
+  if (verbose){cat("Cleaning data and identifying columns to merge")}
 
   #loop over all data tables
   for (i in 1:length(data)){
@@ -163,41 +168,96 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
   }
 
 
+  #CHECK ALL COLUMN NAMES FOR OVERLAPS ----
+
+  #extract updated column names from tables
+  col_names <- sapply(data,colnames)
+
+  #save information on any additional column that will be merged because of its name
+  #loop over the column names of each table
+  for (i in 1:length(col_names)){
+
+    #check if the names are present in any other table
+    temp <- col_names[[i]][col_names[[i]] %in% unlist(col_names[-i])]
+
+    #exclude names that are already captured in by order
+    temp <- temp[!(temp %in% names(by))]
+
+    #save if any
+    if (length(temp)>0){
+      #loop over every shared name and add it to by_table
+      for (j in temp){
+          by_table[i,j] <- j
+      }
+    }
+  }
+
+  #improve format table
+  row.names(by_table)<-paste("Table",row.names(by_table))
+
 
 
 
   ############################################################
   #PERFORM MERGING -------------------------------------------
 
+
   #allow for inner / full merging
   final <- data[[1]]
+  data[[1]] <- "memory cleared"
   for (i in 2:length(data)){
-    cat(paste0("Performing merging: ",i-1,"/",length(data)-1,"\n"))
+
+    #output status update to console
+    if (verbose){
+      cat(paste0("\r                                              ",
+                 "\rPerforming merging: ",i-1,"/",length(data)-1," "))
+    }
+
+
+    #perform merging
     if (inner_join == TRUE){
       final <- suppressMessages(inner_join(final, data[[i]]))
     } else {
       final <- suppressMessages(full_join(final, data[[i]]))
     }
+
+    #clear from memory original table data
+    data[[i]] <- "memory cleared"
   }
 
-  #TODO:
-  # somehow, save the keys used in the dplyr merging -> maybe compare names in common in the two tables before merging
-  # make sure that function works well with destination names provided by user in "by". run tests!
-  # improve output function (opzione merging_info / simplify)
-  # improve message on status merging (maybe make progress bar) / calculations -> introduce a verbose setting?
+  #clean up console
+  cat("\r                                            ")
 
 
 
   ############################################################
   #PREPARE OUTPUT --------------------------------------------
 
-  #se merging_info TRUE, append:
-  #by iniziale usato per il merging
-  #warnings?
+  #Print summary to console
+  if (verbose){
+    temp <- by_table
+    temp[is.na(temp)] <- ""
+    cat(paste0("Merge complete - the following columns were merged:\n",ifelse(merging_info,"","(Set merging_info to TRUE to save details)\n"),"\n"))
+    knitr::kable(by_table, "rst")
+  }
 
 
-  return(list(merged_table = final,
-              info_merged_columns = by_table,
-              info_country_names = country_conversion[,-2],
-              info_time_formats = time_conversion))
+  #Return output
+  if (merging_info){
+    return(list(merged_table = final,
+                info_merged_columns = by_table,
+                info_country_names = country_conversion[,-2],
+                info_time_formats = time_conversion))
+  } else {
+    return(final)
+  }
+
+
 }
+
+
+
+#TODO:
+# AGGIUNGERE INFO
+# make sure that function works well with destination names provided by user in "by". run tests!
+# introduce support for other types of columns by checking if values are the same. (will require find_keycols)

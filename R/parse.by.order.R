@@ -5,7 +5,8 @@
 #' @param col_names list of column names in \code{data} tables
 #' @return Returns a cleaned \code{by} order and a vector indicating the type of data in each element of the order.
 parse.by.order <- function(data, by, col_names){
-  if (!is.null(by)){
+
+    if (!is.null(by)){
 
     # CHECK THAT PROVIDED COLUMN NAMES ARE PRESENT IN TABLES ----
 
@@ -68,7 +69,7 @@ parse.by.order <- function(data, by, col_names){
 
 
   ############################################################
-  # GENERATE MERGING ORDER WHEN NOT PROVIDED -----------------
+  # GENERATE MERGING ORDER WHEN BY NOT PROVIDED -----------------
 
   if (is.null(by)){
     key_cols <- list()
