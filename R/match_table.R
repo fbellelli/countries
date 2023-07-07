@@ -18,6 +18,7 @@
 #' @importFrom stringdist stringdistmatrix
 #' @import tidyr
 #' @import stringr
+#' @import stringi
 #' @examples
 #' match_table(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= c("UN_en","ISO3"))
 match_table <- function(x,
@@ -76,7 +77,7 @@ match_table <- function(x,
   }
 
   #change to lower case to facilitate matching
-  table_references$name_lower <- tolower(table_references$name)
+  table_references$name_lower <- str_to_lower(table_references$name)
 
   #create a shorter version of the reference table by eliminating stopwords, duplicated entries and numeric country codes to avoid mismatches
   table_references_short <- table_references[!duplicated(table_references$name_lower) & table_references$nomenclature != "ISO_code",]
@@ -97,8 +98,17 @@ match_table <- function(x,
     stop("One or more of the values provided to the - to - argument is not valid. If a custom conversion is used, make sure the values in - to - are among the column names of the provided table.")
   }
 
+  #check for encoding issues
+  if(has.invalid.multibyte.string(list_countries)){
+    temp <- has.invalid.multibyte.string(list_countries, return.elements = TRUE)
+    n_temp <- sum(temp)
+    stop(paste0("Check encoding of the data. Some of the characters are not read properly, such as in: ", paste(list_countries[temp][1:min(n_temp,5)], collapse = ", ", sep = "")))
+  }
+
   #create table adding conversion columns for each of the desired naming conventions
-  conversion_table <- data.frame(list_countries, simplified = str_trim(tolower(list_countries), side = "both"), exact_match=NA, closest_match=NA, dist=NA, setNames(rep(list(NA), length(to)),to))
+  conversion_table <- data.frame(list_countries, simplified = str_trim(str_to_lower(list_countries), side = "both"), exact_match=NA, closest_match=NA, dist=NA, setNames(rep(list(NA), length(to)),to))
+
+
 
 
   ##########################################################

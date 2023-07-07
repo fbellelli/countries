@@ -168,9 +168,8 @@ find_keycol <- function(x,
             }
           }
         }
-
-        i<-i+1
       }
+      i<-i+1
     }
   }
 
@@ -194,8 +193,8 @@ find_keycol <- function(x,
         while (i<=length(cols) & key_found==FALSE){
           if (length(country_cols)==0 & length(time_cols)==0){temp <- c("other"=cols[i])}
           if (length(country_cols)>0 & !any(grid_dyad$is_different) & length(time_cols)==0){temp <- c("country"=country_cols[1], "other"=cols[i])}
-          if (length(country_cols)==0 & length(country_cols)>0){temp <- c("time"=time, "other"=cols[i])}
-          if (length(country_cols)>0 & !any(grid_dyad$is_different) & length(country_cols)==1){temp <- c("country"=country_cols[1], "time"=time, "other"=cols[i])}
+          if (length(country_cols)==0 & length(time_cols)>0){temp <- c("time"=time, "other"=cols[i])}
+          if (length(country_cols)>0 & !any(grid_dyad$is_different) & length(time_cols)==1){temp <- c("country"=country_cols[1], "time"=time, "other"=cols[i])}
           if (is_keycol(x,temp, allow_NA= allow_NA, verbose=FALSE)){
             key <- temp
             key_found <- TRUE

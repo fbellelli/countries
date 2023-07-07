@@ -2,11 +2,13 @@
 #'
 #' @param data list of tables provided to auto_join function
 #' @param by by order provided by user to auto_join function
-#' @param col_names list of column names in \code{data} tables
 #' @return Returns a cleaned \code{by} order and a vector indicating the type of data in each element of the order.
-parse.by.order <- function(data, by, col_names){
+parse.by.order <- function(data, by = NULL){
 
-    if (!is.null(by)){
+  # get column names in data
+  col_names <- sapply(data, colnames, simplify = FALSE)
+
+  if (!is.null(by)){
 
     # CHECK THAT PROVIDED COLUMN NAMES ARE PRESENT IN TABLES ----
 
@@ -72,59 +74,130 @@ parse.by.order <- function(data, by, col_names){
   # GENERATE MERGING ORDER WHEN BY NOT PROVIDED -----------------
 
   if (is.null(by)){
+
+    # FIND KEY COLUMNS ------------
+
     key_cols <- list()
-
-    #FIND FIRST TIME AND 1/2 COUNTRY COLUMNS ------------
     for (i in 1:length(data)){
-
-      #find country columns in table
-      cols <- find_countrycol(data[[i]], allow_NA = TRUE)
-      if (length(cols)==1){
-        key_cols[[i]] <- c("country"=cols)
-      } else if (length(cols)>1){
-
-        #take data sample of country column names
-        temp <- data[[i]][if (nrow(data[[i]])>5000){sample(c(1:nrow(data[[i]])), size = 5000, replace = FALSE)} else {TRUE},cols]
-
-        #convert all to same nomenclature
-        temp <- suppressMessages(suppressWarnings(as.data.frame(sapply(temp, country_name))))
-
-        #compare all pairs of columns and eliminate duplicates
-        j <- 1
-        while (j < ncol(temp)){
-          for (k in (j+1):ncol(temp)){
-            dupl_cols <- character(0)
-            #if more than 90% of the names are identical, assume the column is duplicated, so mark as duplicated the one with more NAs (in case of tie, discard the right-most one)
-            if(0.9 < sum(temp[,j] == temp[,k], na.rm=TRUE)/min(sum(!is.na(temp[,j])),sum(!is.na(temp[,k])))){
-              if (sum(is.na(temp[,k])) >= sum(is.na(temp[,j]))){
-                dupl_cols <- c(dupl_cols,colnames(temp)[k])
-              } else {
-                dupl_cols <- c(dupl_cols,colnames(temp)[j])
-              }
-            }
-          }
-          # remove columns marked as duplicates and move to next column
-          temp <- temp[!colnames(temp) %in% dupl_cols]
-          j <- j + 1
-        }
-        #keep only non duplicated columns
-        cols <- colnames(temp)
-
-        #save the first 1/2 distinct country column names
-        if (length(cols)==1){key_cols[[i]] <- c("country"=cols)}
-        if (length(cols)>1){key_cols[[i]]<-c("country"=cols[1], "country"=cols[2])}
-
-      } else {
-        #if no country column was detected, then record an empty vector
-        key_cols[[i]] <- character(0)
-      }
-
-      #find fist time column
-      cols <- find_timecol(data[[i]], allow_NA = TRUE)
-      if (length(cols)>0) key_cols[[i]] <- c(key_cols[[i]], "time"=cols[1])
+      key_cols[[i]] <- find_keycol(data[[i]], allow_NA = TRUE, sample_size = 5000)
     }
 
-    #CREATE MERGING ORDER ----------------
+    # FIND IF "OTHER" KEYS ARE OVERLAPPING ACROSS TABLES ------------
+
+    # create empty holder for any other column
+    other <- list()
+
+    # Check with tables contain a key of type "other"
+    tables_other_cols <- sapply(key_cols, function(x){any(names(x) == "other")})
+
+    # if a key of type "other" was detected in more than 1 table, proceed to check if their values are overlapping across tables, to decide whether merging is needed
+    if (sum(tables_other_cols) > 1){
+
+      # loop over every combination of tables
+      for (i in 1:(sum(tables_other_cols) - 1)){
+        for (j in (i+1):sum(tables_other_cols)){
+
+          # get names of "other" key columns in table i and j
+          tab_i <- which(tables_other_cols)[i]
+          tab_j <- which(tables_other_cols)[j]
+          names_i <- key_cols[[tab_i]][names(key_cols[[tab_i]]) == "other"]
+          names_j <- key_cols[[tab_j]][names(key_cols[[tab_j]]) == "other"]
+
+          #extract a sample of rows to check overlap
+          sample_i <- data.frame(data[[tab_i]][sample(1:(nrow(data[[tab_i]])), size = min(nrow(data[[tab_i]]), 5000), replace = FALSE), names_i])
+          sample_j <- data.frame(data[[tab_j]][sample(1:(nrow(data[[tab_j]])), size = min(nrow(data[[tab_j]]), 5000), replace = FALSE), names_j])
+
+          # ensure names stay the same
+          colnames(sample_i) <- names_i
+          colnames(sample_j) <- names_j
+
+          # loop over every combination of "other" column in the two tables
+          for (col_i in names_i){
+
+            # initiate overlap score container
+            score <- rep(0, length(names_j))
+
+            # loop over all other columns in table j to calculate the overlap
+            if (length(names_j)>0){
+              for (col_j in names_j){
+
+                # calculate number of overlapping unique values
+                unique_i <- as.character(unique(sample_i[, col_i]))
+                unique_j <- as.character(unique(sample_j[, col_j]))
+                n_intersect <- sum(unique_i %fin%  unique_j)
+
+                # calculate overlap score (weighting penalises series which have very different number of unique values)
+                min_length <- min(length(unique_i), length(unique_j))
+                max_length <- max(length(unique_i), length(unique_j))
+                score[match(col_j, names_j)] <- n_intersect / min_length #(min_length * log2(1 + max_length/min_length))
+
+              }
+
+              # if the two columns share the same name, multiply the score by 4
+              score <- score + 3 * score * (tolower(col_i) == tolower(names_j))
+
+              # if overlap score is higher than 50%, then merge the two columns and move to next col_i
+              if (any(score > 0.5)){
+
+                # select the column in table j with the highest overlap score
+                col_overlap <- names_j[which.max(score)]
+
+                if (length(other) > 0) {
+                  # check if col_i has already been merging to something in previous tables
+                  merged_to_i <- which(sapply(other, FUN = function(x) col_i %in% x[tab_i]))
+
+                  # check if col_overlap has already been merging to something in previous tables
+                  merged_to_j <- which(sapply(other, FUN = function(x) col_overlap %in% x[tab_j]))
+                } else {
+                  merged_to_i <- character(0)
+                  merged_to_j <- character(0)
+                }
+
+                if (length(merged_to_i) == 0 & length(merged_to_j) == 0){
+
+                  # if the columns have never been merged to anything yet, create a new entry in merge order
+
+                  # save columns to merge
+                  other[[length(other) + 1]] <- rep(NA_character_, length(data))
+                  other[[length(other)]][c(tab_i, tab_j)] <- unname(c(col_i, col_overlap))
+
+                  # assign name of column in table i
+                  names(other)[[length(other)]] <- col_i
+
+                  # remove col_overlap from names_j
+                  names_j <- names_j[names_j != col_overlap]
+
+                } else if (length(merged_to_i) > 0 & length(merged_to_j) == 0){
+
+                  # if col_i is already merged to something, add col_overlap to same merge order only if score is high
+                  if (max(score) > 0.7){
+                    other[[merged_to_i]][tab_j] <- col_overlap
+
+                    # remove col_overlap from names_j
+                    names_j <- names_j[names_j != col_overlap]
+                  }
+
+                } else if (length(merged_to_i) == 0 & length(merged_to_j) > 0){
+
+                  # if col_overlap is already merged to something, add col_i to same merge order
+                  if (max(score) > 0.7){
+                    other[[merged_to_j]][tab_i] <- col_i
+                  }
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+      }
+
+    }
+
+
+    # CREATE MERGING ORDER ----------------
     #initiate variables to store info
     by <- list()
     by_types <- character(0)
@@ -157,6 +230,10 @@ parse.by.order <- function(data, by, col_names){
       by[[length(by)+1]] <- time
       names(by)[length(by)] <- "time"
       by_types[length(by_types)+1] <- "time"
+    }
+    if (length(other)>0){
+      by <- append(by, other)
+      by_types <- append(by_types, names(other))
     }
   }
 

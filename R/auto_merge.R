@@ -10,17 +10,24 @@
 #' @import tidyr dplyr fastmatch utils stringr
 #' @importFrom lubridate parse_date_time
 #' @importFrom knitr kable
-auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , merging_info = FALSE, verbose=TRUE){
+#' @export
+auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, merging_info = FALSE, verbose=TRUE){
 
   ############################################################
   #CAPTURE INPUT DATA ----------------------------------------
 
+  # save initial by call for future reference
+  by_init <- by
+
+  # save data in a list as separate data.frames
   data <- list(...)
   data <- lapply(data, as.data.frame)
 
-  #extract column names from tables
-  col_names <- sapply(data,colnames)
+  # extract column names from tables
+  col_names <- sapply(data, colnames, simplify = FALSE)
 
+  # save initial column names for future reference
+  col_names_init <- col_names
 
   ############################################################
   # CHECK INPUTS ---------------------------------------------
@@ -31,7 +38,7 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
   if (is.list(by)){
     if (!all(sapply(by,is.atomic))) stop("Function argument - by - is invalid. List input needs to contain vectors of column names to merge")
     if (any(sapply(by,function(x){all(is.na(x))}))) stop("Function argument - by - is invalid. One of the name vectors contains all NAs")
-    if (sapply(by,length)) stop("Function argument - by - is invalid. Length of name vectors differ from the number of provided tables.")
+    if (length(unique(sapply(by, length))) != 1) stop("Function argument - by - is invalid. Length of name vectors differ from the number of provided tables.")
   }
   if (!is.character(country_to)|length(country_to)!=1|!(country_to %in% colnames(country_reference_list)))stop("The argument - country_to - is invalid. It needs to be one of the nomenclatures names recognised by the function country_name (e.g. ISO3, UN_en, simple, etc...). Refer to the documentation for more information.")
   if (!is.logical(inner_join) | length(inner_join)!=1) stop("Function argument - inner_join - needs to be a logical statement (TRUE/FALSE)")
@@ -42,26 +49,51 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
   # CHECK WIDE FORMAT AND PIVOT IF NECESSARY ------------------
 
   #output status to console
-  if (verbose){cat("Cleaning data and identifying columns to merge")}
+  if (verbose){cat("Identifying columns to merge\n")}
 
   #loop over all data tables
+  pivoted_cols <- list()
   for (i in 1:length(data)){
 
-    #check format of table and pivot if necessary
-    temp <- check.wide.format(data[[i]])
+    #check column names for countries/years
+    temp <- countries:::check.wide.format(data[[i]])
     if (!is.null(temp)){
-      data[[i]] <- pivot_longer(data[[i]], all_of(temp$col_name), names_to = paste0("Table",i,"_pivoted_column_name"), values_to = paste0("Table",i,"_pivoted_column_value"))
-      data[[i]][,paste0("detected_",colnames(temp)[1])] <- temp[fmatch(data[[i]][,paste0("Table",i,"_pivoted_column_name")], temp$col_name), 1]
+      # pivot table if countries or years were found and adjust name
+      pivoted_key_name <- paste0("Table",i,"_pivoted_", colnames(temp)[1])
+      data[[i]] <- as.data.frame(pivot_longer(data[[i]], all_of(temp$col_name), names_to = pivoted_key_name, values_to = paste0("Table",i,"_pivoted_data")))
+
+      # move pivoted keys to front of table
+      data[[i]] <- data[[i]][, c(pivoted_key_name, colnames(data[[i]])[colnames(data[[i]]) != pivoted_key_name])]
+
+      # convert year to numeric if possible, otherwise add numeric column with detected year in string
+      if (colnames(temp)[1] == "year"){
+        if (all(grepl('^(?=.)([+-]?([0-9]*)(\\.([0-9]+))?)$', temp$col_name, perl = TRUE))){
+          data[[i]][, pivoted_key_name] <- as.numeric(data[[i]][, pivoted_key_name])
+        } else {
+          data[[i]][,"year detected in column names"] <- temp[fmatch(data[[i]][, pivoted_key_name], temp$col_name), 1]
+        }
+      }
+
+      # save name of pivoted columns
+      pivoted_cols[[length(pivoted_cols)+1]] <- as.vector(temp$col_name)
+      names(pivoted_cols)[length(pivoted_cols)] <- paste("Table", i)
+
+      # issue message to console
+      if (verbose) cat(paste0(colnames(temp)[1], " detected in column names of Table ", i, ", pivoting columns: ", paste(temp$col_name[1:3], collapse=", ", sep = ""), if (nrow(temp)>3){paste0(", ..., ", temp$col_name[nrow(temp)])}, "\n"))
     }
   }
 
+  # update column names list
+  col_names <- sapply(data, colnames, simplify = FALSE)
 
   ############################################################
   # CLEAN BY ORDER -------------------------------------------
 
-  temp <- parse.by.order(data=data, by=by, col_names=col_names)
+  # identify columns to merge
+  temp <- countries:::parse.by.order(data = data, by = by)
   by <- temp$by
   by_types <- temp$by_types
+
 
 
   ############################################################
@@ -71,18 +103,29 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
 
   by_table <- as.data.frame(by)
 
-  #loop over every data table
+  # merge by name if no merging order is created
+  merge_by_name <- FALSE
+  if (nrow(by_table) == 0){
+    merge_by_name <- TRUE
+    if (verbose) cat("No merging keys were found: columns will be merged based on their name\n")
+  }
+
+  #loop over every table
   for (i in 1:length(data)){
 
     #perform check on existing column names to avoid having two columns with destination name
-    temp <- !col_names[[i]] %in% na.omit(unlist(by_table[i,])) #exclude key cols from names to check
+    temp <- !(col_names[[i]] %in% na.omit(unlist(by_table[i,]))) #exclude key cols from names to check
     if (any(names(by) %in% col_names[[i]][temp])){
-      colnames(data[[i]])[temp] <- paste0("X.",col_names[[i]][temp])
+      colnames(data[[i]])[temp] <- paste0("Table",i,".",col_names[[i]][temp])
     }
 
     #change key column names to desired destination name
-    temp <- na.omit(unlist(by_table[i,]))
-    colnames(data[[i]])[match(temp, colnames(data[[i]]))] <- names(temp)
+    if (length(by)>0){
+      temp <- unlist(by_table[i,])
+      names(temp) <- colnames(by_table)
+      temp <- na.omit(temp)
+      colnames(data[[i]])[match(temp, colnames(data[[i]]))] <- names(temp)
+    }
   }
 
 
@@ -92,7 +135,10 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
   country_names <- NULL
   if ("country" %in% by_types){
 
-    #extract data in country columns
+    #message
+    if (verbose){cat("Converting country names\n")}
+
+    #extract all country names in the tables
     for (i in which(!is.na(by_table$country))){
       country_names <- unique(append(country_names, unlist(data[[i]]["country"])))
     }
@@ -129,6 +175,7 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
   for (i in which(!is.na(by_table$country))){
     data[[i]]$country <- suppressMessages(suppressWarnings(country_name(data[[i]]$country, to = "final", custom_table = country_conversion[,c("original","final")])))
   }
+
   #country2 columns
   if (any("country2" %in% colnames(by_table))){
     for (i in which(!is.na(by_table$country2))){
@@ -142,6 +189,9 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
   #proceed only if there are time columns
   time_conversion <- NULL
   if (any("time" %in% colnames(by_table))){
+
+    # Status message
+    if (verbose){cat("Checking time columns\n")}
 
     #check if all time columns are years
     temp <- TRUE
@@ -168,10 +218,13 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
   }
 
 
-  #CHECK ALL COLUMN NAMES FOR OVERLAPS ----
+  #CHECK ALL COLUMN NAMES FOR OVERLAPS -------
+
+  #message
+  # if (verbose){cat("Preparing for merger")}
 
   #extract updated column names from tables
-  col_names <- sapply(data,colnames)
+  col_names <- sapply(data, colnames, simplify = FALSE)
 
   #save information on any additional column that will be merged because of its name
   #loop over the column names of each table
@@ -183,17 +236,111 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
     #exclude names that are already captured in by order
     temp <- temp[!(temp %in% names(by))]
 
-    #save if any
-    if (length(temp)>0){
-      #loop over every shared name and add it to by_table
-      for (j in temp){
-          by_table[i,j] <- j
+    if (merge_by_name){
+      #MERGE COLUMNS WITH SAME NAME ACROSS TABLES
+
+      #save in mege table if any recurring name across table
+      if (length(temp)>0){
+        #loop over every shared name and add it to by_table
+        for (j in temp){
+            by_table[i,j] <- j
+        }
       }
+    } else {
+      # CHANGE NAME OF COLUMN
+      colnames(data[[i]])[colnames(data[[i]]) == temp] <- paste0("Table",i,"_",temp)
     }
   }
 
   #improve format table
-  row.names(by_table)<-paste("Table",row.names(by_table))
+  row.names(by_table) <- paste("Table",row.names(by_table))
+
+
+  #TABLES WITH NO KEYS -------
+
+  # save table to print
+  by_table_for_print <- by_table
+
+  # check if any table has no keys
+  n_keys <- rowSums(!is.na(by_table))
+  if(any(n_keys == 0)){
+
+    # find the most frequent key
+    most_frequent_key <- which.max(apply(by_table, MARGIN = 2, function(x){sum(!is.na(x))}))
+
+    # deal with tables with no keys by adding the most frequent key with NA as inputs
+    for (i in which(n_keys == 0)){
+
+      #output message to console
+      if (verbose){
+        if (verbose) cat(paste0("No merging key found for ", names(n_keys)[i],". Data will be appended. \n"))
+      }
+
+      # add key with NA in table to allow merging
+      data[[i]][, names(most_frequent_key)] <- NA
+
+      # add key to merging table
+      by_table[i, names(most_frequent_key)] <- names(most_frequent_key)
+
+    }
+  }
+
+  ############################################################
+  #DECIDING MERGER ORDER -------------------------------------
+
+  # decide merging order
+
+  # update list of column names
+  col_names <- sapply(data, colnames, simplify = FALSE)
+
+  # count the number of times each key appears in the tables
+  n <- apply(by_table, MARGIN = 2, function(x){sum(!is.na(x))})
+
+  # start by merging tables containing the most frequent key
+  order_merges <- which(!is.na(by_table[, which.max(n)]))
+
+  # find merging order until all tables are merged
+  while (length(order_merges) < nrow(by_table)){
+
+    # count number of merged tables for each key
+    n_in_table <- apply(by_table[order_merges,], MARGIN = 2, function(x){sum(!is.na(x))})
+
+    # keep track of keys that are not fully merged (i.e. there are tables with this keys that have not been merged)
+    keys_to_merge <- which(n_in_table < n)
+
+    # check which keys are already in the merged table
+    keys_in_table <- which(n_in_table > 0)
+
+    # Merge tables with the next incomplete keys
+    if (any(keys_to_merge %in% keys_in_table)){
+
+      # select next key
+      next_key <- keys_to_merge[keys_to_merge %in% keys_in_table][1]
+
+      # order merger of tables containing the next key to merge
+      order_merges <- unique(c(order_merges, which(!is.na(by_table[, next_key]))))
+
+    } else {
+
+      # if there is no table that can be merged, but there are still unmerged keys, it means that there is no chain of keys that allows to merge all tables. To allow merging, create a column of NAs with a bridging key
+      # pick one of the remaining keys
+      next_key <- keys_to_merge[1]
+
+      # find all tables containing it
+      bridge_tabs <- which(!is.na(by_table[, next_key]))
+
+      # add a bridge key to the selected tables with NA values
+      bridge_key <- keys_in_table[1]
+      for (i in bridge_tabs){
+        data[[i]][,names(bridge_key)] <- NA
+      }
+
+      # add bridge tables to the merging order
+      order_merges <- unique(c(order_merges, bridge_tabs))
+    }
+
+  }
+
 
 
 
@@ -201,53 +348,59 @@ auto_merge <- function(... , by=NULL, country_to="ISO3", inner_join = FALSE , me
   ############################################################
   #PERFORM MERGING -------------------------------------------
 
+  #Print summary to console
+  if (verbose){
+    temp <- by_table_for_print
+    temp[is.na(temp)] <- ""
+    cat("The following columns are being merged:")
+    print(knitr::kable(temp, "rst"))
+    # cat(paste0("Tables will be merged in the following order: ", paste0(order_merges, collapse =", "), "\n"))
+  }
 
-  #allow for inner / full merging
-  final <- data[[1]]
-  data[[1]] <- "memory cleared"
-  for (i in 2:length(data)){
 
-    #output status update to console
-    if (verbose){
-      cat(paste0("\r                                              ",
-                 "\rPerforming merging: ",i-1,"/",length(data)-1," "))
-    }
+  #start merging
+  final <- data[[order_merges[1]]]
+  data[[order_merges[1]]] <- "memory cleared"
+  for (i in order_merges[2:length(order_merges)]){
 
 
     #perform merging
     if (inner_join == TRUE){
-      final <- suppressMessages(inner_join(final, data[[i]]))
+      final <- suppressMessages(suppressWarnings(inner_join(final, data[[i]])))
     } else {
-      final <- suppressMessages(full_join(final, data[[i]]))
+      final <- suppressMessages(suppressWarnings(full_join(final, data[[i]])))
     }
 
     #clear from memory original table data
     data[[i]] <- "memory cleared"
-  }
 
-  #clean up console
-  cat("\r                                            ")
+    #output status update to console
+    if (verbose){
+      cat(paste0("\r                                              ",
+                 "\rPerformed merges: ",i-1,"/",length(data)-1," "))
+    }
+  }
 
 
 
   ############################################################
-  #PREPARE OUTPUT --------------------------------------------
+  #FINAL OUTPUT --------------------------------------------
 
-  #Print summary to console
-  if (verbose){
-    temp <- by_table
-    temp[is.na(temp)] <- ""
-    cat(paste0("\rMerge complete - the following columns were merged:",ifelse(merging_info,"","\n(Set merging_info to TRUE to save details)")))
-    print(knitr::kable(temp, "rst"))
-  }
+  # final message
+  if (verbose) cat(paste0("\r                                              ",
+                          "\rMerge complete\n",ifelse(merging_info,"","(Set merging_info to TRUE to save merging details)\n")))
 
-
-  #Return output
+  # Return output
   if (merging_info){
     return(list(merged_table = final,
-                info_merged_columns = by_table,
+                info_merged_columns = by_table_for_print,
                 info_country_names = country_conversion[,-2],
-                info_time_formats = time_conversion))
+                info_time_formats = time_conversion,
+                pivoted_columns = pivoted_cols,
+                call = list(n_data_tables = nrow(by_table),
+                            by = by_init,
+                            country_to = country_to,
+                            inner_join = inner_join)))
   } else {
     return(final)
   }

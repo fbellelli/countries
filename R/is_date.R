@@ -54,8 +54,18 @@ is_date <- function(x, formats=c("%Y-%m-%d",
   if (length(x)==0) stop("The argument - x - is empty")
   if (is.data.frame(x)) stop("The input - x - needs to be a vector")
 
-  #check all possible formats for a match
-  return(sapply(x, function(x, formats){any(!is.na(as.Date(as.character(x), format = formats)))}, formats=formats, USE.NAMES = FALSE))
+  # convert inputs to character
+  x <- as.character(x)
+
+  # check that length is not excessive for a date and keep track of NAs
+  output <- !is.na(x) & (nchar(x) < 100)
+
+  #check all possible date formats for a match
+  if (any(output)){
+    output[output] <- sapply(x[output], function(x, formats){any(!is.na(as.Date(x, format = formats)))}, formats=formats, USE.NAMES = FALSE)
+  }
+
+  return(output)
 }
 
 

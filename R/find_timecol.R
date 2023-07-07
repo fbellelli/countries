@@ -29,8 +29,9 @@ find_timecol <- function(x,
   #----------- INITIATE SEARCH -------------------
 
 
-  #take sample if table is large and requested
   if (ncol(x)>0){
+
+    #take sample if table is large and requested
     if (!is.na(sample_size)){
       temp <- colnames(x)
       x <- as.data.frame(x[sample(1:nrow(x), min(round(sample_size), nrow(x))),])

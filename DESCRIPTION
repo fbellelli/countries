@@ -8,12 +8,13 @@ Authors@R:
 Description: Wrangle country data more effectively and quickly. This package containts functions to easily identify and convert country names, pull country info and datasets, merge country data from different sources, and make quick world maps.
 License: GPL-3
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Imports: 
     stringdist,
     fastmatch,
     tidyr,
     stringr,
+    stringi,
     dplyr,
     knitr,
     rmarkdown,

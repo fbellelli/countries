@@ -156,3 +156,14 @@ test_that("output from check.wide.format are as expected", {
   expect_equal(nrow(check.wide.format(example, adjacency = FALSE)), 3)
   expect_equal(check.wide.format(example, adjacency = FALSE)[,"col_indx"], c(2,3,5))
 })
+
+# HAS.INVALID.MULTIBYTE.STRING --------------------------------------------
+
+example1 <- c("Restaurant","Caf\xe9","Bar")
+example2 <- c("Dog", "cat")
+test_that("output from has.invalid.multibyte.string are as expected", {
+  expect_equal(has.invalid.multibyte.string(example1), TRUE)
+  expect_equal(has.invalid.multibyte.string(example2), FALSE)
+  expect_equal(length(has.invalid.multibyte.string(example2, return.elements = TRUE)), 2)
+  expect_equal(has.invalid.multibyte.string(example1, return.elements = TRUE), c(FALSE, TRUE, FALSE))
+})
