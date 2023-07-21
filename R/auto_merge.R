@@ -1,16 +1,52 @@
-#' Simplified merging of country data tables supporting different country nomenclatures and date formats
+#' @title Simplified merging supporting different country nomenclatures and date formats
 #'
-#' The aim of this function is to simplify country data merging. The function performs merging of multiple data tables at once and is able to automatically detect country and time columns.  It can further simplify merging by handling differing country naming conventions and date formats.
-#' @param ... Data to be merged. Inputs need to be data frames or coercible to data frames
-#' @param by A list or a vector indicating the columns to be used for merging the data. If not provided, the function will automatically detect country and time columns and attempt to merge them. Other columns will be merged only if they share the same name. First time column and first two distinct country columns. Vector of regex, or list of column names, name of element in vector or list can be used to decide name in destination table. e.g. c("countries"="(Nation)|(COUNTRY)", "sector"="[Ii]ndustry") or alternatively list("countries"=c("Nation",NA,"COUNTRY","Nation",NA), "sector"=c("Industry","industry",NA,NA,NA)). In case of list the arguments must be of the same length of data tables to merge and names order must correspond to order of datasets. In case of Regex, it matches with first one.
-#' @param country_to Nomenclature to which country names should be converted to in the output. Default is \code{simple}. For a description of possible options, refer to the table in the vignette \href{https://fbellelli.github.io/countries/articles/dealing_with_names.html}{Dealing with country names}.
+#' @description
+#' The aim of this function is to simplify country data merging for quick analyses. Compared to a normal merge function \code{auto_merge()}:
+#' \itemize{
+#'  \item Is able to perform the merging of multiple data tables at once.
+#'  \item Supports automatic detection of columns to merge.
+#'  \item It is able to handle different country naming conventions and date formats. For example, it will be able to recognise that "Italy" and "ITA" refer to the same country and will merge the two entries across tables.
+#'  \item It detects if data is in a wide format with country names or years in the column names and will automatically pivot the data.
+#' }
+#'
+#' @param ... Data to be merged. Inputs need to be data frames or coercible to data frame. Tables can also be provided into a single list e.g. \code{tab1, tab2, tab3} or \code{list(tab1, tab2, tab3)}.
+#' @param by A list or a vector indicating the columns to be used for merging the data. \emph{If not provided, the function will try to automatically detect columns to be merged}. For more information, refer to the details sections.
+#' @param country_to Nomenclature to which country names should be converted to in the output. Default is \code{ISO3}. For a description of possible options, refer to the table in the vignette \href{https://fbellelli.github.io/countries/articles/dealing_with_names.html}{Dealing with country names}.
 #' @param inner_join Logical value indicating whether to perform an inner join. The default is \code{FALSE}, which results in a full join of the provided tables.
-#' @param merging_info Logical value. If \code{TRUE}, the function will output a list containing the merged data and information generated during the merging process, such as the conversion table used for country names or information on table variables.
-#' @param verbose Logical value. Print status messages on the console. Default is \code{TRUE}.
+#' @param merging_info Logical value. If \code{TRUE}, the function will output a list containing the merged data and information generated during the merging process, such as information on columns that have been merged or the conversion table used for country names. The default is \code{FALSE}, which results into a single merged table being returned.
+#' @param verbose Logical value indicating whether to print status messages on the console. Default is \code{TRUE}.
+#' @returns If \code{merging_info = FALSE} a single merged table is returned. If \code{merging_info = TRUE}, a list object is returned, containing the merged table (\code{merged_table}), a table summarising which columns have been merged (\code{info_merged_columns}), a table summarising the conversion of country names (\code{info_country_names}), a table summarising the conversion of time columns to a common format (\code{info_time_formats}), a list of all the columns that have been pivoted when wide tables with country or years in column names were detected (\code{pivoted_columns}), a list recapitulating the inputs passed to the function (\code{call}).
+#' @seealso \link[countries]{country_name}, \link[countries]{find_keycol}
 #' @import tidyr dplyr fastmatch utils stringr
 #' @importFrom lubridate parse_date_time
 #' @importFrom knitr kable
 #' @export
+#' @details
+#' \strong{Automatic detection of columns to merge}.
+#'  The automatic detection process starts by first identifying the key of each table, i.e. a set of variables identifying the entries in the table. This process is optimised for common formats of country data.
+#'  The function will then try to match key columns across tables based on their values.
+#'  Columns containing country names and time information are identified and are processed to take into account different nomenclatures and time formats.
+#'  This automatic process works for the most common dataset structures, but it is not foolproof. Therefore, we always advise to check the columns that are being merged by setting \code{verbose = TRUE} and reading the printout.
+#'  Moreover, be aware that this automatic detection process can increase the overall merging time considerably. This can be especially long for tables containing many columns or when a large number of tables is being merged.
+#'
+#' \strong{Formatting of \code{by} argument}
+#' If an argument is provided to \code{by}, it needs to be either 1) a list of column names, or 2) a vector of regular expressions. The format requirements are the following:
+#' \enumerate{
+#' \item In case a \strong{list} is passed, each element of the list must be a vector of length equal to the number of tables being merged (i.e., if 3 tables are being merged, the list needs to contain all vectors of length 3). The vectors should contain the names of columns to be merged in each table, \code{NA} can be inserted for tables that do not contain the variable, and names should be ordered in the same order of the tables that are being merged (i.e. the first column name should be present in the first table being merged). The name of the merged columns can be modified by assigning a name to the elements of the list. For example, \code{list("countries"=c("Nation",NA,"COUNTRY"), "sector"=c("Industry","industry",NA))} is requesting to merge the columns \code{tab1$Nation} and \code{tab3$COUNTRY}, and the columns \code{tab1$Industry} and \code{tab2$industry}. These two merged columns will have be names \code{"countries"} and \code{"sector"} in the output, as requested by the user.
+#' \item In case a \strong{vector} is passed, each element is interpreted as a regular expression to be used for matching the columns to be merged. For example, the same order provided in the list example could be written as \code{c("countries"="Nation|COUNTRY", "sector"="[Ii]ndustry")}. This will merge the first column in each table whose name matches the pattern described by the regular expression and will name the two resulting columns as \code{"countries"} and \code{"sector"} respectively.
+#' }
+#'
+#' @examples
+#' # sample data
+#' tab1 <- data.frame(Industry = c(1, 1, 2, 2), Nation = c("ITA", "FRA", "ITA", "FRA"), tot = runif(4))
+#' tab2 <- data.frame(industry = 1:4, rate = runif(1:4))
+#' tab3 <- data.frame(COUNTRY = c("United States", "France", "India"), national_avg = runif(3))
+#'
+#' # examples of merging orders
+#' auto_merge(tab1, tab2, tab3)
+#' auto_merge(list(tab1, tab2, tab3))
+#' auto_merge(tab1, tab2, tab3, by = c("countries"="Nation|COUNTRY", "sector"="[Ii]ndustry"))
+#' auto_merge(tab1, tab2, tab3, country_to = "UN_fr")
 auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, merging_info = FALSE, verbose=TRUE){
 
   ############################################################
@@ -21,6 +57,13 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
 
   # save data in a list as separate data.frames
   data <- list(...)
+
+  # check if input is a list, if so extract content
+  if (length(data) == 1 & class(data) == "list"){
+    if (length(data[[1]]) > 1) data <- data[[1]] else stop("Please provide multiple tables as inputs for merging")
+  }
+
+  # convert all elements in list into data.frames
   data <- lapply(data, as.data.frame)
 
   # extract column names from tables
@@ -99,16 +142,21 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
   ############################################################
   #PREPARE DATA FOR MERGING ----------------------------------
 
-  #CONVERT COLUMN NAMES TO DESTINATION NAME ----
 
+  # SAVE TABLE THAT WILL BE USED FOR PRINTING OUT MERGER DETAILS ---
+
+  # convert by order into a table
   by_table <- as.data.frame(by)
 
-  # merge by name if no merging order is created
-  merge_by_name <- FALSE
-  if (nrow(by_table) == 0){
-    merge_by_name <- TRUE
-    if (verbose) cat("No merging keys were found: columns will be merged based on their name\n")
-  }
+  # save a copy of the table to print on screen
+  by_table_for_print <- by_table
+
+
+
+  #CONVERT COLUMN NAMES TO DESTINATION NAME ----
+
+  # update column name list
+  col_names <- sapply(data, colnames, simplify = FALSE)
 
   #loop over every table
   for (i in 1:length(data)){
@@ -128,103 +176,14 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
     }
   }
 
-
-  #CREATE A CONVERSION TABLE FOR COUNTRY NAMES ----
-
-  #make a list of all unique country names
-  country_names <- NULL
-  if ("country" %in% by_types){
-
-    #message
-    if (verbose){cat("Converting country names\n")}
-
-    #extract all country names in the tables
-    for (i in which(!is.na(by_table$country))){
-      country_names <- unique(append(country_names, unlist(data[[i]]["country"])))
-    }
-
-    #check second country column, if present
-    if (any("country2" %in% colnames(by_table))){
-      for (i in which(!is.na(by_table$country2))){
-        country_names <- unique(append(country_names, unlist(data[[i]]["country2"])))
-      }
-    }
-
-    #Prepare the conversion table with the final country names nomenclature
-    country_names <- sort(country_names)
-    temp <- suppressMessages(suppressWarnings(country_name(country_names, to=c("simple", country_to))))
-    country_conversion <- data.frame(original=country_names,
-                                     simple = temp[,1],
-                                     final = temp[,2])
-
-    #add flags in conversion table and format final name
-    country_conversion$note <- ifelse(!is.na(country_conversion$final), "-",
-                                      ifelse(is.na(country_conversion$simple), "name not recognised", paste0("this country has no name in ",country_to," nomenclature")))
-    country_conversion$final[is.na(country_conversion$final)] <- country_conversion$original[is.na(country_conversion$final)]
-
-    } else {
-    #if there is no country column in the data, then save a blank conversion table
-    country_conversion <- NULL
-  }
-
-
-
-  #CONVERT COUNTRY NAMES ----
-
-  #country columns
-  for (i in which(!is.na(by_table$country))){
-    data[[i]]$country <- suppressMessages(suppressWarnings(country_name(data[[i]]$country, to = "final", custom_table = country_conversion[,c("original","final")])))
-  }
-
-  #country2 columns
-  if (any("country2" %in% colnames(by_table))){
-    for (i in which(!is.na(by_table$country2))){
-      data[[i]]$country2 <- suppressMessages(suppressWarnings(country_name(data[[i]]$country2, to = "final", custom_table = country_conversion[,c("original","final")])))
-    }
-  }
-
-
-  #UNIFY FORMAT OF TIME COLUMNS ----
-
-  #proceed only if there are time columns
-  time_conversion <- NULL
-  if (any("time" %in% colnames(by_table))){
-
-    # Status message
-    if (verbose){cat("Checking time columns\n")}
-
-    #check if all time columns are years
-    temp <- TRUE
-    for (i in which(!is.na(by_table$time))){
-      if (countries:::is.yearcol(data[[i]]$time) == FALSE){
-        temp <- FALSE
-        break
-      }
-    }
-
-    #if all time columns are years then proceed with merging, otherwise all time columns need to be converted to a standardised format
-    if (temp == FALSE){
-      time_unformatted <- NULL
-      date_formats <- c("dmy","mdy","ymd","y","my","m","dm","md")
-      for (i in which(!is.na(by_table$time))){
-        time_unformatted <- unique(c(time_unformatted, as.character(data[[i]]$time)))
-        data[[i]]$time <- lubridate::parse_date_time(data[[i]]$time, date_formats)
-      }
-
-      #save info on time formatting
-      time_conversion <- data.frame(time_unformatted = sort(time_unformatted),
-                                    time_formatted = lubridate::parse_date_time(sort(time_unformatted), date_formats))
-    }
-  }
-
-
   #CHECK ALL COLUMN NAMES FOR OVERLAPS -------
 
-  #message
-  # if (verbose){cat("Preparing for merger")}
-
-  #extract updated column names from tables
-  col_names <- sapply(data, colnames, simplify = FALSE)
+  # merge by name if no merging order is created (backup strategy)
+  merge_by_name <- FALSE
+  if (nrow(by_table) == 0){
+    merge_by_name <- TRUE
+    if (verbose) cat("No merging keys were found. Will try merging all columns with matching names!\n")
+  }
 
   #save information on any additional column that will be merged because of its name
   #loop over the column names of each table
@@ -241,9 +200,11 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
 
       #save in mege table if any recurring name across table
       if (length(temp)>0){
+
         #loop over every shared name and add it to by_table
         for (j in temp){
-            by_table[i,j] <- j
+          by_table[i,j] <- j
+          by_table_for_print[i,j] <- j
         }
       }
     } else {
@@ -252,14 +213,119 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
     }
   }
 
-  #improve format table
-  row.names(by_table) <- paste("Table",row.names(by_table))
+  #improve format by_table
+  if (nrow(by_table)>0){
+    row.names(by_table) <- paste("Table", row.names(by_table))
+    row.names(by_table_for_print) <- paste("Table", row.names(by_table_for_print))
+  }
+
+  #CREATE A CONVERSION TABLE FOR COUNTRY NAMES ----
+
+  #make a list of all unique country names
+  country_names <- NULL
+  if ("country" %in% by_types){
+
+    # get final name of first country column
+    country_dest_name <- names(by)[by_types == "country"][1]
+
+    #message
+    if (verbose){cat("Converting country names\n")}
+
+    #extract all country names in the tables
+    for (i in which(!is.na(by_table[, country_dest_name]))){
+      country_names <- unique(append(country_names, unlist(data[[i]][country_dest_name])))
+    }
+
+    #check second country column, if present
+    if (sum(by_types == "country")>1){
+
+      # get name of second country column
+      country2_dest_name <- names(by)[by_types == "country"][2]
+
+      # extract names
+      for (i in which(!is.na(by_table[, country2_dest_name]))){
+        country_names <- unique(append(country_names, unlist(data[[i]][country2_dest_name])))
+      }
+    }
+
+    #Prepare the conversion table with the final country names nomenclature
+    country_names <- sort(country_names)
+    temp <- suppressMessages(suppressWarnings(country_name(country_names, to=c("simple", country_to))))
+    country_conversion <- data.frame(original=country_names,
+                                     simple = temp[,1],
+                                     final = temp[,2])
+
+    #add flags in conversion table and format final name
+    country_conversion$note <- ifelse(!is.na(country_conversion$final), "-",
+                                      ifelse(is.na(country_conversion$simple), "name not recognised", paste0("this country has no name in ",country_to," nomenclature")))
+    country_conversion$final[is.na(country_conversion$final)] <- country_conversion$original[is.na(country_conversion$final)]
 
 
-  #TABLES WITH NO KEYS -------
 
-  # save table to print
-  by_table_for_print <- by_table
+    #CONVERT COUNTRY NAMES ----
+
+    #country columns
+    for (i in which(!is.na(by_table[, country_dest_name]))){
+      data[[i]][, country_dest_name] <- suppressMessages(suppressWarnings(country_name(data[[i]][, country_dest_name], to = "final", custom_table = country_conversion[,c("original","final")])))
+    }
+
+    #country2 columns
+    if (sum(by_types == "country")>1){
+
+      for (i in which(!is.na(by_table[, country2_dest_name]))){
+        data[[i]][, country2_dest_name] <- suppressMessages(suppressWarnings(country_name(data[[i]][, country2_dest_name], to = "final", custom_table = country_conversion[,c("original","final")])))
+      }
+    }
+
+  } else {
+    #if there is no country column in the data, then save a blank conversion table
+    country_conversion <- NULL
+  }
+
+
+
+
+
+  #UNIFY FORMAT OF TIME COLUMNS ----
+
+  #proceed only if there are time columns
+  time_conversion <- NULL
+  if (any("time" %in% by_types)){
+
+    # get final name of time column
+    time_dest_name <- names(by)[by_types == "time"][1]
+
+    # Status message
+    if (verbose){cat("Checking time columns\n")}
+
+    #check if all time columns are years
+    temp <- TRUE
+    for (i in which(!is.na(by_table[,time_dest_name]))){
+      if (countries:::is.yearcol(data[[i]][,time_dest_name]) == FALSE){
+        temp <- FALSE
+        break
+      }
+    }
+
+    #if all time columns are years then proceed with merging, otherwise all time columns need to be converted to a standardised format
+    if (temp == FALSE){
+      time_unformatted <- NULL
+      date_formats <- c("dmy","mdy","ymd","y","my","m","dm","md")
+      for (i in which(!is.na(by_table[,time_dest_name]))){
+        time_unformatted <- unique(c(time_unformatted, as.character(data[[i]][,time_dest_name])))
+        data[[i]][,time_dest_name] <- lubridate::parse_date_time(data[[i]][,time_dest_name], date_formats)
+      }
+
+      #save info on time formatting
+      time_conversion <- data.frame(time_unformatted = sort(time_unformatted),
+                                    time_formatted = lubridate::parse_date_time(sort(time_unformatted), date_formats))
+    }
+  }
+
+
+
+
+  # DEAL WITH TABLES WITH NO KEYS -------
 
   # check if any table has no keys
   n_keys <- rowSums(!is.na(by_table))
@@ -377,7 +443,7 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
     #output status update to console
     if (verbose){
       cat(paste0("\r                                              ",
-                 "\rPerformed merges: ",i-1,"/",length(data)-1," "))
+                 "\rPerforming merge: ",i-1,"/",length(data)-1," "))
     }
   }
 

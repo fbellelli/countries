@@ -4,14 +4,12 @@
 \alias{parse.by.order}
 \title{Internal function - Parses input merging order for function auto_join}
 \usage{
-parse.by.order(data, by, col_names)
+parse.by.order(data, by = NULL)
 }
 \arguments{
 \item{data}{list of tables provided to auto_join function}
 
 \item{by}{by order provided by user to auto_join function}
-
-\item{col_names}{list of column names in \code{data} tables}
 }
 \value{
 Returns a cleaned \code{by} order and a vector indicating the type of data in each element of the order.
