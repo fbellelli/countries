@@ -76,7 +76,7 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
   # CHECK INPUTS ---------------------------------------------
 
   if (length(data)<2) stop("At least two tables need to be provided for merging")
-  if (any(sapply(data, ncol)==0) | any(sapply(data, nrow)==0)) stop("Unable to proceed: input data tables need to have at least one column and one row")
+  if (any(sapply(data, ncol)<2) | any(sapply(data, nrow)==0)) stop("Unable to proceed: input data tables need to have at least two columns and one row")
   if (!is.atomic(by)&!is.list(by)) stop("Function argument - by - is invalid. It needs to be either a vector of regular expressions, or a list of column names. Refer to the documentation for more information.")
   if (is.list(by)){
     if (!all(sapply(by,is.atomic))) stop("Function argument - by - is invalid. List input needs to contain vectors of column names to merge")
@@ -217,7 +217,43 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
   if (nrow(by_table)>0){
     row.names(by_table) <- paste("Table", row.names(by_table))
     row.names(by_table_for_print) <- paste("Table", row.names(by_table_for_print))
+
+  } else {
+
+    if (verbose) cat("MERGING ABORTED\n")
+
+    # if no merging key is created at this tage, terminate execution here
+    stop("No columns to merge were found. Please provide a -by- argument and check the data inputs.")
   }
+
+
+  # ENFORCE SAME DATA TYPE ON MERGED COLUMNS ---
+
+  # check that data type is the same for merged columns, if not, convert to character
+  for (i in colnames(by_table)){
+
+    # extract number of tables containing column i
+    tabs <- which(!is.na(by_table[,i]))
+
+    # loop over every table to extract data type of column i
+    temp <- NULL
+    for (j in tabs){
+      temp <- c(temp, class(data[[j]][,i]))
+    }
+
+    # if type is not the same in all columns, convert to character
+    if (any(temp != temp[1])){
+
+      # issue message
+      if (verbose) cat(paste0("Data type for variable ", i, " differ across tables - converting to character\n"))
+
+      # convert all to character to allow merging
+      for (j in tabs){
+        data[[j]][,i] <- as.character(data[[j]][,i])
+      }
+    }
+  }
+
 
   #CREATE A CONVERSION TABLE FOR COUNTRY NAMES ----
 
@@ -343,7 +379,7 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
       }
 
       # add key with NA in table to allow merging
-      data[[i]][, names(most_frequent_key)] <- NA
+      data[[i]][, names(most_frequent_key)] <- NA_character_
 
       # add key to merging table
       by_table[i, names(most_frequent_key)] <- names(most_frequent_key)
@@ -398,7 +434,7 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
       # add a bridge key to the selected tables with NA values
       bridge_key <- keys_in_table[1]
       for (i in bridge_tabs){
-        data[[i]][,names(bridge_key)] <- NA
+        data[[i]][,names(bridge_key)] <- NA_character_
       }
 
       # add bridge tables to the merging order

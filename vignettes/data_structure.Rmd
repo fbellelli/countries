@@ -30,9 +30,11 @@ temp <- tempfile()
 download.file("https://fbellelli.com/data%20files/Extended%20EDB%20by%20measure-country-HS%20chapter.zip", temp, mode="wb")
 
 #unzip and load it in R
-example <- read.csv(
+library(data.table)
+example <- fread(
   unzip(temp,"Extended EDB by measure-country-HS chapter/Extended EDB (by measure-country-HS chapter).csv"),
-  stringsAsFactors=FALSE)
+  stringsAsFactors=FALSE,
+  encoding = "Latin-1")
 ```
 
 ```{r include=FALSE}
@@ -128,7 +130,7 @@ If the user wants to test a specific set of columns, the package also provides t
 
 ```{r}
 is_keycol(example, c("COUNTRIES","Year"), allow_NA = TRUE)
-is_keycol(example, c("COUNTRIES","Year", "Nr","Tentative.HS.chapters.match"), allow_NA = TRUE)
+is_keycol(example, c("COUNTRIES","Year", "Nr","Tentative HS chapters match"), allow_NA = TRUE)
 ```
 
 

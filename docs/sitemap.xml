@@ -28,6 +28,9 @@
     <loc>https://fbellelli.github.io/countries/reference/auto_join.html</loc>
   </url>
   <url>
+    <loc>https://fbellelli.github.io/countries/reference/auto_merge.html</loc>
+  </url>
+  <url>
     <loc>https://fbellelli.github.io/countries/reference/check.wide.format.html</loc>
   </url>
   <url>
@@ -50,6 +53,9 @@
   </url>
   <url>
     <loc>https://fbellelli.github.io/countries/reference/get_mode.html</loc>
+  </url>
+  <url>
+    <loc>https://fbellelli.github.io/countries/reference/has.invalid.multibyte.string.html</loc>
   </url>
   <url>
     <loc>https://fbellelli.github.io/countries/reference/index.html</loc>
