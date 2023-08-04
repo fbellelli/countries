@@ -36,9 +36,9 @@ It detects if data is in a wide format with country names or years in the column
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/auto_merge.html">Easy joining with auto_merge()</a>
     <a class="dropdown-item" href="../articles/data_structure.html">Data structure</a>
     <a class="dropdown-item" href="../articles/dealing_with_names.html">Dealing with country names</a>
-    <a class="dropdown-item" href="../articles/package_intro.html">Getting started</a>
   </div>
 </li>
 <li class="nav-item">
@@ -80,7 +80,8 @@ It detects if data is in a wide format with country names or years in the column
 <span>  country_to <span class="op">=</span> <span class="st">"ISO3"</span>,</span>
 <span>  inner_join <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  merging_info <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  auto_melt <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -109,6 +110,10 @@ It detects if data is in a wide format with country names or years in the column
 <dt>verbose</dt>
 <dd><p>Logical value indicating whether to print status messages on the console. Default is <code>TRUE</code>.</p></dd>
 
+
+<dt>auto_melt</dt>
+<dd><p>Logical value indicating whether to automatically pivot country names or years present in the column names. Default is <code>TRUE</code>. When at least 3 country names or years are found in the column names, the function will automatically transform the table from a wide to a long format by pivoting the country/year columns.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -123,9 +128,9 @@ It detects if data is in a wide format with country names or years in the column
  The function will then try to match key columns across tables based on their values.
  Columns containing country names and time information are identified and are processed to take into account different nomenclatures and time formats.
  This automatic process works for the most common dataset structures, but it is not foolproof. Therefore, we always advise to check the columns that are being merged by setting <code>verbose = TRUE</code> and reading the printout.
- Moreover, be aware that this automatic detection process can increase the overall merging time considerably. This can be especially long for tables containing many columns or when a large number of tables is being merged.</p>
+ Moreover, users should be aware that this automatic detection process can increase the overall merging time considerably. This can be especially long for tables containing many columns or when a large number of tables is being merged.</p>
 <p><strong>Formatting of <code>by</code> argument</strong>
-If an argument is provided to <code>by</code>, it needs to be either 1) a list of column names, or 2) a vector of regular expressions. The format requirements are the following:</p><ol><li><p>In case a <strong>list</strong> is passed, each element of the list must be a vector of length equal to the number of tables being merged (i.e., if 3 tables are being merged, the list needs to contain all vectors of length 3). The vectors should contain the names of columns to be merged in each table, <code>NA</code> can be inserted for tables that do not contain the variable, and names should be ordered in the same order of the tables that are being merged (i.e. the first column name should be present in the first table being merged). The name of the merged columns can be modified by assigning a name to the elements of the list. For example, <code>list("countries"=c("Nation",NA,"COUNTRY"), "sector"=c("Industry","industry",NA))</code> is requesting to merge the columns <code>tab1$Nation</code> and <code>tab3$COUNTRY</code>, and the columns <code>tab1$Industry</code> and <code>tab2$industry</code>. These two merged columns will have be names <code>"countries"</code> and <code>"sector"</code> in the output, as requested by the user.</p></li>
+If an argument is provided to <code>by</code>, it needs to be either 1) a list of column names, or 2) a vector of regular expressions. The format requirements are the following:</p><ol><li><p>In case a <strong>list</strong> is passed, each element of the list must be a vector of length equal to the number of tables being merged (i.e., if 3 tables are being merged, the list needs to contain all vectors of length 3). The vectors should contain the names of columns to be merged in each table, <code>NA</code> can be inserted for tables that do not contain the variable, and names should be ordered in the same order of the tables that are being merged (i.e. the first column name should be present in the first table being merged). The name of the merged columns can be modified by assigning a name to the elements of the list. For example, <code>list("countries"=c("Nation",NA,"COUNTRY"), "sector"=c("Industry","industry",NA))</code> is requesting to merge the columns <code>tab1$Nation</code> and <code>tab3$COUNTRY</code>, and the columns <code>tab1$Industry</code> and <code>tab2$industry</code>. These two merged columns will be named <code>"countries"</code> and <code>"sector"</code> in the output, as requested by the user.</p></li>
 <li><p>In case a <strong>vector</strong> is passed, each element is interpreted as a regular expression to be used for matching the columns to be merged. For example, the same order provided in the list example could be written as <code>c("countries"="Nation|COUNTRY", "sector"="[Ii]ndustry")</code>. This will merge the first column in each table whose name matches the pattern described by the regular expression and will name the two resulting columns as <code>"countries"</code> and <code>"sector"</code> respectively.</p></li>
 </ol></div>
     <div class="section level2">
@@ -135,11 +140,15 @@ If an argument is provided to <code>by</code>, it needs to be either 1) a list o
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">tab1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Industry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, Nation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ITA"</span>, <span class="st">"FRA"</span>, <span class="st">"ITA"</span>, <span class="st">"FRA"</span><span class="op">)</span>, tot <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># sample data</span></span></span>
+<span class="r-in"><span><span class="va">tab1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Industry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, Nation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ITA"</span>, <span class="st">"FRA"</span>, <span class="st">"ITA"</span>, <span class="st">"FRA"</span><span class="op">)</span>, tot <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tab2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>industry <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tab3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>COUNTRY <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States"</span>, <span class="st">"France"</span>, <span class="st">"India"</span><span class="op">)</span>, national_avg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># examples of merging orders</span></span></span>
 <span class="r-in"><span><span class="fu">auto_merge</span><span class="op">(</span><span class="va">tab1</span>, <span class="va">tab2</span>, <span class="va">tab3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Identifying columns to merge</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Data type for variable Industry differ across tables - converting to character</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Converting country names</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The following columns are being merged:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -153,16 +162,17 @@ If an argument is provided to <code>by</code>, it needs to be either 1) a list o
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                               Performing merge: 2/2                                               Performing merge: 1/2                                               Merge complete</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Set merging_info to TRUE to save merging details)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Industry country       tot national_avg       rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1     ITA 0.9772315           NA 0.70118317</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1     FRA 0.2600081    0.5546310 0.70118317</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2     ITA 0.2330822           NA 0.04858446</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        2     FRA 0.8681729    0.5546310 0.04858446</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       NA     USA        NA    0.9179675         NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       NA     IND        NA    0.3519445         NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        3    &lt;NA&gt;        NA           NA 0.14669247</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        4    &lt;NA&gt;        NA           NA 0.71859923</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1     ITA 0.5612849           NA 0.90717884</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1     FRA 0.7894601   0.97400334 0.90717884</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2     ITA 0.3869034           NA 0.33115330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        2     FRA 0.8788141   0.97400334 0.33115330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     &lt;NA&gt;     USA        NA   0.34924474         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     &lt;NA&gt;     IND        NA   0.02788734         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        3    &lt;NA&gt;        NA           NA 0.08082439</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        4    &lt;NA&gt;        NA           NA 0.51014017</span>
 <span class="r-in"><span><span class="fu">auto_merge</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">tab1</span>, <span class="va">tab2</span>, <span class="va">tab3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Identifying columns to merge</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Data type for variable Industry differ across tables - converting to character</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Converting country names</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The following columns are being merged:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -176,16 +186,17 @@ If an argument is provided to <code>by</code>, it needs to be either 1) a list o
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                               Performing merge: 2/2                                               Performing merge: 1/2                                               Merge complete</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Set merging_info to TRUE to save merging details)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Industry country       tot national_avg       rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1     ITA 0.9772315           NA 0.70118317</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1     FRA 0.2600081    0.5546310 0.70118317</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2     ITA 0.2330822           NA 0.04858446</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        2     FRA 0.8681729    0.5546310 0.04858446</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       NA     USA        NA    0.9179675         NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       NA     IND        NA    0.3519445         NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        3    &lt;NA&gt;        NA           NA 0.14669247</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        4    &lt;NA&gt;        NA           NA 0.71859923</span>
-<span class="r-in"><span><span class="fu">auto_merge</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">tab1</span>, <span class="va">tab2</span>, <span class="va">tab3</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"countries"</span><span class="op">=</span><span class="st">"Nation|COUNTRY"</span>, <span class="st">"sector"</span><span class="op">=</span><span class="st">"[Ii]ndustry"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1     ITA 0.5612849           NA 0.90717884</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1     FRA 0.7894601   0.97400334 0.90717884</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2     ITA 0.3869034           NA 0.33115330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        2     FRA 0.8788141   0.97400334 0.33115330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     &lt;NA&gt;     USA        NA   0.34924474         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     &lt;NA&gt;     IND        NA   0.02788734         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        3    &lt;NA&gt;        NA           NA 0.08082439</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        4    &lt;NA&gt;        NA           NA 0.51014017</span>
+<span class="r-in"><span><span class="fu">auto_merge</span><span class="op">(</span><span class="va">tab1</span>, <span class="va">tab2</span>, <span class="va">tab3</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"countries"</span><span class="op">=</span><span class="st">"Nation|COUNTRY"</span>, <span class="st">"sector"</span><span class="op">=</span><span class="st">"[Ii]ndustry"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Identifying columns to merge</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Data type for variable Industry differ across tables - converting to character</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Converting country names</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The following columns are being merged:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -199,16 +210,17 @@ If an argument is provided to <code>by</code>, it needs to be either 1) a list o
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                               Performing merge: 2/2                                               Performing merge: 1/2                                               Merge complete</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Set merging_info to TRUE to save merging details)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Industry Nation       tot national_avg       rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1    ITA 0.9772315           NA 0.70118317</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1    FRA 0.2600081    0.5546310 0.70118317</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2    ITA 0.2330822           NA 0.04858446</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        2    FRA 0.8681729    0.5546310 0.04858446</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       NA    USA        NA    0.9179675         NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       NA    IND        NA    0.3519445         NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        3   &lt;NA&gt;        NA           NA 0.14669247</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        4   &lt;NA&gt;        NA           NA 0.71859923</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1    ITA 0.5612849           NA 0.90717884</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1    FRA 0.7894601   0.97400334 0.90717884</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2    ITA 0.3869034           NA 0.33115330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        2    FRA 0.8788141   0.97400334 0.33115330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     &lt;NA&gt;    USA        NA   0.34924474         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     &lt;NA&gt;    IND        NA   0.02788734         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        3   &lt;NA&gt;        NA           NA 0.08082439</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        4   &lt;NA&gt;        NA           NA 0.51014017</span>
 <span class="r-in"><span><span class="fu">auto_merge</span><span class="op">(</span><span class="va">tab1</span>, <span class="va">tab2</span>, <span class="va">tab3</span>, country_to <span class="op">=</span> <span class="st">"UN_fr"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Identifying columns to merge</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Data type for variable Industry differ across tables - converting to character</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Converting country names</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The following columns are being merged:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -222,14 +234,14 @@ If an argument is provided to <code>by</code>, it needs to be either 1) a list o
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                               Performing merge: 2/2                                               Performing merge: 1/2                                               Merge complete</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Set merging_info to TRUE to save merging details)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Industry               country       tot national_avg       rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1                Italie 0.9772315           NA 0.70118317</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1                France 0.2600081    0.5546310 0.70118317</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2                Italie 0.2330822           NA 0.04858446</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        2                France 0.8681729    0.5546310 0.04858446</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       NA États-Unis d’Amérique        NA    0.9179675         NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       NA                  Inde        NA    0.3519445         NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        3                  &lt;NA&gt;        NA           NA 0.14669247</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        4                  &lt;NA&gt;        NA           NA 0.71859923</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1                Italie 0.5612849           NA 0.90717884</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1                France 0.7894601   0.97400334 0.90717884</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2                Italie 0.3869034           NA 0.33115330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        2                France 0.8788141   0.97400334 0.33115330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     &lt;NA&gt; États-Unis d’Amérique        NA   0.34924474         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     &lt;NA&gt;                  Inde        NA   0.02788734         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        3                  &lt;NA&gt;        NA           NA 0.08082439</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        4                  &lt;NA&gt;        NA           NA 0.51014017</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

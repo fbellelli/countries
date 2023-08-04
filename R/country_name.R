@@ -7,7 +7,7 @@
 #' @param fuzzy_match Logical value indicating whether fuzzy matching of country names should be allowed (\code{TRUE}), or only exact matches are allowed (\code{FALSE}). Default is \code{TRUE}.
 #' @param verbose Logical value indicating whether the function should print to the console a full report. Default is \code{FALSE}.
 #' @param simplify Logical value. If set to \code{TRUE} the function will return a vector of converted names. If set to \code{FALSE}, the function will return a list object containing the converted vector and additional details on the country matching process. Default is \code{TRUE}.
-#' @param poor_matches Logical value. If set to \code{FALSE} (the default), the function will return \code{NA} in case of poor matching. If set to \code{TRUE}, the function will always return the closest matching country name, even if the matching is poor.
+#' @param poor_matches Logical value. If set to \code{FALSE} (the default), the function will return \code{NA} in case of poor matching. If set to \code{TRUE}, the function will always return the closest matching country name, even if the match is poor.
 #' @param custom_table Custom conversion table to be used. This needs to be a \code{data.frame} object. Default is \code{NULL}.
 #' @return Returns a vector of converted country names. If multiple nomenclatures are passed to the argument \code{to}, the vectors are arranged in a data frame. If \code{simplify=FALSE}, the function will return a list object.
 #' @seealso \link[countries]{is_country}, \link[countries]{match_table}, \link[countries]{find_countrycol}

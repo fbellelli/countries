@@ -172,24 +172,25 @@ test_that("output from has.invalid.multibyte.string are as expected", {
 # AUTO_MERGE --------------------------------------------
 
 example <- data.frame(HS = 85:89, freq = sample(1:3, size = 5, replace = TRUE))
+example1 <- data.frame(Date = c("01.01.2019", "01.02.2019", "01.03.2019"), Japan = 1:3, Norway = 2:4, Germany = 3:5, US = 4:6)
 example4 <- data.frame(chapter = 82:87, freq = runif(6))
 example5 <- data.frame(HS = c(T,F,T,F,T), number = runif(5))
 example3 <- data.frame(ISIC = 1000:1010, freq = sample(1:3, size = 11, replace = TRUE))
-example2 <- data.frame(France = 1:10, Italy = 11:20, UK = 6:15)
+example2 <- data.frame(France = 1:10, Italy = 11:20, US = 6:15)
 example6 <- data.frame(ID = 1:10, France1992 = runif(10), France1993 = runif(10), France1994 = runif(10), USA1992 = runif(10), USA1993 = runif(10), USA1994 = runif(10))
 example8 <- data.frame(ID = 1001:1010, France1992 = runif(10), France1993 = runif(10), France1994 = runif(10))
 example7 <-data.frame(HS = paste("Prova", 1:10), freq = runif(10))
 example9 <- data.frame(a = 1:10, b = 2:11)
 test_that("output from auto_merge is as expected", {
   expect_equal(auto_merge(example, example3, merging_info = T)$info_merged_columns$freq, c("freq","freq"))
-  expect_equal(nrow(auto_merge(example, example3)), 19)
+  expect_equal(nrow(auto_merge(example, example3)), 18)
   expect_equal(ncol(auto_merge(example, example3)), 3)
   expect_equal(sum(is.na(auto_merge(example, example3)$freq)), 0)
   expect_equal(auto_merge(example, example3, country_to = "UN_en"), auto_merge(example, example3))
   expect_equal(sum(is.na(auto_merge(example, example2)$freq)), 30)
   expect_equal(auto_merge(example, example2, verbose = FALSE), auto_merge(example, example2))
   expect_equal(length(auto_merge(example, example2, merging_info = T)$pivoted_columns), 1)
-  expect_equal(auto_merge(example, example2, merging_info = T)$pivoted_columns$`Table 2`, c("France","Italy","UK"))
+  expect_equal(auto_merge(example, example2, merging_info = T)$pivoted_columns$`Table 2`, c("France","Italy","US"))
   expect_equal(nrow(auto_merge(example, example2, merging_info = T)$info_country_names), 3)
   expect_equal(auto_merge(list(example, example2)), auto_merge(example, example2))
   expect_equal(ncol(auto_merge(example, example5, example7, merging_info = T)$info_merged_columns), 2)
@@ -198,7 +199,9 @@ test_that("output from auto_merge is as expected", {
   expect_equal(nrow(auto_merge(example5, example7, inner_join = F)), 15)
   expect_equal(length(auto_merge(example2, example8, merging_info = T)$pivoted_columns), 2)
   expect_equal(nrow(auto_merge(example, example2, inner_join = T)), 0)
-
+  expect_equal(nrow(auto_merge(example1, example2)), 59)
+  expect_equal(nrow(auto_merge(example1, example2, auto_melt = FALSE)), 13)
+  expect_equal(ncol(auto_merge(example1, example2, merging_info = T, auto_melt = FALSE)$info_merged_columns), 1)
 
 })
 

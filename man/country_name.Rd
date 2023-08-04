@@ -25,7 +25,7 @@ country_name(
 
 \item{simplify}{Logical value. If set to \code{TRUE} the function will return a vector of converted names. If set to \code{FALSE}, the function will return a list object containing the converted vector and additional details on the country matching process. Default is \code{TRUE}.}
 
-\item{poor_matches}{Logical value. If set to \code{FALSE} (the default), the function will return \code{NA} in case of poor matching. If set to \code{TRUE}, the function will always return the closest matching country name, even if the matching is poor.}
+\item{poor_matches}{Logical value. If set to \code{FALSE} (the default), the function will return \code{NA} in case of poor matching. If set to \code{TRUE}, the function will always return the closest matching country name, even if the match is poor.}
 
 \item{custom_table}{Custom conversion table to be used. This needs to be a \code{data.frame} object. Default is \code{NULL}.}
 }

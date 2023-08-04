@@ -1,5 +1,10 @@
 # countries 0.3
 
+* Added function *auto_merge()* to quickly join multiple dataset and automatically deal with country names and time columns
+* Added function *auto_melt()* to automatically pivot tables containing country names and years in their headers
+* Added vignette on merging country data with *auto_merge()*
+* Bug fixes
+
 # countries 0.2
 
 * Added function *is_country()* to test whether a string is a country name or related to list of countries names

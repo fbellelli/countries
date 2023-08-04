@@ -48,9 +48,9 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/auto_merge.html">Easy joining with auto_merge()</a>
     <a class="dropdown-item" href="../articles/data_structure.html">Data structure</a>
     <a class="dropdown-item" href="../articles/dealing_with_names.html">Dealing with country names</a>
-    <a class="dropdown-item" href="../articles/package_intro.html">Getting started</a>
   </div>
 </li>
 <li class="nav-item">
@@ -98,7 +98,7 @@ functionalities.</p>
 </h2>
 <p>In this vignette we will use <a href="https://fbellelli.com/EDB-data.html" class="external-link">a dataset of country
 policies</a> as an example for the functions in the package. This
-dataset contains 41 columns and has a rather complex strutcture. Every
+dataset contains 41 columns and has a rather complex structure. Every
 row is identified by a combination of Country name (column 21), Year
 (Column 9), Policy measure number (column 1), and HS code (column 39) —
 which is a code identifying traded commodities. This dataset is an
@@ -252,17 +252,18 @@ in this page, it is possible to request the column index instead of the
 name by passing <code>return_index = TRUE</code>.</p>
 <p>Due to the potentially very high number of column combinations in a
 table, the function only tests the more likely options. The function
-will first check country and time columns. Next, left-most columns are
-prioritised. Also, the function will only look for the most common
+will first look for country and time columns. Next, left-most columns
+are prioritised. Also, the function will only look for the most common
 country data formats (e.g. cross-sectional, time-series, panel data,
 dyadic, etc.) and only searches for up to two additional key columns of
 type <code>other</code>. If no key is found at the end of the search,
 the function returns a <code>NULL</code> value.</p>
-<p>Computation can be slow on large datasets. Therfore, the function
-relies on a sample of row. The sample size can be controlled with
-<code>sample_size</code>. Moreover, it is also possible to restrict the
-search to a subset of columns by providing a vector of column names or
-indices in the argument <code>search_only</code>.</p>
+<p>Computation can be slow on large datasets. Therefore, the function
+evaluates only a random sample of rows from the table. The sample size
+can be controlled with <code>sample_size</code>. Moreover, it is also
+possible to restrict the search to a subset of columns by providing a
+vector of column names or indices in the argument
+<code>search_only</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#This will only check if a key is found among the first three columns</span></span>
 <span><span class="fu"><a href="../reference/find_keycol.html">find_keycol</a></span><span class="op">(</span><span class="va">example</span>, allow_NA <span class="op">=</span> <span class="cn">TRUE</span>, search_only <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>

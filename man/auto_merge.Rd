@@ -10,7 +10,8 @@ auto_merge(
   country_to = "ISO3",
   inner_join = FALSE,
   merging_info = FALSE,
-  verbose = TRUE
+  verbose = TRUE,
+  auto_melt = TRUE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ auto_merge(
 \item{merging_info}{Logical value. If \code{TRUE}, the function will output a list containing the merged data and information generated during the merging process, such as information on columns that have been merged or the conversion table used for country names. The default is \code{FALSE}, which results into a single merged table being returned.}
 
 \item{verbose}{Logical value indicating whether to print status messages on the console. Default is \code{TRUE}.}
+
+\item{auto_melt}{Logical value indicating whether to automatically pivot country names or years present in the column names. Default is \code{TRUE}. When at least 3 country names or years are found in the column names, the function will automatically transform the table from a wide to a long format by pivoting the country/year columns.}
 }
 \value{
 If \code{merging_info = FALSE} a single merged table is returned. If \code{merging_info = TRUE}, a list object is returned, containing the merged table (\code{merged_table}), a table summarising which columns have been merged (\code{info_merged_columns}), a table summarising the conversion of country names (\code{info_country_names}), a table summarising the conversion of time columns to a common format (\code{info_time_formats}), a list of all the columns that have been pivoted when wide tables with country or years in column names were detected (\code{pivoted_columns}), a list recapitulating the inputs passed to the function (\code{call}).
@@ -44,22 +47,25 @@ The aim of this function is to simplify country data merging for quick analyses.
  The function will then try to match key columns across tables based on their values.
  Columns containing country names and time information are identified and are processed to take into account different nomenclatures and time formats.
  This automatic process works for the most common dataset structures, but it is not foolproof. Therefore, we always advise to check the columns that are being merged by setting \code{verbose = TRUE} and reading the printout.
- Moreover, be aware that this automatic detection process can increase the overall merging time considerably. This can be especially long for tables containing many columns or when a large number of tables is being merged.
+ Moreover, users should be aware that this automatic detection process can increase the overall merging time considerably. This can be especially long for tables containing many columns or when a large number of tables is being merged.
 
 \strong{Formatting of \code{by} argument}
 If an argument is provided to \code{by}, it needs to be either 1) a list of column names, or 2) a vector of regular expressions. The format requirements are the following:
 \enumerate{
-\item In case a \strong{list} is passed, each element of the list must be a vector of length equal to the number of tables being merged (i.e., if 3 tables are being merged, the list needs to contain all vectors of length 3). The vectors should contain the names of columns to be merged in each table, \code{NA} can be inserted for tables that do not contain the variable, and names should be ordered in the same order of the tables that are being merged (i.e. the first column name should be present in the first table being merged). The name of the merged columns can be modified by assigning a name to the elements of the list. For example, \code{list("countries"=c("Nation",NA,"COUNTRY"), "sector"=c("Industry","industry",NA))} is requesting to merge the columns \code{tab1$Nation} and \code{tab3$COUNTRY}, and the columns \code{tab1$Industry} and \code{tab2$industry}. These two merged columns will have be names \code{"countries"} and \code{"sector"} in the output, as requested by the user.
+\item In case a \strong{list} is passed, each element of the list must be a vector of length equal to the number of tables being merged (i.e., if 3 tables are being merged, the list needs to contain all vectors of length 3). The vectors should contain the names of columns to be merged in each table, \code{NA} can be inserted for tables that do not contain the variable, and names should be ordered in the same order of the tables that are being merged (i.e. the first column name should be present in the first table being merged). The name of the merged columns can be modified by assigning a name to the elements of the list. For example, \code{list("countries"=c("Nation",NA,"COUNTRY"), "sector"=c("Industry","industry",NA))} is requesting to merge the columns \code{tab1$Nation} and \code{tab3$COUNTRY}, and the columns \code{tab1$Industry} and \code{tab2$industry}. These two merged columns will be named \code{"countries"} and \code{"sector"} in the output, as requested by the user.
 \item In case a \strong{vector} is passed, each element is interpreted as a regular expression to be used for matching the columns to be merged. For example, the same order provided in the list example could be written as \code{c("countries"="Nation|COUNTRY", "sector"="[Ii]ndustry")}. This will merge the first column in each table whose name matches the pattern described by the regular expression and will name the two resulting columns as \code{"countries"} and \code{"sector"} respectively.
 }
 }
 \examples{
+# sample data
 tab1 <- data.frame(Industry = c(1, 1, 2, 2), Nation = c("ITA", "FRA", "ITA", "FRA"), tot = runif(4))
 tab2 <- data.frame(industry = 1:4, rate = runif(1:4))
 tab3 <- data.frame(COUNTRY = c("United States", "France", "India"), national_avg = runif(3))
+
+# examples of merging orders
 auto_merge(tab1, tab2, tab3)
 auto_merge(list(tab1, tab2, tab3))
-auto_merge(list(tab1, tab2, tab3), by = c("countries"="Nation|COUNTRY", "sector"="[Ii]ndustry"))
+auto_merge(tab1, tab2, tab3, by = c("countries"="Nation|COUNTRY", "sector"="[Ii]ndustry"))
 auto_merge(tab1, tab2, tab3, country_to = "UN_fr")
 }
 \seealso{

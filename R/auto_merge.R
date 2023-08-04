@@ -15,6 +15,7 @@
 #' @param inner_join Logical value indicating whether to perform an inner join. The default is \code{FALSE}, which results in a full join of the provided tables.
 #' @param merging_info Logical value. If \code{TRUE}, the function will output a list containing the merged data and information generated during the merging process, such as information on columns that have been merged or the conversion table used for country names. The default is \code{FALSE}, which results into a single merged table being returned.
 #' @param verbose Logical value indicating whether to print status messages on the console. Default is \code{TRUE}.
+#' @param auto_melt Logical value indicating whether to automatically pivot country names or years present in the column names. Default is \code{TRUE}. When at least 3 country names or years are found in the column names, the function will automatically transform the table from a wide to a long format by pivoting the country/year columns.
 #' @returns If \code{merging_info = FALSE} a single merged table is returned. If \code{merging_info = TRUE}, a list object is returned, containing the merged table (\code{merged_table}), a table summarising which columns have been merged (\code{info_merged_columns}), a table summarising the conversion of country names (\code{info_country_names}), a table summarising the conversion of time columns to a common format (\code{info_time_formats}), a list of all the columns that have been pivoted when wide tables with country or years in column names were detected (\code{pivoted_columns}), a list recapitulating the inputs passed to the function (\code{call}).
 #' @seealso \link[countries]{country_name}, \link[countries]{find_keycol}
 #' @import tidyr dplyr fastmatch utils stringr
@@ -27,12 +28,12 @@
 #'  The function will then try to match key columns across tables based on their values.
 #'  Columns containing country names and time information are identified and are processed to take into account different nomenclatures and time formats.
 #'  This automatic process works for the most common dataset structures, but it is not foolproof. Therefore, we always advise to check the columns that are being merged by setting \code{verbose = TRUE} and reading the printout.
-#'  Moreover, be aware that this automatic detection process can increase the overall merging time considerably. This can be especially long for tables containing many columns or when a large number of tables is being merged.
+#'  Moreover, users should be aware that this automatic detection process can increase the overall merging time considerably. This can be especially long for tables containing many columns or when a large number of tables is being merged.
 #'
 #' \strong{Formatting of \code{by} argument}
 #' If an argument is provided to \code{by}, it needs to be either 1) a list of column names, or 2) a vector of regular expressions. The format requirements are the following:
 #' \enumerate{
-#' \item In case a \strong{list} is passed, each element of the list must be a vector of length equal to the number of tables being merged (i.e., if 3 tables are being merged, the list needs to contain all vectors of length 3). The vectors should contain the names of columns to be merged in each table, \code{NA} can be inserted for tables that do not contain the variable, and names should be ordered in the same order of the tables that are being merged (i.e. the first column name should be present in the first table being merged). The name of the merged columns can be modified by assigning a name to the elements of the list. For example, \code{list("countries"=c("Nation",NA,"COUNTRY"), "sector"=c("Industry","industry",NA))} is requesting to merge the columns \code{tab1$Nation} and \code{tab3$COUNTRY}, and the columns \code{tab1$Industry} and \code{tab2$industry}. These two merged columns will have be names \code{"countries"} and \code{"sector"} in the output, as requested by the user.
+#' \item In case a \strong{list} is passed, each element of the list must be a vector of length equal to the number of tables being merged (i.e., if 3 tables are being merged, the list needs to contain all vectors of length 3). The vectors should contain the names of columns to be merged in each table, \code{NA} can be inserted for tables that do not contain the variable, and names should be ordered in the same order of the tables that are being merged (i.e. the first column name should be present in the first table being merged). The name of the merged columns can be modified by assigning a name to the elements of the list. For example, \code{list("countries"=c("Nation",NA,"COUNTRY"), "sector"=c("Industry","industry",NA))} is requesting to merge the columns \code{tab1$Nation} and \code{tab3$COUNTRY}, and the columns \code{tab1$Industry} and \code{tab2$industry}. These two merged columns will be named \code{"countries"} and \code{"sector"} in the output, as requested by the user.
 #' \item In case a \strong{vector} is passed, each element is interpreted as a regular expression to be used for matching the columns to be merged. For example, the same order provided in the list example could be written as \code{c("countries"="Nation|COUNTRY", "sector"="[Ii]ndustry")}. This will merge the first column in each table whose name matches the pattern described by the regular expression and will name the two resulting columns as \code{"countries"} and \code{"sector"} respectively.
 #' }
 #'
@@ -47,7 +48,7 @@
 #' auto_merge(list(tab1, tab2, tab3))
 #' auto_merge(tab1, tab2, tab3, by = c("countries"="Nation|COUNTRY", "sector"="[Ii]ndustry"))
 #' auto_merge(tab1, tab2, tab3, country_to = "UN_fr")
-auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, merging_info = FALSE, verbose=TRUE){
+auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, merging_info = FALSE, verbose=TRUE, auto_melt = TRUE){
 
   ############################################################
   #CAPTURE INPUT DATA ----------------------------------------
@@ -86,7 +87,7 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
   if (!is.character(country_to)|length(country_to)!=1|!(country_to %in% colnames(country_reference_list)))stop("The argument - country_to - is invalid. It needs to be one of the nomenclatures names recognised by the function country_name (e.g. ISO3, UN_en, simple, etc...). Refer to the documentation for more information.")
   if (!is.logical(inner_join) | length(inner_join)!=1) stop("Function argument - inner_join - needs to be a logical statement (TRUE/FALSE)")
   if (!is.logical(merging_info) | length(merging_info)!=1) stop("Function argument - merging_info - needs to be a logical statement (TRUE/FALSE)")
-
+  if (!is.logical(verbose) | length(verbose)!=1) stop("Function argument - verbose - needs to be a logical statement (TRUE/FALSE)")
 
   ############################################################
   # CHECK WIDE FORMAT AND PIVOT IF NECESSARY ------------------
@@ -96,38 +97,46 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
 
   #loop over all data tables
   pivoted_cols <- list()
-  for (i in 1:length(data)){
+  if (auto_melt){
 
-    #check column names for countries/years
-    temp <- countries:::check.wide.format(data[[i]])
-    if (!is.null(temp)){
-      # pivot table if countries or years were found and adjust name
-      pivoted_key_name <- paste0("Table",i,"_pivoted_", colnames(temp)[1])
-      data[[i]] <- as.data.frame(pivot_longer(data[[i]], all_of(temp$col_name), names_to = pivoted_key_name, values_to = paste0("Table",i,"_pivoted_data")))
+    for (i in 1:length(data)){
 
-      # move pivoted keys to front of table
-      data[[i]] <- data[[i]][, c(pivoted_key_name, colnames(data[[i]])[colnames(data[[i]]) != pivoted_key_name])]
+      # check if there is need to pivot the table and pivot it
+      temp <- auto_melt(data[[i]],
+                        names_to = paste0("Table", i, "_pivoted_colnames"),
+                        values_to = paste0("Table", i, "_pivoted_values"),
+                        verbose = FALSE,
+                        pivoting_info = TRUE)
 
-      # convert year to numeric if possible, otherwise add numeric column with detected year in string
-      if (colnames(temp)[1] == "year"){
-        if (all(grepl('^(?=.)([+-]?([0-9]*)(\\.([0-9]+))?)$', temp$col_name, perl = TRUE))){
-          data[[i]][, pivoted_key_name] <- as.numeric(data[[i]][, pivoted_key_name])
-        } else {
-          data[[i]][,"year detected in column names"] <- temp[fmatch(data[[i]][, pivoted_key_name], temp$col_name), 1]
+      if(!is.null(temp$pivoted_cols)){
+        # update the data with pivoted table
+        data[[i]] <- temp$output
+
+        # save name of pivoted columns as record
+        pivoted_cols[[length(pivoted_cols)+1]] <- temp$pivoted_cols
+        names(pivoted_cols)[length(pivoted_cols)] <- paste("Table", i)
+
+        # print message to console
+        if(verbose){
+
+          # check if countries were detected
+          temp$is_country <- any(is_country(temp$pivoted_cols))
+
+          # message
+          cat(paste0(
+            "Table ", i, " - ",
+            if(temp$is_country) "countries" else "years", " detected in column names, pivoting columns: ",
+            paste(temp$pivoted_cols[1:3], collapse=", ", sep = ""), if (length(temp$pivoted_cols)>3){paste0(if (length(temp$pivoted_cols)>4) ", ..., " else ", ", temp$pivoted_cols[length(temp$pivoted_cols)])},
+            "\n"))
         }
       }
 
-      # save name of pivoted columns
-      pivoted_cols[[length(pivoted_cols)+1]] <- as.vector(temp$col_name)
-      names(pivoted_cols)[length(pivoted_cols)] <- paste("Table", i)
-
-      # issue message to console
-      if (verbose) cat(paste0(colnames(temp)[1], " detected in column names of Table ", i, ", pivoting columns: ", paste(temp$col_name[1:3], collapse=", ", sep = ""), if (nrow(temp)>3){paste0(", ..., ", temp$col_name[nrow(temp)])}, "\n"))
     }
+
+    # update column names list
+    col_names <- sapply(data, colnames, simplify = FALSE)
   }
 
-  # update column names list
-  col_names <- sapply(data, colnames, simplify = FALSE)
 
   ############################################################
   # CLEAN BY ORDER -------------------------------------------
@@ -178,6 +187,9 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
 
   #CHECK ALL COLUMN NAMES FOR OVERLAPS -------
 
+  # update column name list
+  col_names <- sapply(data, colnames, simplify = FALSE)
+
   # merge by name if no merging order is created (backup strategy)
   merge_by_name <- FALSE
   if (nrow(by_table) == 0){
@@ -195,21 +207,22 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
     #exclude names that are already captured in by order
     temp <- temp[!(temp %in% names(by))]
 
-    if (merge_by_name){
-      #MERGE COLUMNS WITH SAME NAME ACROSS TABLES
+    if (length(temp)>0){
+      if (merge_by_name){
 
-      #save in mege table if any recurring name across table
-      if (length(temp)>0){
+        #MERGE COLUMNS WITH SAME NAME ACROSS TABLES
 
-        #loop over every shared name and add it to by_table
+        #save in merge table any recurring name across table by looping over every shared name and adding it to by_table
         for (j in temp){
           by_table[i,j] <- j
           by_table_for_print[i,j] <- j
+
         }
+      } else {
+
+        # CHANGE NAME OF COLUMN
+        colnames(data[[i]])[colnames(data[[i]]) == temp] <- paste0("Table",i,"_",temp)
       }
-    } else {
-      # CHANGE NAME OF COLUMN
-      colnames(data[[i]])[colnames(data[[i]]) == temp] <- paste0("Table",i,"_",temp)
     }
   }
 
@@ -349,7 +362,7 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
       date_formats <- c("dmy","mdy","ymd","y","my","m","dm","md")
       for (i in which(!is.na(by_table[,time_dest_name]))){
         time_unformatted <- unique(c(time_unformatted, as.character(data[[i]][,time_dest_name])))
-        data[[i]][,time_dest_name] <- lubridate::parse_date_time(data[[i]][,time_dest_name], date_formats)
+        data[[i]][,time_dest_name] <- as.character(lubridate::parse_date_time(data[[i]][,time_dest_name], date_formats))
       }
 
       #save info on time formatting

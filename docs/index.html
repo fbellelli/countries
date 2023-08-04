@@ -48,9 +48,9 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="articles/auto_merge.html">Easy joining with auto_merge()</a>
     <a class="dropdown-item" href="articles/data_structure.html">Data structure</a>
     <a class="dropdown-item" href="articles/dealing_with_names.html">Dealing with country names</a>
-    <a class="dropdown-item" href="articles/package_intro.html">Getting started</a>
   </div>
 </li>
 <li class="nav-item">
@@ -96,7 +96,14 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"fbellelli/countries"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>The package can then be loaded normally</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://fbellelli.github.io/countries/">countries</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://fbellelli.github.io/countries/">countries</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: replacing previous import 'dplyr::coalesce' by 'fastmatch::coalesce'</span></span>
+<span><span class="co">#&gt; when loading 'countries'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'countries'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     mode</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="dealing-with-country-names">Dealing with country names<a class="anchor" aria-label="anchor" href="#dealing-with-country-names"></a>
@@ -134,13 +141,64 @@
 <p>Learn more about country names functions in <a href="/articles/dealing_with_names.html">this article</a>.</p>
 </div>
 <div class="section level2">
+<h2 id="merging-country-data">Merging country data<a class="anchor" aria-label="anchor" href="#merging-country-data"></a>
+</h2>
+<p>The function <code><a href="reference/auto_merge.html">auto_merge()</a></code> simplifies the merging of country data tables by: <strong>1)</strong> allowing merging of 2+ tables at the same time, <strong>2)</strong> Supporting automatic detection of columns to merge, <strong>3)</strong> automatically handling different country naming conventions and date formats, <strong>4)</strong> automatic pivoting of country names or years in tables’ headers.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Let's create 4 tables with different formats and country names</span></span>
+<span><span class="va">tab1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Italy"</span>, <span class="st">"Pakistan"</span>, <span class="st">"Brazil"</span><span class="op">)</span>, world_cups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">tab2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>exporter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DEU"</span>, <span class="st">"DEU"</span>, <span class="st">"ITA"</span>, <span class="st">"ITA"</span><span class="op">)</span>, HS_chapter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">85</span>, <span class="fl">9</span>, <span class="fl">85</span><span class="op">)</span>, volume <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">800</span>, <span class="fl">5000</span>, <span class="fl">1000</span>, <span class="fl">2000</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">tab3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>HS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">85</span><span class="op">)</span>, Description <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Coffee, tea and mate"</span>, <span class="st">"Electrical machinery"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">tab4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>, <span class="fl">2011</span><span class="op">)</span>, Allemagne <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, Brésil <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, Pakistan <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># These tables can easily be merged with one line of code:</span></span>
+<span><span class="fu"><a href="reference/auto_merge.html">auto_merge</a></span><span class="op">(</span><span class="va">tab1</span>, <span class="va">tab2</span>, <span class="va">tab3</span>, <span class="va">tab4</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Identifying columns to merge</span></span>
+<span><span class="co">#&gt; Table 4 - countries detected in column names, pivoting columns: Allemagne, Brésil, Pakistan</span></span>
+<span><span class="co">#&gt; Converting country names</span></span>
+<span><span class="co">#&gt; Checking time columns</span></span>
+<span><span class="co">#&gt; The following columns are being merged:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; =======  =======================  ====  ==========</span></span>
+<span><span class="co">#&gt; \        country                  time  HS_chapter</span></span>
+<span><span class="co">#&gt; =======  =======================  ====  ==========</span></span>
+<span><span class="co">#&gt; Table 1  country                                  </span></span>
+<span><span class="co">#&gt; Table 2  exporter                       HS_chapter</span></span>
+<span><span class="co">#&gt; Table 3                                 HS        </span></span>
+<span><span class="co">#&gt; Table 4  Table4_pivoted_colnames  year            </span></span>
+<span><span class="co">#&gt; =======  =======================  ====  ==========</span></span>
+<span><span class="co">#&gt;                                               Performing merge: 1/3                                               Performing merge: 3/3                                               Performing merge: 2/3                                               Merge complete</span></span>
+<span><span class="co">#&gt; (Set merging_info to TRUE to save merging details)</span></span>
+<span><span class="co">#&gt;    country world_cups HS_chapter volume time Table4_pivoted_values</span></span>
+<span><span class="co">#&gt; 1      ITA          4          9   1000   NA                    NA</span></span>
+<span><span class="co">#&gt; 2      ITA          4         85   2000   NA                    NA</span></span>
+<span><span class="co">#&gt; 3      PAK          0         NA     NA 2010            0.96806166</span></span>
+<span><span class="co">#&gt; 4      PAK          0         NA     NA 2011            0.82748801</span></span>
+<span><span class="co">#&gt; 5      BRA          5         NA     NA 2010            0.44822190</span></span>
+<span><span class="co">#&gt; 6      BRA          5         NA     NA 2011            0.25766459</span></span>
+<span><span class="co">#&gt; 7      DEU         NA          9    800 2010            0.83197629</span></span>
+<span><span class="co">#&gt; 8      DEU         NA          9    800 2011            0.08110245</span></span>
+<span><span class="co">#&gt; 9      DEU         NA         85   5000 2010            0.83197629</span></span>
+<span><span class="co">#&gt; 10     DEU         NA         85   5000 2011            0.08110245</span></span>
+<span><span class="co">#&gt;             Description</span></span>
+<span><span class="co">#&gt; 1  Coffee, tea and mate</span></span>
+<span><span class="co">#&gt; 2  Electrical machinery</span></span>
+<span><span class="co">#&gt; 3                  &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4                  &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5                  &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 6                  &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 7  Coffee, tea and mate</span></span>
+<span><span class="co">#&gt; 8  Coffee, tea and mate</span></span>
+<span><span class="co">#&gt; 9  Electrical machinery</span></span>
+<span><span class="co">#&gt; 10 Electrical machinery</span></span></code></pre></div>
+<p>Learn more about country names functions in <a href="/articles/auto_merge.html">this article</a>.</p>
+</div>
+<div class="section level2">
 <h2 id="work-in-progress">Work in progress:<a class="anchor" aria-label="anchor" href="#work-in-progress"></a>
 </h2>
 <ul>
 <li>function for downloading up-to-date information on countries (e.g. currency, language, population, etc.)</li>
 <li>function for downloading country data for analysis from different sources (e.g. UN, World Bank, FRED, etc.)</li>
-<li>function to quickly merge country data from different sources</li>
-<li>function to tag countries based on common criteria (e.g. developing status, World bank income group, geographic region, etc.)</li>
 <li>function to easily plot chloropleth maps</li>
 <li>publish on CRAN</li>
 </ul>

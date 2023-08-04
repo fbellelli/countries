@@ -1,0 +1,218 @@
+---
+title: "Easy joining with auto_merge()"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Easy joining with auto_merge()}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(countries)
+```
+
+
+The function `auto_merge()` allows easy merging of data tables. This function is optimised to work with the most common country data formats. Some of the advantages over other merging functions are that: **1)** it allows merging of multiple tables at the same time, **2)** it can automatically detect columns to merge, **3)** it automatically handles different country naming conventions and date formats, **4)** it automatically pivots country names or years in table headers. 
+
+In this vignette we will go through some examples showcasing these functionalities.
+
+## Example data
+
+Let's first start by creating some example data to merge. All the tables created below contain data relating to countries, but their format and keys are different. `tab1` is a classic cross-sectional data, providing one data point per country. `tab2` and `tab3` are  typical panel (or longitudinal) dataset, providing data for countries over different time periods. The difference between the two is the structure of the table (`tab2` is in a long format, while `tab3` is in a wide format) and the time frequency of observations (annual vs monthly). Finally, `tab4` and `tab5` provide sectoral data for different countries. 
+
+
+```{r}
+# FIFA female world cups won
+tab1 <- data.frame(country = c("UNITED STATES", "GERMANY", "NORWAY", "JAPAN"),
+                   FIFA_cups = c(4, 2, 1, 1))
+
+# nominal yearly GDP estimates from IMF (World economic outlook) 
+tab2 <- data.frame(nation = c("DEU", "JPN", "USA", "DEU", "JPN", "USA"),
+                   year = c(rep(1980,3), rep(2019,3)), 
+                   GDP = c(854, 1128, 2857, 3888, 5118, 21380), 
+                   unit = "billion current USD")
+
+# fictitious monthly time series
+tab3 <- data.frame(Date = c("01.01.2019", "01.02.2019", "01.03.2019"), 
+                   Japan = 1:3, 
+                   Norway = 2:4, 
+                   Germany = 3:5, 
+                   US = 4:6)
+
+# fictitious sectoral data
+tab4 <- data.frame(year = 2019,
+                   country = "US", 
+                   industry = c("Agriculture", "Mining", "Manifacture", "Energy"),
+                   freq = runif(1:4))
+
+# more fictitious sectoral data
+tab5 <- data.frame(country = c("Estados Unidos", "Japon", "Estados Unidos", "Japon"), 
+                   sector = c("Agriculture", "Agriculture","Energy", "Energy"),
+                   x = c(T, F, T, F))
+```
+
+
+## Quick start
+
+Using `auto_merge()` is really easy. All the users needs to do is list the tables to merge. In most cases, the function will be able take care of everything else.
+
+```{r}
+auto_merge(tab1, tab2, tab3, tab4, tab5)
+```
+
+
+The function will print to the console some information on the merger status. The most important piece of information is the table summarising all the columns that are being merged together (see reproduction below). Each row in this table corresponds to one of the input data tables, each column to a key that is used for merging. The names in this table are the column names from the original data tables. The names in the header of the summary table is the name of the merged columns in the final output table. For instance, the summary table is telling us that the columns "year", "Date" and "year", respectively from the third, fourth and fifth input table were merged together into a column called "time". 
+
+```{r, eval=T, include=F}
+dt <- auto_merge(tab1, tab2, tab3, tab4, tab5, verbose = F, merging_info = T)
+```
+
+```{r, echo =F}
+knitr::kable(dt$info_merged_columns)
+```
+
+
+It is always a good idea to inspect the summary table and make sure that the correct columns were merged. In case the function did not merge the right columns, the user can manually provide a merging order. For more information, you can may refer to the section in this article *Manual merging orders*.
+
+
+## The function in details
+
+### Dynamic inputs
+
+The function also accept a lists of tables as inputs. This could be useful when passing a dynamic set of tables to the function.
+
+```{r, eval = F}
+data <- list(tab1, tab2, tab3, tab4, tab5)
+
+# the following two commands are equivalent
+auto_merge(tab1, tab2, tab3, tab4, tab5)
+auto_merge(data)
+```
+
+
+
+### Country names
+
+`auto_merge()` will automatically recognise country names and convert them to the same nomenclature for merging. For example, the country names in `tab1` and `tab2` have a different format, but with `auto_merge()` there is no need of converting the names beforehand. The function will perform this automatically. This feature is based on the function `country_name()`, which is described in [this article](/articles/dealing_with_names.html). 
+
+
+It is possible to change the destination nomenclature with the argument `country_to`. By default, all country names will be converted to ISO 3166-1 alpha-3 standard. Any of the nomenclatures supported by `country_name()` can be requested. 
+
+```{r}
+# changing the country names to UN spanish official name
+auto_merge(tab1, tab2, country_to = "UN_es", verbose = FALSE)
+```
+
+
+
+### Pivotting of countries and years in table headers
+
+When country names or years are found in the column names, the function will automatically transform the table from a wide to a [long format](https://en.wikipedia.org/wiki/Wide_and_narrow_data) by pivoting the country/year columns. At least 3 country names or years need to be present in the table header to trigger the automatic pivoting. Pivoting can be turned off by setting `auto_melt = FALSE`. For additional information, refer to the documentation of the function `auto_melt()`. 
+
+In the first example below, the `auto_melt` option is turned on (this is the default behaviour). The function detects country names in the header of the table and proceeds to pivoting the corresponding columns. Pivoted columns will have the name `"Table?_pivoted_colnames"` and the data from these columns will be stored in a column `"Table?_pivoted_data"` (here ? stands for the number of the table in the provided input). A message is printed on the console to inform the user that columns have been pivoted.
+
+Notice that in the second example no pivoting is performed. As a result, no shared key was found for merging and the two tables were just stacked in the final output.
+
+```{r}
+# with auto_melt
+auto_merge(tab1, tab3)
+
+# without auto_melt
+auto_merge(tab1, tab3, auto_melt = FALSE)
+```
+
+
+
+### Inner vs full join
+
+By default, the function will return a **full join** of all the tables. This means that all the table-key combinations are conserved in the output table. If no information is available for a variable, `NA` will be used to fill the output table. By contrast, an **inner join** only keeps the combination of keys that are available across all tables. [Click here for more information on join types](https://en.wikipedia.org/wiki/Join_(SQL)).
+
+An inner join can be requested with the argument `inner_join`.
+
+```{r}
+auto_merge(tab1, tab2, tab3, tab4, tab5, inner_join = TRUE)
+```
+
+
+### Turning off messages
+
+The function's messages tend to be very wordy. If you wish to suppress messages printed to the console you can just turn them off with the option `verbose = FALSE`.
+
+```{r, eval = F}
+auto_merge(tab1, tab2, tab3, tab4, tab5, verbose = F)
+```
+
+
+### Saving information on merging operations
+
+If the argument `merging_info` is set to `TRUE`, the function will return a list object containing additional information on the merger. The following objects are saved in the output:
+
+* `merged_table`: This is the merged data table (i.e. the table you get  when `merging_info = FALSE`).
+* `info_merged_columns`: This is the summary table that is printed on the console. It gives an overview of all the columns that are merged together. It is always a good idea to inspect this table and make sure that the correct columns were merged.
+* `info_country_names`: If any country column is found, here the user can find  a table summarising the conversion of all the country names to the destination nomenclature. This can be used to check if countries were correctly identified.
+* `info_time_formats`: similar to the above, this table summarises any conversion that was made to date columns. It can be used to check how time columns were handled by the function.
+* `pivotted_columns`: When country names or years are found in the header of the table, `auto_merge()` automatically "pivots" the table. Pivoting transforms the table into a [long format](https://en.wikipedia.org/wiki/Wide_and_narrow_data). The name of all columns that have been pivotted is saved in a list format here.
+* `call`: This is a list recapitulating the user's call. 
+
+
+
+
+
+
+## Manual merging orders
+
+The automatic merging process starts by first identifying the key of each table, i.e. a set of variables identifying the entries in the table. This process is optimised for common formats of country data.
+The function will then try to match key columns across tables based on their values.
+Columns containing country names and time information are identified and are processed to take into account different nomenclatures and time formats.
+This automatic process works for the most common dataset structures, but it is not foolproof. Therefore, we always advise to check the columns that are being merged by setting `verbose = TRUE` and reading the printout.
+Moreover, this automatic detection process can increase the overall merging time considerably. This can be especially long for tables containing many columns or when a large number of tables is being merged.
+
+The user can pass a merge order with argument `by` to save time during the merger, or if the detection process did not succeed. Inputs need to be provided either 1) as a list of column names, or 2) a vector of regular expressions. Here we will go in more details on the  format requirements.
+
+**A) List of column names**
+
+In case a *list* is passed, there are 3 key requirements regarding the format. 
+
+1. Each element of the list must be a vector of length equal to the number of tables being merged. For instance, if 3 tables are being merged, the list needs to contain one or more character vectors of length 3. One vector should be provided for each variable to merge (in the example below one for countries and one for years).
+2. The vectors should contain the names of columns to be merged in each table, `NA` can be inserted for tables that do not contain the variable, and names should be ordered in the same order of the input tables (i.e. the first column name should be present in the first table being merged). 
+3. Optionally, the name of the merged columns can be modified by assigning a name to the elements of the list. If no name is provided, the first column name is retained.
+
+In the example below, we are requesting to merge the columns `"country"` and `"nation"` from `tab1` and `tab2`, and the columns `"year"` from `tab2` and `tab4`. Notice that we are inserting `NA` whenever the key is not present in the table. In addition, we are also changing the name in the final table to `"COUNTRIES"` and `"YEARS"` by naming the elemnts in the list.
+
+
+```{r}
+# asking to merge country and year columns manually with a list of column names
+auto_merge(tab1, tab2, tab4,
+           by = list("COUNTRIES" = c("country", "nation", NA),
+                     "YEARS" = c(NA, "year", "year")))
+
+```
+
+
+**B) Vector of regular expressions**
+
+In case a *vector* is passed, each element in the vector is interpreted as a regular expression to be used for matching the columns to be merged. This means that we need to provide one regex for each variable we want to join. In our example, we would need one regex for identifying country columns and one for identifying year columns. The function will scan through the column names and pick the first column matching with the regex's pattern. A name can be provided for the variables in the final table by naming the elements in the vector.
+
+For example, we can achieve exactly the same merger simply with the following order: `by = c("COUNTRIES" = "country|nation", "YEARS" = "year")`. Since the function will pick the first matching column in each table, the user must be careful that the regex does not match with any other undesired column in the tables. 
+
+
+```{r}
+# asking to merge country and year columns manually with a vector of regular expressions
+auto_merge(tab1, tab2, tab4,
+           by = list("COUNTRIES" = c("country", "nation", NA),
+                     "YEARS" = c(NA, "year", "year")))
+
+```
+
+
+
+## Good to know
+
+* When no shared key for merging is found among tables, the tables will get stacked.
+* if no country, time column or any merging key is found in the tables, merging will be attempted based on column names. That is to say, the function will try to merge columns having identical names. If no overlapping name is found, then an error is returned.
+* If columns to be merged have differing data types (e.g. numeric and logical), they will all be converted to character.
