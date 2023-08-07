@@ -104,9 +104,4 @@ auto_merge(tab1, tab2, tab3, tab4)
 
 Learn more about country names functions in [this article](/articles/auto_merge.html).
 
-## Work in progress:
 
-* function for downloading up-to-date information on countries (e.g. currency, language, population, etc.)
-* function for downloading country data for analysis from different sources (e.g. UN, World Bank, FRED, etc.)
-* function to easily plot chloropleth maps
-* publish on CRAN
