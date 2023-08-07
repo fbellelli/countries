@@ -67,7 +67,7 @@ country_name(x= example, to="name_es")
 country_name(x= example, to=c("ISO3","ISO2","UN_en"))
 ```
 
-Learn more about how to deal with country names in [this article](/articles/dealing_with_names.html).
+Learn more about how to deal with country names in [this article](https://fbellelli.github.io/countries/articles/dealing_with_names.html).
 
 
 ## Getting information about countries
@@ -102,6 +102,6 @@ auto_merge(tab1, tab2, tab3, tab4)
 ```
 
 
-Learn more about country names functions in [this article](/articles/auto_merge.html).
+Learn more about country names functions in [this article](https://fbellelli.github.io/countries/articles/auto_merge.html).
 
 
