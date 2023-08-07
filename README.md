@@ -30,13 +30,6 @@ The package can then be loaded normally
 
 ``` r
 library(countries)
-#> Warning: replacing previous import 'dplyr::coalesce' by 'fastmatch::coalesce'
-#> when loading 'countries'
-#> 
-#> Attaching package: 'countries'
-#> The following object is masked from 'package:base':
-#> 
-#>     mode
 ```
 
 ## Dealing with country names
@@ -84,8 +77,32 @@ country_name(x= example, to=c("ISO3","ISO2","UN_en"))
 #> 5  SAU   SA             Saudi Arabia
 ```
 
-Learn more about country names functions in [this
+Learn more about how to deal with country names in [this
 article](/articles/dealing_with_names.html).
+
+## Getting information about countries
+
+`country_info()` allows to download a variety of information about
+countries, such as: currencies used, capital city, language spoken,
+flag, neighbouring countries, and much more.
+
+``` r
+# What are the official languages of Switzerland?
+country_info("Switzerland", "languages")
+#>             x                              languages
+#> 1 Switzerland French; Swiss German; Italian; Romansh
+
+# Get information on the capital name and currencies for multiple countries
+country_info(c("Canada", "Mozambique", "India"), c("capital", "currencies"))
+#>            x   capital    currencies.name currencies.symbol
+#> 1     Canada    Ottawa    Canadian dollar                 $
+#> 2 Mozambique    Maputo Mozambican metical                MT
+#> 3      India New Delhi       Indian rupee                 ₹
+```
+
+You can find [more information about this
+function](https://fbellelli.github.io/countries/reference/country_info.html)
+in the documentation.
 
 ## Merging country data
 
@@ -123,14 +140,14 @@ auto_merge(tab1, tab2, tab3, tab4)
 #>    country world_cups HS_chapter volume time Table4_pivoted_values
 #> 1      ITA          4          9   1000   NA                    NA
 #> 2      ITA          4         85   2000   NA                    NA
-#> 3      PAK          0         NA     NA 2010            0.96806166
-#> 4      PAK          0         NA     NA 2011            0.82748801
-#> 5      BRA          5         NA     NA 2010            0.44822190
-#> 6      BRA          5         NA     NA 2011            0.25766459
-#> 7      DEU         NA          9    800 2010            0.83197629
-#> 8      DEU         NA          9    800 2011            0.08110245
-#> 9      DEU         NA         85   5000 2010            0.83197629
-#> 10     DEU         NA         85   5000 2011            0.08110245
+#> 3      PAK          0         NA     NA 2010             0.9866484
+#> 4      PAK          0         NA     NA 2011             0.7401758
+#> 5      BRA          5         NA     NA 2010             0.4051490
+#> 6      BRA          5         NA     NA 2011             0.2128332
+#> 7      DEU         NA          9    800 2010             0.3004649
+#> 8      DEU         NA          9    800 2011             0.4818840
+#> 9      DEU         NA         85   5000 2010             0.3004649
+#> 10     DEU         NA         85   5000 2011             0.4818840
 #>             Description
 #> 1  Coffee, tea and mate
 #> 2  Electrical machinery

@@ -1,4 +1,4 @@
-#' Get the mode of a vector
+#' Statistical mode of a vector
 #'
 #' This function returns the mode of vectors. That is to say, for any given vector of values, it returns the value that appears most frequently.
 #' The function works with strings, numerical and mixed inputs. \code{NA} values are treated as distinct values.
@@ -8,12 +8,11 @@
 #' @param first_only Logical value indicating whether only the first mode should be returned if \code{x} has multiple modes (i.e. there are multiple values with the highest number of observations). Default is FALSE.
 #' @return Returns the mode of the vector \code{x}
 #' @export
-#' @importFrom fastmatch fmatch
 #' @examples
-#' countries::mode(c("a","a",2,3))
-#' countries::mode(c(1,1,2,3,NA,2))
-#' countries::mode(c(NA,NA,NA,1,1,2))
-mode <- function(x,
+#' countries::Mode(c("a","a",2,3))
+#' countries::Mode(c(1,1,2,3,NA,2))
+#' countries::Mode(c(NA,NA,NA,1,1,2))
+Mode <- function(x,
                  na.rm = FALSE,
                  first_only = FALSE) {
 
@@ -33,7 +32,7 @@ mode <- function(x,
     ux <- na.omit(ux)
   }
   if (first_only==TRUE){
-    return(ux[which.max(tabulate(fmatch(x, ux)))])
+    return(ux[which.max(tabulate(fastmatch::fmatch(x, ux)))])
   } else {
     tab <- tabulate(match(x, ux))
     return(ux[tab == max(tab)])

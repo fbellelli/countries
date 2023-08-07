@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="Wrangle country data more effectively and quickly. This package containts functions to easily identify and convert country names, pull country info and datasets, merge country data from different sources, and make quick world maps.">
-<title>A package to deal with country data in a quick and easy way • countries</title>
+<title>A package to deal with country data in an easy way • countries</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="A package to deal with country data in a quick and easy way">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="A package to deal with country data in an easy way">
 <meta property="og:description" content="Wrangle country data more effectively and quickly. This package containts functions to easily identify and convert country names, pull country info and datasets, merge country data from different sources, and make quick world maps.">
 <meta property="og:image" content="https://fbellelli.github.io/countries/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -49,7 +49,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="articles/auto_merge.html">Easy joining with auto_merge()</a>
-    <a class="dropdown-item" href="articles/data_structure.html">Data structure</a>
+    <a class="dropdown-item" href="articles/data_structure.html">Detecting the structure of data tables</a>
     <a class="dropdown-item" href="articles/dealing_with_names.html">Dealing with country names</a>
   </div>
 </li>
@@ -96,14 +96,7 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"fbellelli/countries"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>The package can then be loaded normally</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://fbellelli.github.io/countries/">countries</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: replacing previous import 'dplyr::coalesce' by 'fastmatch::coalesce'</span></span>
-<span><span class="co">#&gt; when loading 'countries'</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'countries'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     mode</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://fbellelli.github.io/countries/">countries</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="dealing-with-country-names">Dealing with country names<a class="anchor" aria-label="anchor" href="#dealing-with-country-names"></a>
@@ -138,13 +131,31 @@
 <span><span class="co">#&gt; 3  MAR   MA                  Morocco</span></span>
 <span><span class="co">#&gt; 4  MKD   MK          North Macedonia</span></span>
 <span><span class="co">#&gt; 5  SAU   SA             Saudi Arabia</span></span></code></pre></div>
-<p>Learn more about country names functions in <a href="/articles/dealing_with_names.html">this article</a>.</p>
+<p>Learn more about how to deal with country names in <a href="/articles/dealing_with_names.html">this article</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="getting-information-about-countries">Getting information about countries<a class="anchor" aria-label="anchor" href="#getting-information-about-countries"></a>
+</h2>
+<p><code><a href="reference/country_info.html">country_info()</a></code> allows to download a variety of information about countries, such as: currencies used, capital city, language spoken, flag, neighbouring countries, and much more.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># What are the official languages of Switzerland?</span></span>
+<span><span class="fu"><a href="reference/country_info.html">country_info</a></span><span class="op">(</span><span class="st">"Switzerland"</span>, <span class="st">"languages"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;             x                              languages</span></span>
+<span><span class="co">#&gt; 1 Switzerland French; Swiss German; Italian; Romansh</span></span>
+<span></span>
+<span><span class="co"># Get information on the capital name and currencies for multiple countries</span></span>
+<span><span class="fu"><a href="reference/country_info.html">country_info</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Canada"</span>, <span class="st">"Mozambique"</span>, <span class="st">"India"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"capital"</span>, <span class="st">"currencies"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;            x   capital    currencies.name currencies.symbol</span></span>
+<span><span class="co">#&gt; 1     Canada    Ottawa    Canadian dollar                 $</span></span>
+<span><span class="co">#&gt; 2 Mozambique    Maputo Mozambican metical                MT</span></span>
+<span><span class="co">#&gt; 3      India New Delhi       Indian rupee                 ₹</span></span></code></pre></div>
+<p>You can find <a href="https://fbellelli.github.io/countries/reference/country_info.html">more information about this function</a> in the documentation.</p>
 </div>
 <div class="section level2">
 <h2 id="merging-country-data">Merging country data<a class="anchor" aria-label="anchor" href="#merging-country-data"></a>
 </h2>
 <p>The function <code><a href="reference/auto_merge.html">auto_merge()</a></code> simplifies the merging of country data tables by: <strong>1)</strong> allowing merging of 2+ tables at the same time, <strong>2)</strong> Supporting automatic detection of columns to merge, <strong>3)</strong> automatically handling different country naming conventions and date formats, <strong>4)</strong> automatic pivoting of country names or years in tables’ headers.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Let's create 4 tables with different formats and country names</span></span>
 <span><span class="va">tab1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Italy"</span>, <span class="st">"Pakistan"</span>, <span class="st">"Brazil"</span><span class="op">)</span>, world_cups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">tab2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>exporter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DEU"</span>, <span class="st">"DEU"</span>, <span class="st">"ITA"</span>, <span class="st">"ITA"</span><span class="op">)</span>, HS_chapter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">85</span>, <span class="fl">9</span>, <span class="fl">85</span><span class="op">)</span>, volume <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">800</span>, <span class="fl">5000</span>, <span class="fl">1000</span>, <span class="fl">2000</span><span class="op">)</span><span class="op">)</span></span>
@@ -172,14 +183,14 @@
 <span><span class="co">#&gt;    country world_cups HS_chapter volume time Table4_pivoted_values</span></span>
 <span><span class="co">#&gt; 1      ITA          4          9   1000   NA                    NA</span></span>
 <span><span class="co">#&gt; 2      ITA          4         85   2000   NA                    NA</span></span>
-<span><span class="co">#&gt; 3      PAK          0         NA     NA 2010            0.96806166</span></span>
-<span><span class="co">#&gt; 4      PAK          0         NA     NA 2011            0.82748801</span></span>
-<span><span class="co">#&gt; 5      BRA          5         NA     NA 2010            0.44822190</span></span>
-<span><span class="co">#&gt; 6      BRA          5         NA     NA 2011            0.25766459</span></span>
-<span><span class="co">#&gt; 7      DEU         NA          9    800 2010            0.83197629</span></span>
-<span><span class="co">#&gt; 8      DEU         NA          9    800 2011            0.08110245</span></span>
-<span><span class="co">#&gt; 9      DEU         NA         85   5000 2010            0.83197629</span></span>
-<span><span class="co">#&gt; 10     DEU         NA         85   5000 2011            0.08110245</span></span>
+<span><span class="co">#&gt; 3      PAK          0         NA     NA 2010             0.9866484</span></span>
+<span><span class="co">#&gt; 4      PAK          0         NA     NA 2011             0.7401758</span></span>
+<span><span class="co">#&gt; 5      BRA          5         NA     NA 2010             0.4051490</span></span>
+<span><span class="co">#&gt; 6      BRA          5         NA     NA 2011             0.2128332</span></span>
+<span><span class="co">#&gt; 7      DEU         NA          9    800 2010             0.3004649</span></span>
+<span><span class="co">#&gt; 8      DEU         NA          9    800 2011             0.4818840</span></span>
+<span><span class="co">#&gt; 9      DEU         NA         85   5000 2010             0.3004649</span></span>
+<span><span class="co">#&gt; 10     DEU         NA         85   5000 2011             0.4818840</span></span>
 <span><span class="co">#&gt;             Description</span></span>
 <span><span class="co">#&gt; 1  Coffee, tea and mate</span></span>
 <span><span class="co">#&gt; 2  Electrical machinery</span></span>

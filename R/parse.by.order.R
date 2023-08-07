@@ -65,7 +65,7 @@ parse.by.order <- function(data, by = NULL){
         }
       }
       #for each group of variable select most frequent classification
-      by_types[i] <- countries::mode(temp)
+      by_types[i] <- countries::Mode(temp)
     }
   }
 
@@ -124,7 +124,7 @@ parse.by.order <- function(data, by = NULL){
                 # calculate number of overlapping unique values
                 unique_i <- as.character(unique(sample_i[, col_i]))
                 unique_j <- as.character(unique(sample_j[, col_j]))
-                n_intersect <- sum(unique_i %fin%  unique_j)
+                n_intersect <- sum(unique_i %fin% unique_j)
 
                 # calculate overlap score (weighting penalises series which have very different number of unique values)
                 min_length <- min(length(unique_i), length(unique_j))

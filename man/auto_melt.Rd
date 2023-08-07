@@ -9,7 +9,7 @@ auto_melt(
   names_to = "pivoted_colnames",
   values_to = "pivoted_data",
   verbose = TRUE,
-  pivoting_info = TRUE
+  pivoting_info = FALSE
 )
 }
 \arguments{

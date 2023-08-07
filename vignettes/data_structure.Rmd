@@ -1,8 +1,8 @@
 ---
-title: "Data structure"
+title: "Detecting the structure of data tables"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data structure}
+  %\VignetteIndexEntry{Detecting the structure of data tables}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

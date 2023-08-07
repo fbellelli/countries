@@ -1,11 +1,11 @@
 #MODE ----------------------------------------
-test_that("get_mode output has the correct format", {
-  expect_equal(is.numeric(countries::mode(c(NA,1,1,2))), TRUE)
-  expect_equal(is.character(countries::mode(c(NA,"prova"))), TRUE)
-  expect_equal(is.character(countries::mode(c(1,2,1,NA,"prova"))), TRUE)
-  expect_equal(length(countries::mode(c(1,2,1,2,3))), 2)
-  expect_equal(length(countries::mode(c(1,2,1,2,3), first_only = TRUE)), 1)
-  expect_equal(countries::mode(c(1,2,1,NA,"prova","prova")), c("1","prova"))
+test_that("Mode output has the correct format", {
+  expect_equal(is.numeric(countries::Mode(c(NA,1,1,2))), TRUE)
+  expect_equal(is.character(countries::Mode(c(NA,"prova"))), TRUE)
+  expect_equal(is.character(countries::Mode(c(1,2,1,NA,"prova"))), TRUE)
+  expect_equal(length(countries::Mode(c(1,2,1,2,3))), 2)
+  expect_equal(length(countries::Mode(c(1,2,1,2,3), first_only = TRUE)), 1)
+  expect_equal(countries::Mode(c(1,2,1,NA,"prova","prova")), c("1","prova"))
 })
 
 
@@ -169,6 +169,8 @@ test_that("output from has.invalid.multibyte.string are as expected", {
 })
 
 
+
+
 # AUTO_MERGE --------------------------------------------
 
 example <- data.frame(HS = 85:89, freq = sample(1:3, size = 5, replace = TRUE))
@@ -183,7 +185,7 @@ example7 <-data.frame(HS = paste("Prova", 1:10), freq = runif(10))
 example9 <- data.frame(a = 1:10, b = 2:11)
 test_that("output from auto_merge is as expected", {
   expect_equal(auto_merge(example, example3, merging_info = T)$info_merged_columns$freq, c("freq","freq"))
-  expect_equal(nrow(auto_merge(example, example3)), 18)
+  expect_equal(nrow(auto_merge(example, example3)), 17)
   expect_equal(ncol(auto_merge(example, example3)), 3)
   expect_equal(sum(is.na(auto_merge(example, example3)$freq)), 0)
   expect_equal(auto_merge(example, example3, country_to = "UN_en"), auto_merge(example, example3))
@@ -205,3 +207,48 @@ test_that("output from auto_merge is as expected", {
 
 })
 
+
+
+# AUTO_MELT --------------------------------------------
+
+
+test_that("output from auto_melt are as expected", {
+  expect_equal(is.data.frame(auto_melt(example2)), TRUE)
+  expect_equal(is.list(auto_melt(example2, pivoting_info = TRUE)), TRUE)
+  expect_equal(length(auto_melt(example2, pivoting_info = TRUE)), 2)
+  expect_equal(colnames(auto_melt(example2)), c("pivoted_colnames", "pivoted_data"))
+  expect_equal(colnames(auto_melt(example2, names_to = "COUNTRY", values_to = "DATA")), c("COUNTRY", "DATA"))
+  expect_equal(length(auto_melt(example2, pivoting_info = TRUE)$pivoted_cols), 3)
+  expect_equal(auto_melt(example2, pivoting_info = TRUE)$pivoted_cols, c("France", "Italy", "US"))
+  expect_equal(nrow(auto_melt(example2)), 30)
+  expect_equal(auto_melt(example), example)
+  expect_equal(is.null(auto_melt(example, pivoting_info = TRUE)$pivoted_cols), TRUE)
+  expect_equal(auto_melt(example6), example6)
+  expect_equal(auto_melt(example8, pivoting_info = TRUE)$pivoted_cols, c("France1992", "France1993", "France1994"))
+  expect_equal(colnames(auto_melt(example8)), c("pivoted_colnames", "ID", "pivoted_data", "year_pivoted_colnames"))
+  expect_equal(nrow(auto_melt(example8)), 30)
+  expect_equal(auto_melt(example8)$year_pivoted_colnames, rep(1992:1994, 10))
+})
+
+
+# LIST_FIELDS -------------------------------
+
+
+test_that("output from list_fields() are as expected", {
+  expect_equal(length(list_fields())>0, TRUE)
+})
+
+
+# COUNTRY_INFO ------------------------------
+
+test_that("output from country_info() are as expected", {
+  expect_equal(is.data.frame(country_info("USA", "capital")), TRUE)
+  expect_equal(dim(country_info("Belgium", "languages")), c(1, 2))
+  expect_equal(dim(country_info("Belgium", "languages", collapse = FALSE)), c(1, 4))
+  expect_equal(dim(country_info(c("Bel", "Taiwan"), c("capital", "unMember"))), c(2, 3))
+  expect_equal(dim(country_info(c("Bel", "China"), c("capital", "unMember"), match_info = TRUE)), c(2, 5))
+  expect_equal(all(c("matched_country", "is_country") %in% colnames(country_info(c("Bel", "China"), c("capital", "unMember"), match_info = TRUE))), TRUE)
+  expect_equal(unlist(country_info(c("France", "Australia", "Italy"), "capital")$capital), c("Paris", "Canberra", "Rome"))
+  expect_equal(nrow(country_info(fields = "capital"))>190, TRUE)
+  expect_equal(ncol(country_info("USA"))>50, TRUE)
+})

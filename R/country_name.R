@@ -12,7 +12,6 @@
 #' @return Returns a vector of converted country names. If multiple nomenclatures are passed to the argument \code{to}, the vectors are arranged in a data frame. If \code{simplify=FALSE}, the function will return a list object.
 #' @seealso \link[countries]{is_country}, \link[countries]{match_table}, \link[countries]{find_countrycol}
 #' @export
-#' @importFrom dplyr left_join
 #' @examples
 #' #Convert country names to a single nomenclatures: (e.g. 3-letters ISO code)
 #' country_name(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= "ISO3")
@@ -44,7 +43,7 @@ country_name <- function(x,
     # CONVERT DATA
     conv_table <- as.data.frame(x)
     colnames(conv_table) <- "Countries"
-    conv_table <- left_join(conv_table, matches$match_table[,c("list_countries",to)], by = c("Countries"="list_countries"))
+    conv_table <- dplyr::left_join(conv_table, matches$match_table[,c("list_countries",to)], by = c("Countries"="list_countries"))
 
     #warning
     if (verbose == FALSE & matches$warning) message("\nSet - verbose - to TRUE for more details")

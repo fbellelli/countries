@@ -12,7 +12,6 @@
 #' @param pivoting_info Logical value indicating whether to return the list of names of the column that have been pivoted. Default is \code{FALSE}. If set to \code{TRUE}, the output will be a list instead of simple data.frame. Teh list will contain 1) the pivoted table, 2) the list of pivoted columns.
 #' @returns A table transformed into a "long" format by pivoting country or year columns. If year columns are found, a numeric column called \code{"year_pivoted_colnames"} is added isolating the years extracted from the table header's.
 #' @seealso \link[countries]{auto_merge}, \link[countries]{find_countrycol},\link[countries]{find_yearcol}
-#' @import tidyr
 #' @export
 #' @examples
 #' # example data
@@ -35,7 +34,7 @@ auto_melt <- function(
     names_to = "pivoted_colnames",
     values_to = "pivoted_data",
     verbose = TRUE,
-    pivoting_info = TRUE
+    pivoting_info = FALSE
 ){
 
   # check inputs
@@ -59,7 +58,7 @@ auto_melt <- function(
   if (!is.null(temp)){
 
     # pivot table if countries or years were found and adjust name
-    data <- as.data.frame(pivot_longer(data, all_of(temp$col_name), names_to = names_to, values_to = values_to))
+    data <- as.data.frame(tidyr::pivot_longer(data, all_of(temp$col_name), names_to = names_to, values_to = values_to))
 
     # move pivoted keys to front of table
     data <- data[, c(names_to, colnames(data)[colnames(data) != names_to])]
@@ -69,7 +68,7 @@ auto_melt <- function(
       if (all(grepl('^(?=.)([+-]?([0-9]*)(\\.([0-9]+))?)$', temp$col_name, perl = TRUE))){
         data[, names_to] <- as.numeric(data[, names_to])
       } else {
-        data[,"year_pivoted_colnames"] <- temp[fmatch(data[, names_to], temp$col_name), 1]
+        data[,"year_pivoted_colnames"] <- temp[fastmatch::fmatch(data[, names_to], temp$col_name), 1]
       }
     }
 

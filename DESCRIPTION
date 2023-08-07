@@ -1,6 +1,6 @@
 Package: countries
 Type: Package
-Title: A package to deal with country data in a quick and easy way
+Title: A package to deal with country data in an easy way
 Version: 0.3
 Authors@R: 
     person("Francesco Saverio", "Bellelli", , "fsabellelli@gmail.com", role = c("aut", "cre"),
@@ -11,15 +11,18 @@ Encoding: UTF-8
 RoxygenNote: 7.2.3
 Imports: 
     stringdist,
-    fastmatch,
     tidyr,
     stringr,
-    stringi,
+    data.table,
     dplyr,
     knitr,
     rmarkdown,
+    fastmatch,
+    lubridate,
     testthat,
-    utils
+    utils,
+    httr,
+    jsonlite
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr

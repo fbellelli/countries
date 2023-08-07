@@ -1,5 +1,7 @@
 # countries 0.3
 
+* Added function *country_info()* to download information about countries (e.g. capital city, currency, neighbouring countries, etc.)
+* Added function *list_fields()* returning a list of accepted fields for *country_info()*
 * Added function *auto_merge()* to quickly join multiple dataset and automatically deal with country names and time columns
 * Added function *auto_melt()* to automatically pivot tables containing country names and years in their headers
 * Added vignette on merging country data with *auto_merge()*
@@ -24,7 +26,7 @@
 
 * Function *country_name()* for converting and translating country names based on a fuzzy matching approach
 * Function *match_table()* to easily construct conversion tables with the help of fuzzy matching algorithm
-* Function *mode()* returns the mode of a vectors (most frequent observation)
+* Function *Mode()* returns the statistical mode of a vectors (most frequent observation)
 * Dataset *country_reference_list* containing a country names in different languages and naming conventions
 * Added vignettes and documentation
 * Created website for the package

@@ -18,9 +18,7 @@
 #' @param auto_melt Logical value indicating whether to automatically pivot country names or years present in the column names. Default is \code{TRUE}. When at least 3 country names or years are found in the column names, the function will automatically transform the table from a wide to a long format by pivoting the country/year columns.
 #' @returns If \code{merging_info = FALSE} a single merged table is returned. If \code{merging_info = TRUE}, a list object is returned, containing the merged table (\code{merged_table}), a table summarising which columns have been merged (\code{info_merged_columns}), a table summarising the conversion of country names (\code{info_country_names}), a table summarising the conversion of time columns to a common format (\code{info_time_formats}), a list of all the columns that have been pivoted when wide tables with country or years in column names were detected (\code{pivoted_columns}), a list recapitulating the inputs passed to the function (\code{call}).
 #' @seealso \link[countries]{country_name}, \link[countries]{find_keycol}
-#' @import tidyr dplyr fastmatch utils stringr
-#' @importFrom lubridate parse_date_time
-#' @importFrom knitr kable
+#' @importFrom fastmatch %fin%
 #' @export
 #' @details
 #' \strong{Automatic detection of columns to merge}.
@@ -481,9 +479,9 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
 
     #perform merging
     if (inner_join == TRUE){
-      final <- suppressMessages(suppressWarnings(inner_join(final, data[[i]])))
+      final <- suppressMessages(suppressWarnings(dplyr::inner_join(final, data[[i]])))
     } else {
-      final <- suppressMessages(suppressWarnings(full_join(final, data[[i]])))
+      final <- suppressMessages(suppressWarnings(dplyr::full_join(final, data[[i]])))
     }
 
     #clear from memory original table data

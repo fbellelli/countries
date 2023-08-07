@@ -29,7 +29,7 @@ The function is able to detect years also when they are preceded by a prefix."><
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/auto_merge.html">Easy joining with auto_merge()</a>
-    <a class="dropdown-item" href="../articles/data_structure.html">Data structure</a>
+    <a class="dropdown-item" href="../articles/data_structure.html">Detecting the structure of data tables</a>
     <a class="dropdown-item" href="../articles/dealing_with_names.html">Dealing with country names</a>
   </div>
 </li>
@@ -70,7 +70,7 @@ The function is able to detect years also when they are preceded by a prefix.</p
 <span>  names_to <span class="op">=</span> <span class="st">"pivoted_colnames"</span>,</span>
 <span>  values_to <span class="op">=</span> <span class="st">"pivoted_data"</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  pivoting_info <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  pivoting_info <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -124,7 +124,6 @@ The function is able to detect years also when they are preceded by a prefix.</p
 <span class="r-in"><span><span class="co"># examples pivotting countries and years from column names</span></span></span>
 <span class="r-in"><span><span class="fu">auto_melt</span><span class="op">(</span><span class="va">example</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> countries detected in column names, pivoting columns: Japan, Norway, Germany, ..., US</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $output</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    pivoted_colnames       Date pivoted_data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1             Japan 01.01.2019            1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2            Norway 01.01.2019            2</span>
@@ -138,13 +137,8 @@ The function is able to detect years also when they are preceded by a prefix.</p
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10           Norway 01.03.2019            4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11          Germany 01.03.2019            5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12               US 01.03.2019            6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $pivoted_cols</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Japan"   "Norway"  "Germany" "US"     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">auto_melt</span><span class="op">(</span><span class="va">example2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> year detected in column names, pivoting columns: X2000, X2001, X2002, ..., X2003</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $output</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    pivoted_colnames      Sector pivoted_data year_pivoted_colnames</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1             X2000 Agriculture            1                  2000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2             X2001 Agriculture            2                  2001</span>
@@ -158,10 +152,6 @@ The function is able to detect years also when they are preceded by a prefix.</p
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10            X2001    Forestry            4                  2001</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11            X2002    Forestry            5                  2002</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12            X2003    Forestry            6                  2003</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $pivoted_cols</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "X2000" "X2001" "X2002" "X2003"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

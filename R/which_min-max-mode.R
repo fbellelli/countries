@@ -1,4 +1,4 @@
-#' Return location of minimum, maximum and mode values' position
+#' Return location of minimum, maximum and mode values' index
 #'
 #' These function return the position (index) of all the minimum, maximum, and mode values of the vector \code{x}. \code{which_min()} and \code{which_max()} only support numeric and logical vectors.
 #' These functions are identical to \code{which.min()} and \code{which.max()}, except that ALL minima/maxima are returned instead of only the first one.
@@ -6,7 +6,7 @@
 #' @param x A numeric or vector
 #' @param first_only Logical value indicating whether only the first value should be returned (i.e. if \code{TRUE} the function behaves like \code{which.min()} and \code{which.max()}). Default is FALSE.
 #' @return Returns the position of the minimum, maximum and mode values of a vector \code{x}
-#' @seealso \link[countries]{mode}, \link[base]{which.min}, \link[base]{which.max}
+#' @seealso \link[countries]{Mode}, \link[base]{which.min}, \link[base]{which.max}
 #' @export
 #' @examples
 #' which_mode(c("a","a",2,3))
@@ -52,17 +52,17 @@ which_max <- function(x, first_only=FALSE){
 
 #' @rdname which_min
 #' @export
-#' @import fastmatch
+#' @importFrom fastmatch %fin%
 which_mode <- function(x, first_only=FALSE){
 
   #CHECK INPUTS ----
-  #perfomed by countries::mode()
+  #perfomed by countries::Mode()
 
   #RETURN POSITON ----
 
   if (is.null(x)){return(NULL)} else {
 
-    xmode <- countries::mode(x, first_only = FALSE)
+    xmode <- countries::Mode(x, first_only = FALSE)
     position <- c(1:length(x))[x %fin% xmode]
 
     if (first_only == TRUE){

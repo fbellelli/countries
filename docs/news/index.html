@@ -25,7 +25,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/auto_merge.html">Easy joining with auto_merge()</a>
-    <a class="dropdown-item" href="../articles/data_structure.html">Data structure</a>
+    <a class="dropdown-item" href="../articles/data_structure.html">Detecting the structure of data tables</a>
     <a class="dropdown-item" href="../articles/dealing_with_names.html">Dealing with country names</a>
   </div>
 </li>
@@ -54,7 +54,10 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3" id="countries-03">countries 0.3<a class="anchor" aria-label="anchor" href="#countries-03"></a></h2>
-<ul><li>Added function <em>auto_merge()</em> to quickly join multiple dataset and automatically deal with country names and time columns</li>
+<ul><li>Added function <em>country_info()</em> to download information about countries (e.g. capital city, currency, neighbouring countries, etc.)</li>
+<li>Added function <em>list_fields()</em> returning a list of accepted fields for <em>country_info()</em>
+</li>
+<li>Added function <em>auto_merge()</em> to quickly join multiple dataset and automatically deal with country names and time columns</li>
 <li>Added function <em>auto_melt()</em> to automatically pivot tables containing country names and years in their headers</li>
 <li>Added vignette on merging country data with <em>auto_merge()</em>
 </li>
@@ -78,7 +81,7 @@
 <h2 class="pkg-version" data-toc-text="0.1" id="countries-01">countries 0.1<a class="anchor" aria-label="anchor" href="#countries-01"></a></h2>
 <ul><li>Function <em>country_name()</em> for converting and translating country names based on a fuzzy matching approach</li>
 <li>Function <em>match_table()</em> to easily construct conversion tables with the help of fuzzy matching algorithm</li>
-<li>Function <em>mode()</em> returns the mode of a vectors (most frequent observation)</li>
+<li>Function <em>Mode()</em> returns the statistical mode of a vectors (most frequent observation)</li>
 <li>Dataset <em>country_reference_list</em> containing a country names in different languages and naming conventions</li>
 <li>Added vignettes and documentation</li>
 <li>Created website for the package</li>

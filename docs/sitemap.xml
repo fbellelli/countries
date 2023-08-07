@@ -40,6 +40,9 @@
     <loc>https://fbellelli.github.io/countries/reference/check.wide.format.html</loc>
   </url>
   <url>
+    <loc>https://fbellelli.github.io/countries/reference/country_info.html</loc>
+  </url>
+  <url>
     <loc>https://fbellelli.github.io/countries/reference/country_name.html</loc>
   </url>
   <url>
@@ -83,6 +86,9 @@
   </url>
   <url>
     <loc>https://fbellelli.github.io/countries/reference/is_keycol.html</loc>
+  </url>
+  <url>
+    <loc>https://fbellelli.github.io/countries/reference/list_fields.html</loc>
   </url>
   <url>
     <loc>https://fbellelli.github.io/countries/reference/match_table.html</loc>

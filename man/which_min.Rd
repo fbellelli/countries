@@ -30,5 +30,5 @@ which_min(c(1,1,2,3,NA,2))
 which_max(c(NA,NA,NA,1,1,2))
 }
 \seealso{
-\link[countries]{mode}, \link[base]{which.min}, \link[base]{which.max}
+\link[countries]{Mode}, \link[base]{which.min}, \link[base]{which.max}
 }

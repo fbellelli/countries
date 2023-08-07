@@ -6,7 +6,7 @@
 #' @param adjacency Logical value indicating whether column names containing country or year information need to be adjacent to each other. Default is \code{TRUE}
 #' @return Returns a data.frame identifying the columns names that contain country or year information.
 #' @seealso \link[countries]{find_keycol}, \link[countries]{find_countrycol}, \link[countries]{find_timecol}
-#' @import stringr fastmatch
+#' @importFrom fastmatch %fin%
 #' @examples
 #' example <- data.frame(Year=2000:2010, China=0:10, US=10:20, Vietnam=30:40)
 #' countries:::check.wide.format(x=example)

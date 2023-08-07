@@ -67,7 +67,22 @@ country_name(x= example, to="name_es")
 country_name(x= example, to=c("ISO3","ISO2","UN_en"))
 ```
 
-Learn more about country names functions in [this article](/articles/dealing_with_names.html).
+Learn more about how to deal with country names in [this article](/articles/dealing_with_names.html).
+
+
+## Getting information about countries
+
+`country_info()` allows to download a variety of information about countries, such as: currencies used, capital city, language spoken, flag, neighbouring countries, and much more.
+
+```{r}
+# What are the official languages of Switzerland?
+country_info("Switzerland", "languages")
+
+# Get information on the capital name and currencies for multiple countries
+country_info(c("Canada", "Mozambique", "India"), c("capital", "currencies"))
+```
+
+You can find [more information about this function](https://fbellelli.github.io/countries/reference/country_info.html) in the documentation.
 
 
 ## Merging country data

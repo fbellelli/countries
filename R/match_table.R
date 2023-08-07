@@ -14,11 +14,6 @@
 #' @seealso \link[countries]{country_name}, \link[countries]{is_country}
 #' @export
 #' @importFrom stats na.omit quantile
-#' @importFrom fastmatch fmatch
-#' @importFrom stringdist stringdistmatrix
-#' @import tidyr
-#' @import stringr
-#' @import stringi
 #' @examples
 #' match_table(x=c("UK","Estados Unidos","Zaire","C#te d^ivoire"), to= c("UN_en","ISO3"))
 match_table <- function(x,
@@ -77,7 +72,7 @@ match_table <- function(x,
   }
 
   #change to lower case to facilitate matching
-  table_references$name_lower <- str_to_lower(table_references$name)
+  table_references$name_lower <- stringr::str_to_lower(table_references$name)
 
   #create a shorter version of the reference table by eliminating stopwords, duplicated entries and numeric country codes to avoid mismatches
   table_references_short <- table_references[!duplicated(table_references$name_lower) & table_references$nomenclature != "ISO_code",]
@@ -106,7 +101,7 @@ match_table <- function(x,
   }
 
   #create table adding conversion columns for each of the desired naming conventions
-  conversion_table <- data.frame(list_countries, simplified = str_trim(str_to_lower(list_countries), side = "both"), exact_match=NA, closest_match=NA, dist=NA, setNames(rep(list(NA), length(to)),to))
+  conversion_table <- data.frame(list_countries, simplified = stringr::str_trim(stringr::str_to_lower(list_countries), side = "both"), exact_match=NA, closest_match=NA, dist=NA, setNames(rep(list(NA), length(to)),to))
 
 
 
@@ -119,7 +114,7 @@ match_table <- function(x,
   #----------------
 
   # get index of first EXACT match
-  exact_matches_index <- fmatch(conversion_table$simplified, table_references_short$name_lower, nomatch=NA)
+  exact_matches_index <- fastmatch::fmatch(conversion_table$simplified, table_references_short$name_lower, nomatch=NA)
 
   # 2. FUZZY MATCH
   #----------------
@@ -131,9 +126,9 @@ match_table <- function(x,
     conversion_table$simplified[is.na(exact_matches_index)] <- unlist(lapply(strsplit(conversion_table$simplified[is.na(exact_matches_index)], " "),
                                                                              function(x){paste(x[!x %in% stopwords], collapse = " ")}))
     #Compute distance matrix
-    distance_matrix <- stringdistmatrix(conversion_table$simplified[is.na(exact_matches_index)],table_references_short$name_lower, method = "jw", p=0.2)
+    distance_matrix <- stringdist::stringdistmatrix(conversion_table$simplified[is.na(exact_matches_index)],table_references_short$name_lower, method = "jw", p=0.2)
 
-    #select first country with the most closest matches
+    #select first country with the closest matches
     fuzzy_matches_index <-apply(distance_matrix, 1, which.min)
   } else {
     distance_matrix <- NULL
@@ -151,8 +146,8 @@ match_table <- function(x,
   if (any(!is.na(matches_ID))){
     temp<- table_references[table_references$ID %in% matches_ID & table_references$nomenclature %in% to,]
     if (nrow(temp)>0){
-      temp <- pivot_wider(temp[,c("ID","nomenclature","name")], values_from = name, names_from = nomenclature)
-      conversion_table[,to] <- temp[fmatch(matches_ID, temp$ID),to]
+      temp <- tidyr::pivot_wider(temp[,c("ID","nomenclature","name")], values_from = name, names_from = nomenclature)
+      conversion_table[,to] <- temp[fastmatch::fmatch(matches_ID, temp$ID),to]
     } else {
       conversion_table[,to] <- NA
     }
@@ -242,6 +237,7 @@ match_table <- function(x,
         cat(paste0("\n - ", uncertain_matches," : ",uncertain_matches_to))
       } else {
         cat("\n\nNo close match found for the following countries, NA returned:")
+        cat("\n(set - poor_matches - to TRUE if you want the closest match to be returned)")
         cat(paste0("\n - ", uncertain_matches))
       }
     } else {
