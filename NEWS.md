@@ -4,6 +4,8 @@
 * Added function *list_fields()* returning a list of accepted fields for *country_info()*
 * Added function *auto_merge()* to quickly join multiple dataset and automatically deal with country names and time columns
 * Added function *auto_melt()* to automatically pivot tables containing country names and years in their headers
+* Added function *quick_map()* to easily plot coloured country maps
+* Added function *palettes_countries()* providing access to the package's colour themes
 * Added vignette on merging country data with *auto_merge()*
 * Bug fixes
 

@@ -4,51 +4,51 @@
 #' It allows to request and download information about countries, such as: currency, capital city, language spoken, flag, neighbouring countries, and much more.
 #' \strong{NOTE:} Internet access is needed to download information from the API.
 #'
-#' @param x A vector of countries for which we wish to download information. The function also supports fuzzy matching capabilities to facilitate querying. Information is only returned for the 249 countries in the ISO standard \code{3166}.
+#' @param countries A vector of countries for which we wish to download information. The function also supports fuzzy matching capabilities to facilitate querying. Information is only returned for the 249 countries in the ISO standard \code{3166}.
 #' @param fields Character vector indicating the fields to query. A description of the \href{https://gitlab.com/restcountries/restcountries/-/blob/master/FIELDS.md}{accepted fields can be found here}. Alternatively, a list of accepted field names can be obtained with the function \code{list_fields()}.
 #' @param fuzzy_match Logical value indicating whether to allow fuzzy matching of country names. Default is \code{TRUE}.
-#' @param match_info Logical value indicating whether to return information on country names matched to each input in \code{x}. If \code{TRUE}, two additional columns will be added to the output (\code{matched_country} and \code{is_country}). Default is \code{FALSE}.
+#' @param match_info Logical value indicating whether to return information on country names matched to each input in \code{countries}. If \code{TRUE}, two additional columns will be added to the output (\code{matched_country} and \code{is_country}). Default is \code{FALSE}.
 #' @param collapse Logical value indicating whether to collapse multiple columns relating to a same field together. Default is \code{TRUE}. For some specific fields (currencies, languages, names), multiple columns will be returned. This happens because countries can take multiple values for these fields. For example, \code{country_info("Switzerland", "languages", collapse = FALSE)} will return 4 columns for the field languages. When \code{collapse = TRUE}, these four columns will be collapsed into one string, with values separated by semicolons.
-#' @return Returns the requested information about the countries in a table. The rows of the table correspond to entries in \code{x}, columns correspond to requested \code{fields}.
+#' @return Returns the requested information about the countries in a table. The rows of the table correspond to entries in \code{countries}, columns correspond to requested \code{fields}.
 #' @seealso \link[countries]{list_fields}
 #' @export
 #' @examples
 #' # The example below queries information on the currency used in Brazil, US and France:
-#' info <- country_info(x = "Brazil", fields = "capital")
+#' info <- country_info(countries = "Brazil", fields = "capital")
 #'
 #' # data for multiple countries can be requested
-#' info <- country_info(x = c("Brazil", "USA", "FR"), fields = "capital")
+#' info <- country_info(countries = c("Brazil", "USA", "FR"), fields = "capital")
 #'
-#'#' # Data can be returned for all countries by leaving x empty
+#'#' # Data can be returned for all countries by leaving - countries - empty
 #' info <- country_info(fields = "capital")
 #'
 #' # All available fields can be requested by leaving fields empty
-#' info <- country_info(x = c("Brazil", "USA", "FR"))
+#' info <- country_info(countries = c("Brazil", "USA", "FR"))
 #'
 #' # All information for all countries can be downloaded by leaving both arguments empty
 #' info <- country_info()
-country_info <- function(x = NULL, fields = NULL, fuzzy_match = TRUE, match_info = FALSE, collapse = TRUE){
+country_info <- function(countries = NULL, fields = NULL, fuzzy_match = TRUE, match_info = FALSE, collapse = TRUE){
 
   # check input format
   if (!is.logical(fuzzy_match) | length(fuzzy_match)!=1) stop("Function argument - fuzzy_match - needs to be a single logical statement (TRUE/FALSE)")
   if (!is.logical(match_info) | length(match_info)!=1) stop("Function argument - match_info - needs to be a single logical statement (TRUE/FALSE)")
-  if (!is.atomic(x)) stop("Function argument - x - needs to be a vector of country names")
+  if (!is.atomic(countries)) stop("Function argument - countries - needs to be a vector of country names")
   if (!is.atomic(fields)) stop("Function argument - fields - needs to be a character vector")
-  if (all(is.na(x)) & !is.null(x)) stop("Only NAs in function argument - x -")
+  if (all(is.na(countries)) & !is.null(countries)) stop("Only NAs in function argument - countries -")
   if (all(is.na(fields)) & !is.null(fields)) stop("Only NAs in function argument - fields -")
 
   # convert inputs to character
-  x <- as.character(x)
+  countries <- as.character(countries)
   fields <- as.character(fields)
 
 
   # IDENTIFY COUNTRIES TO QUERY ------------------
 
-  if (length(x) > 0){
+  if (length(countries) > 0){
 
     # check that provided input countries are actually countries
-    inputs <- data.frame(original = x,
-                         is_country = is_country(x, fuzzy_match = fuzzy_match))
+    inputs <- data.frame(original = countries,
+                         is_country = is_country(countries, fuzzy_match = fuzzy_match))
 
     # deal with potential NAs in is_country
     inputs$is_country[is.na(inputs$is_country)] <- FALSE
@@ -57,23 +57,23 @@ country_info <- function(x = NULL, fields = NULL, fuzzy_match = TRUE, match_info
     inputs$matched_country[inputs$is_country] <- suppressMessages(suppressWarnings(country_name(inputs$original[inputs$is_country], fuzzy_match = fuzzy_match, poor_matches = TRUE, verbose = FALSE)))
 
     # make a list without duplicates countries that will be queried
-    countries <- unique(inputs$matched_country[inputs$is_country])
+    list_countries <- unique(inputs$matched_country[inputs$is_country])
 
 
   } else {
 
-    countries <- "all"
+    list_countries <- "all"
   }
 
 
   # if there is no country to query data for, return empty result
-  if (length(countries) == 0){
-    warning(paste0("No country was found in input - x - returning an empty output.", if (fuzzy_match == FALSE) " (try setting fuzzy_match to TRUE?)" else ""))
+  if (length(list_countries) == 0){
+    warning(paste0("No country was found in input - countries - returning an empty output.", if (fuzzy_match == FALSE) " (try setting fuzzy_match to TRUE?)" else ""))
     return(NULL)
   }
 
   # issue warning for inputs that are not recognised as countries
-  if (length(x)>0){
+  if (length(countries)>0){
     if (!all(inputs$is_country)) warning(paste0("The following names were not recognised as countries, NAs will be returned", if (fuzzy_match == FALSE) " (try setting fuzzy_match to TRUE?)" else "" , ":\n - ",paste(unique(inputs$original[inputs$is_country == FALSE]), sep = "", collapse = "\n - ")))
   }
 
@@ -90,7 +90,7 @@ country_info <- function(x = NULL, fields = NULL, fuzzy_match = TRUE, match_info
   }
 
   query <- paste0("restcountries.com/v3.1/",
-                  if (length(x) == 0) "all?" else paste0("alpha?codes=", paste(stringr::str_to_lower(countries), collapse = ",", sep = "")),
+                  if (length(countries) == 0) "all?" else paste0("alpha?codes=", paste(stringr::str_to_lower(list_countries), collapse = ",", sep = "")),
                   if (length(fields) == 0) "" else paste0("&fields=", paste(fields, collapse = ",", sep = "")))
 
 
@@ -179,7 +179,7 @@ country_info <- function(x = NULL, fields = NULL, fuzzy_match = TRUE, match_info
 
   # PREPARE FINAL OUTPUT --------------------------
 
-  if (length(x) == 0){
+  if (length(countries) == 0){
 
     # if data was requested for all countries, return output as it is.
     return(data)
@@ -187,7 +187,7 @@ country_info <- function(x = NULL, fields = NULL, fuzzy_match = TRUE, match_info
   } else {
 
     # change name of inputs columns
-    colnames(inputs)[1] <- "x"
+    colnames(inputs)[1] <- "countries"
 
     # if data was requested for a vector of country names, merge data with input vector
     final <- merge(inputs, data,  all.x = TRUE, by.x = "matched_country", by.y = "cca3", sort = FALSE)

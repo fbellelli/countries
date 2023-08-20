@@ -4,7 +4,7 @@
 \alias{which_min}
 \alias{which_max}
 \alias{which_mode}
-\title{Return location of minimum, maximum and mode values' position}
+\title{Return location of minimum, maximum and mode values' index}
 \usage{
 which_min(x, first_only = FALSE)
 

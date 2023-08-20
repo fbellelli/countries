@@ -22,7 +22,10 @@ Imports:
     testthat,
     utils,
     httr,
-    jsonlite
+    jsonlite,
+    ggplot2,
+    viridis,
+    grDevices
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr

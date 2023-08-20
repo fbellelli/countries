@@ -31,6 +31,7 @@ test_that("country_name output has the correct format", {
   expect_equal(length(country_name(example1, to="ISO3")), length(example1))
   expect_equal(ncol(country_name(example1, to=c("ISO3","ISO2","name_en"))), 3)
   expect_equal(all(nchar(country_name(example1, to="ISO3")==3)), TRUE)
+  expect_equal(country_name("Taiwan", to = c("ISO3", "UN_en"), verbose = TRUE), data.frame(ISO3 = "TWN", UN_en = NA))
 })
 
 test_that("country_name seems to correctly identify countries", {
@@ -251,4 +252,54 @@ test_that("output from country_info() are as expected", {
   expect_equal(unlist(country_info(c("France", "Australia", "Italy"), "capital")$capital), c("Paris", "Canberra", "Rome"))
   expect_equal(nrow(country_info(fields = "capital"))>190, TRUE)
   expect_equal(ncol(country_info("USA"))>50, TRUE)
+})
+
+
+
+# PICK_COLOUR --------------------------------
+
+test_that("output from pick_colours() are as expected",{
+  expect_equal(all(is.numeric(pick_colours(3, 5))), TRUE)
+  expect_equal(length(pick_colours(3, 5)), 3)
+  expect_equal(suppressWarnings(pick_colours(5, 3)), c(1,2,3,1,1))
+  expect_equal(pick_colours(3, 3), 1:3)
+  expect_equal(pick_colours(3, 5), c(1, 3, 5))
+})
+
+
+# PALETTES_COUNTRIES -------------------------
+
+test_that("output from palettes_countries() are as expected",{
+  expect_equal(all(is.character(palettes_countries(5, 1))), TRUE)
+  expect_equal(all(is.character(palettes_countries(5, 2))), TRUE)
+  expect_equal(length(palettes_countries(3, 5)), 3)
+  expect_equal(palettes_countries(2, 2), c("grey85", "grey15"))
+  expect_equal(all(palettes_countries(5, 1, reverse = TRUE) == rev(palettes_countries(5, 1, reverse = FALSE))), TRUE)
+  expect_equal(all(suppressWarnings(palettes_countries(10, 1))[c(1,7)] == "#cb997e"), TRUE)
+  expect_equal(is.null(suppressWarnings(palettes_countries(5,100))), TRUE)
+})
+
+# THEME_COUNTRIES ----------------------------
+
+test_that("output from palettes_countries() are as expected",{
+  expect_equal(is.list(themes_countries(1)), TRUE)
+  expect_equal(is.null(themes_countries(0)), TRUE)
+  expect_equal(all(c("axis.text", "legend.background", "legend.position") %in% names(themes_countries(2))), TRUE)
+})
+
+
+# QUICK_MAP ----------------------------
+
+example <- data.frame(country = c("FRA", "Italy", "UK", "India"), price = c(250, 10, 1000, 100), test = c("a", "b", "c", "d"))
+example2 <- data.frame(country = c("FRA", "Italy", "UK", "India", "CHINA", "Russia", "US"), price = c(250, 10, 1000, 100, 5000, 1e5, 2e5))
+test_that("output from quick_map() are as expected",{
+  expect_equal(class(quick_map(example, "price")), c("gg", "ggplot"))
+  expect_equal(class(quick_map(example, "price", theme = 2)), c("gg", "ggplot"))
+  expect_equal(class(quick_map(example, "price", theme = "Candy")), c("gg", "ggplot"))
+  expect_equal(class(quick_map(example, "price", verbose = FALSE)), c("gg", "ggplot"))
+  expect_equal(class(quick_map(example, "price", width_plot = 10)), c("gg", "ggplot"))
+  expect_equal(class(quick_map(example, "price", reverse_palette = TRUE)), c("gg", "ggplot"))
+  expect_equal(class(quick_map(example, "price", col_border = "white")), c("gg", "ggplot"))
+  expect_equal(class(quick_map(example2, "price", col_breaks = c(1, 5, 150,500, 1e6))), c("gg", "ggplot"))
+  expect_equal(class(quick_map(example, "test",col_na = "black")), c("gg", "ggplot"))
 })

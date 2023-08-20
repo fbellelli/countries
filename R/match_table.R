@@ -44,10 +44,13 @@ match_table <- function(x,
   list_nomenclatures <- c("simple", "ISO3", "ISO2", "ISO_code", "UN_ar", "UN_zh", "UN_en", "UN_fr", "UN_ru", "UN_es", "WTO_en", "WTO_fr", "WTO_es", "GTAP", "name_ar", "name_bg", "name_cs", "name_da", "name_de", "name_el", "name_en", "name_es", "name_et", "name_eu", "name_fi", "name_fr", "name_hu", "name_it", "name_ja", "name_ko", "name_lt", "name_nl", "name_no", "name_pl", "name_pt", "name_ro", "name_ru", "name_sk", "name_sv", "name_th", "name_uk", "name_zh", "name_zh-tw")
   x <- as.character(x)
   if (is.null(custom_table)){
+
     if (!all(to %in% c("all",list_nomenclatures)) | length(to)<1)  stop("The value provided to the - to - argument is not valid")
     if ("all" %in% to){to <- list_nomenclatures}
     table_references <- country_reference_list_long
+
   } else {
+
     #coerce to data frame and check that the provided table has at least two columns. otherwise give error
     custom_table <- as.data.frame(custom_table)
     if(!is.data.frame(custom_table)){stop("The table provided in - custom_table - needs to be coecible to a data.frame class")}
@@ -144,10 +147,19 @@ match_table <- function(x,
 
   #fill converted country names in table
   if (any(!is.na(matches_ID))){
-    temp<- table_references[table_references$ID %in% matches_ID & table_references$nomenclature %in% to,]
+    temp <- table_references[table_references$ID %in% matches_ID & table_references$nomenclature %in% to,]
     if (nrow(temp)>0){
       temp <- tidyr::pivot_wider(temp[,c("ID","nomenclature","name")], values_from = name, names_from = nomenclature)
-      conversion_table[,to] <- temp[fastmatch::fmatch(matches_ID, temp$ID),to]
+
+      # if no country in x is present in a nomenclature, temp will not have all - to - columns. HEre we deal with this edge case
+      if (ncol(temp) - 1 < length(to) ) {
+        for (i in colnames(temp)[colnames(temp) != "ID"]){
+          conversion_table[,i] <- temp[fastmatch::fmatch(matches_ID, temp$ID), i]
+        }
+      } else {
+        conversion_table[,to] <- temp[fastmatch::fmatch(matches_ID, temp$ID), to]
+      }
+
     } else {
       conversion_table[,to] <- NA
     }
@@ -206,11 +218,11 @@ match_table <- function(x,
   }
 
   # Message on missing conversion
-  if (any((no_equiv>0)&(conversion_table$list_countries!= uncertain_matches))){
+  if (any((no_equiv>0)& !(conversion_table$list_countries %in% uncertain_matches))){
     output_warning <- TRUE
     if (verbose){
       cat("\n\nThe following country IDs do not have a match in one or more of the naming conventions:")
-      cat(paste0("\n  - ", conversion_table$list_countries[(no_equiv>0)&(conversion_table$list_countries!= uncertain_matches)]))
+      cat(paste0("\n  - ", conversion_table$list_countries[(no_equiv>0)& ! (conversion_table$list_countries %in% uncertain_matches)]))
     } else {
       message("Some country IDs have no match in one or more country naming conventions")
     }

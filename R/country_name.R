@@ -34,8 +34,12 @@ country_name <- function(x,
   if (!is.logical(simplify) | length(simplify)!=1) stop("Function argument - simplify - needs to be a logical statement (TRUE/FALSE)")
 
   if (all(is.na(x))){
+
     message("All values in argument - x - are NA")
-    return(rep(NA, length(x)))} else{
+    return(rep(NA, length(x)))
+
+  } else{
+
     # BUILD CONVERSION TABLE
     matches <- match_table(x, to = to, fuzzy_match = fuzzy_match, verbose = verbose, matching_info= TRUE, simplify = FALSE, poor_matches = poor_matches, custom_table = custom_table)
     to <- matches$call$to

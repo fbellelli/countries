@@ -2,7 +2,7 @@
 % Please edit documentation in R/has.invalid.multibyte.string.R
 \name{has.invalid.multibyte.string}
 \alias{has.invalid.multibyte.string}
-\title{Determine if "invalid multibyte string" error will be triggered due to wrong encoding.}
+\title{Internal function - Determine if "invalid multibyte string" error will be triggered due to wrong encoding.}
 \usage{
 has.invalid.multibyte.string(x, return.elements = FALSE)
 }
@@ -12,5 +12,5 @@ has.invalid.multibyte.string(x, return.elements = FALSE)
 \item{return.elements}{Logical value. If `TRUE`, then the function returns a logical value for each element of x, otherwise a single logical is returned for the entire vector.}
 }
 \description{
-Determine if "invalid multibyte string" error will be triggered due to wrong encoding.
+Internal function - Determine if "invalid multibyte string" error will be triggered due to wrong encoding.
 }
