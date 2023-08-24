@@ -49,5 +49,5 @@ auto_melt(example)
 auto_melt(example2)
 }
 \seealso{
-\link[countries]{auto_merge}, \link[countries]{find_countrycol},\link[countries]{find_yearcol}
+\link[countries]{auto_merge}, \link[countries]{find_countrycol},\link[countries]{find_timecol}
 }

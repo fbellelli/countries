@@ -58,7 +58,7 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
   data <- list(...)
 
   # check if input is a list, if so extract content
-  if (length(data) == 1 & class(data) == "list"){
+  if (length(data) == 1 & methods::is(data, "list")){
     if (length(data[[1]]) > 1) data <- data[[1]] else stop("Please provide multiple tables as inputs for merging")
   }
 
@@ -140,7 +140,7 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
   # CLEAN BY ORDER -------------------------------------------
 
   # identify columns to merge
-  temp <- countries:::parse.by.order(data = data, by = by)
+  temp <- parse.by.order(data = data, by = by)
   by <- temp$by
   by_types <- temp$by_types
 
@@ -348,7 +348,7 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
     #check if all time columns are years
     temp <- TRUE
     for (i in which(!is.na(by_table[,time_dest_name]))){
-      if (countries:::is.yearcol(data[[i]][,time_dest_name]) == FALSE){
+      if (is.yearcol(data[[i]][,time_dest_name]) == FALSE){
         temp <- FALSE
         break
       }

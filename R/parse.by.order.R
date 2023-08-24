@@ -2,7 +2,7 @@
 #'
 #' @param data list of tables provided to auto_join function
 #' @param by by order provided by user to auto_join function
-#' @return Returns a cleaned \code{by} order and a vector indicating the type of data in each element of the order.
+#' @returns Returns a cleaned \code{by} order and a vector indicating the type of data in each element of the order.
 parse.by.order <- function(data, by = NULL){
 
   # get column names in data

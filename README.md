@@ -9,26 +9,17 @@
 `countries` is an R package designed to quickly wrangle, merge and
 explore country data. This package contains functions to easily identify
 and convert country names, pull country info and datasets, merge country
-data from different sources, and make quick world maps.
+data from different sources, and easily make world maps.
 
 ## Installing and loading the package
 
-Since the package is not yet on CRAN, the development version needs to
-be downloaded directly from the Github repository. This can be done with
-the `devtools` package.
+The package can now be installed from CRAN.
 
 ``` r
-# Install and load devtools
-install.packages("devtools")
-library(devtools)
+# Install package from CRAN
+install.packages("countries")
 
-# Install countries
-devtools::install_github("fbellelli/countries", build_vignettes = TRUE)
-```
-
-The package can then be loaded normally
-
-``` r
+# load package
 library(countries)
 ```
 
@@ -89,12 +80,12 @@ flag, neighbouring countries, and much more.
 ``` r
 # What are the official languages of Switzerland?
 country_info("Switzerland", "languages")
-#>             x                              languages
+#>     countries                              languages
 #> 1 Switzerland French; Swiss German; Italian; Romansh
 
 # Get information on the capital name and currencies for multiple countries
 country_info(c("Canada", "Mozambique", "India"), c("capital", "currencies"))
-#>            x   capital    currencies.name currencies.symbol
+#>    countries   capital    currencies.name currencies.symbol
 #> 1     Canada    Ottawa    Canadian dollar                 $
 #> 2 Mozambique    Maputo Mozambican metical                MT
 #> 3      India New Delhi       Indian rupee                 ₹
@@ -103,6 +94,28 @@ country_info(c("Canada", "Mozambique", "India"), c("capital", "currencies"))
 You can find [more information about this
 function](https://fbellelli.github.io/countries/reference/country_info.html)
 in the documentation.
+
+## Easy country maps
+
+With `quick_map()`, it takes only one line of code to produce
+[chloropleth maps](https://en.wikipedia.org/wiki/Choropleth_map). It
+automatically recognises country names in multiple languages and
+nomenclatures. This allows to produce publication-grade map in seconds.
+Moreover, the output is a ggplot object, so the visual look can be
+customised in infinite ways.
+
+``` r
+# downloading some sample data to plot
+example_data <- country_info(fields = c("car"))
+
+# make a map
+quick_map(example_data, plot_col = "car.side")
+```
+
+<img src="man/figures/unnamed-chunk-6-1.png" width="100%" />
+
+You can find [more examples in this
+article](https://fbellelli.github.io/countries/articles/quick_map.html).
 
 ## Merging country data
 
@@ -140,14 +153,14 @@ auto_merge(tab1, tab2, tab3, tab4)
 #>    country world_cups HS_chapter volume time Table4_pivoted_values
 #> 1      ITA          4          9   1000   NA                    NA
 #> 2      ITA          4         85   2000   NA                    NA
-#> 3      PAK          0         NA     NA 2010             0.2099429
-#> 4      PAK          0         NA     NA 2011             0.4724805
-#> 5      BRA          5         NA     NA 2010             0.7302934
-#> 6      BRA          5         NA     NA 2011             0.4534566
-#> 7      DEU         NA          9    800 2010             0.3975449
-#> 8      DEU         NA          9    800 2011             0.8840562
-#> 9      DEU         NA         85   5000 2010             0.3975449
-#> 10     DEU         NA         85   5000 2011             0.8840562
+#> 3      PAK          0         NA     NA 2010             0.8531421
+#> 4      PAK          0         NA     NA 2011             0.7631570
+#> 5      BRA          5         NA     NA 2010             0.4660966
+#> 6      BRA          5         NA     NA 2011             0.7523389
+#> 7      DEU         NA          9    800 2010             0.4448022
+#> 8      DEU         NA          9    800 2011             0.4098941
+#> 9      DEU         NA         85   5000 2010             0.4448022
+#> 10     DEU         NA         85   5000 2011             0.4098941
 #>             Description
 #> 1  Coffee, tea and mate
 #> 2  Electrical machinery

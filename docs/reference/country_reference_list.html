@@ -27,6 +27,7 @@
     <a class="dropdown-item" href="../articles/auto_merge.html">Easy joining with auto_merge()</a>
     <a class="dropdown-item" href="../articles/data_structure.html">Detecting the structure of data tables</a>
     <a class="dropdown-item" href="../articles/dealing_with_names.html">Dealing with country names</a>
+    <a class="dropdown-item" href="../articles/quick_map.html">Easy country chloropleth maps</a>
   </div>
 </li>
 <li class="nav-item">
@@ -49,7 +50,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Conversion table</h1>
-      <small class="dont-index">Source: <a href="https://github.com/fbellelli/countries/blob/HEAD/R/data.R" class="external-link"><code>R/data.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/fbellelli/countries/blob/HEAD/R/data_wide.R" class="external-link"><code>R/data_wide.R</code></a></small>
       <div class="d-none name"><code>country_reference_list.Rd</code></div>
     </div>
 
@@ -76,19 +77,187 @@
   <dt>ISO_code</dt>
 <dd><p>Numeric country codes as defined in ISO standard <code>3166-1 numeric</code>. This country code is the same as the UN's country number (<a href="https://unstats.un.org/unsd/methodology/m49/" class="external-link">M49 standard</a>). This nomenclature is available for the territories in the ISO standard (currently 249 countries).</p></dd>
 
-  <dt>UN_<strong>xx</strong></dt>
-<dd><p>Official UN name in 6 official UN languages. Arabic (<code>UN_ar</code>), Chinese  (<code>UN_zh</code>), English  (<code>UN_en</code>), French  (<code>UN_fr</code>), Spanish  (<code>UN_es</code>), Russian (<code>UN_ru</code>). This nomenclature is only available for countries in the <a href="https://unstats.un.org/unsd/methodology/m49/" class="external-link">M49 standard</a> (currently 249 territories).</p></dd>
+  <dt>UN_ar</dt>
+<dd><p>Official UN name in <strong>Arabic</strong>.  This nomenclature is only available for countries in the <a href="https://unstats.un.org/unsd/methodology/m49/" class="external-link">M49 standard</a> (currently 249 territories).</p></dd>
 
-  <dt>WTO_<strong>xx</strong></dt>
-<dd><p>Official WTO name in 3 official WTO languages: English (<code>WTO_en</code>), French (<code>WTO_fr</code>), Spanish (<code>WTO_es</code>). This nomenclature is only available for <a href="https://www.wto.org/english/thewto_e/whatis_e/tif_e/org6_e.htm" class="external-link">WTO members and observers</a> (currently 189 entities).</p></dd>
+  <dt>UN_zh</dt>
+<dd><p>Official UN name in <strong>Chinese</strong>. This nomenclature is only available for countries in the <a href="https://unstats.un.org/unsd/methodology/m49/" class="external-link">M49 standard</a> (currently 249 territories).</p></dd>
 
-  <dt>name_<strong>xx</strong></dt>
-<dd><p>Translation of ISO country names in 28 different languages: Arabic (<code>name_ar</code>), Bulgarian (<code>name_bg</code>), Czech (<code>name_cs</code>), Danish (<code>name_da</code>), German (<code>name_de</code>), Greek (<code>name_el</code>), English  (<code>name_en</code>), Spanish  (<code>name_es</code>), Estonian (<code>name_et</code>),  Basque (<code>name_eu</code>),  Finnish (<code>name_fi</code>), French (<code>name_fr</code>), Hungarian (<code>name_hu</code>), Italian (<code>name_it</code>), Japponease (<code>name_ja</code>), Korean (<code>name_ko</code>), Lithuanian (<code>name_lt</code>), Dutch (<code>name_nl</code>), Norwegian (<code>name_no</code>), Polish (<code>name_po</code>), Portuguese (<code>name_pt</code>), Romenian (<code>name_ro</code>), Russian (<code>name_ru</code>), Slovak (<code>name_sk</code>), Swedish (<code>name_sv</code>), Thai (<code>name_th</code>), Ukranian (<code>name_uk</code>), Chinese simplified (<code>name_zh</code>), Chinese traditional (<code>name_zh-tw</code>)</p></dd>
+  <dt>UN_en</dt>
+<dd><p>Official UN name in <strong>English</strong>. This nomenclature is only available for countries in the <a href="https://unstats.un.org/unsd/methodology/m49/" class="external-link">M49 standard</a> (currently 249 territories).</p></dd>
+
+  <dt>UN_fr</dt>
+<dd><p>Official UN name in <strong>French</strong>. This nomenclature is only available for countries in the <a href="https://unstats.un.org/unsd/methodology/m49/" class="external-link">M49 standard</a> (currently 249 territories).</p></dd>
+
+  <dt>UN_es</dt>
+<dd><p>Official UN name in <strong>Spanish</strong>. This nomenclature is only available for countries in the <a href="https://unstats.un.org/unsd/methodology/m49/" class="external-link">M49 standard</a> (currently 249 territories).</p></dd>
+
+  <dt>UN_ru</dt>
+<dd><p>Official UN name in <strong>Russian</strong>. This nomenclature is only available for countries in the <a href="https://unstats.un.org/unsd/methodology/m49/" class="external-link">M49 standard</a> (currently 249 territories).</p></dd>
+
+  <dt>WTO_en</dt>
+<dd><p>Official WTO name in <strong>English</strong>. This nomenclature is only available for <a href="https://www.wto.org/english/thewto_e/whatis_e/tif_e/org6_e.htm" class="external-link">WTO members and observers</a> (currently 189 entities).</p></dd>
+
+  <dt>WTO_fr</dt>
+<dd><p>Official WTO name in <strong>French</strong>. This nomenclature is only available for <a href="https://www.wto.org/english/thewto_e/whatis_e/tif_e/org6_e.htm" class="external-link">WTO members and observers</a> (currently 189 entities).</p></dd>
+
+  <dt>WTO_es</dt>
+<dd><p>Official WTO name in <strong>Spanish</strong>. This nomenclature is only available for <a href="https://www.wto.org/english/thewto_e/whatis_e/tif_e/org6_e.htm" class="external-link">WTO members and observers</a> (currently 189 entities).</p></dd>
+
+  <dt>name_ar</dt>
+<dd><p>Translation of ISO country names in <strong>Arabic</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_bg</dt>
+<dd><p>Translation of ISO country names in <strong>Bulgarian</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_cs</dt>
+<dd><p>Translation of ISO country names in <strong>Czech</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_da</dt>
+<dd><p>Translation of ISO country names in <strong>Danish</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_de</dt>
+<dd><p>Translation of ISO country names in <strong>German</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_el</dt>
+<dd><p>Translation of ISO country names in <strong>Greek</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_en</dt>
+<dd><p>Translation of ISO country names in <strong>English</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_es</dt>
+<dd><p>Translation of ISO country names in <strong>Spanish</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_et</dt>
+<dd><p>Translation of ISO country names in <strong>Estonian</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_eu</dt>
+<dd><p>Translation of ISO country names in <strong>Basque</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_fi</dt>
+<dd><p>Translation of ISO country names in <strong>Finnish</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_fr</dt>
+<dd><p>Translation of ISO country names in <strong>French</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_hu</dt>
+<dd><p>Translation of ISO country names in <strong>Hungarian</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_it</dt>
+<dd><p>Translation of ISO country names in <strong>Italian</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_ja</dt>
+<dd><p>Translation of ISO country names in <strong>Japanese</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_ko</dt>
+<dd><p>Translation of ISO country names in <strong>Korean</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_lt</dt>
+<dd><p>Translation of ISO country names in <strong>Lithuanian</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_nl</dt>
+<dd><p>Translation of ISO country names in <strong>Dutch</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_no</dt>
+<dd><p>Translation of ISO country names in <strong>Norwegian</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_po</dt>
+<dd><p>Translation of ISO country names in <strong>Polish</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_pt</dt>
+<dd><p>Translation of ISO country names in <strong>Portuguese</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_ro</dt>
+<dd><p>Translation of ISO country names in <strong>Romanian</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_ru</dt>
+<dd><p>Translation of ISO country names in <strong>Russian</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_sk</dt>
+<dd><p>Translation of ISO country names in <strong>Slovak</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_sv</dt>
+<dd><p>Translation of ISO country names in <strong>Swedish</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_th</dt>
+<dd><p>Translation of ISO country names in <strong>Thai</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_uk</dt>
+<dd><p>Translation of ISO country names in <strong>Ukranian</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_zh</dt>
+<dd><p>Translation of ISO country names in <strong>simplified Chinese</strong>. (currently 249 territories)</p></dd>
+
+  <dt>name_zh-tw</dt>
+<dd><p>Translation of ISO country names in <strong>traditional Chinese</strong>. (currently 249 territories)</p></dd>
 
   <dt>GTAP</dt>
 <dd><p><a href="https://www.gtap.agecon.purdue.edu/databases/regions.aspx?version=9.211" class="external-link">GTAP</a> country and region codes.</p></dd>
 
-  <dt>Name0-20</dt>
+  <dt>Name0</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name1</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name1</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name2</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name3</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name4</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name5</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name6</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name7</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name8</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name9</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name10</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name11</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name12</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name13</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name14</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name15</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name16</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name17</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name18</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name19</dt>
+<dd><p>Other variants of the country name included to improve the matching process</p></dd>
+
+  <dt>Name20</dt>
 <dd><p>Other variants of the country name included to improve the matching process</p></dd>
 
 

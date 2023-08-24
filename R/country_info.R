@@ -9,7 +9,7 @@
 #' @param fuzzy_match Logical value indicating whether to allow fuzzy matching of country names. Default is \code{TRUE}.
 #' @param match_info Logical value indicating whether to return information on country names matched to each input in \code{countries}. If \code{TRUE}, two additional columns will be added to the output (\code{matched_country} and \code{is_country}). Default is \code{FALSE}.
 #' @param collapse Logical value indicating whether to collapse multiple columns relating to a same field together. Default is \code{TRUE}. For some specific fields (currencies, languages, names), multiple columns will be returned. This happens because countries can take multiple values for these fields. For example, \code{country_info("Switzerland", "languages", collapse = FALSE)} will return 4 columns for the field languages. When \code{collapse = TRUE}, these four columns will be collapsed into one string, with values separated by semicolons.
-#' @return Returns the requested information about the countries in a table. The rows of the table correspond to entries in \code{countries}, columns correspond to requested \code{fields}.
+#' @returns Returns the requested information about the countries in a table. The rows of the table correspond to entries in \code{countries}, columns correspond to requested \code{fields}.
 #' @seealso \link[countries]{list_fields}
 #' @export
 #' @examples
@@ -135,6 +135,7 @@ country_info <- function(countries = NULL, fields = NULL, fuzzy_match = TRUE, ma
 
   # COLLAPSE COLUMNS RELATING TO SAME FIELD -------
 
+
   regex_collapse <- c("^(languages)\\.[a-z]{3}()$",
                       "^(currencies)\\.[A-Z]{3}(\\.name)$",
                       "^(currencies)\\.[A-Z]{3}(\\.symbol)$",
@@ -174,6 +175,17 @@ country_info <- function(countries = NULL, fields = NULL, fuzzy_match = TRUE, ma
       }
 
     }
+  }
+
+  # paste together list columns
+  if (collapse == TRUE){
+    for (i in 1:ncol(data)){
+      if (is.list(data[,i])){
+        data[,i] <- unlist(lapply(data[,i], paste, collapse = "; ", sep = ""))
+      }
+    }
+
+
   }
 
 

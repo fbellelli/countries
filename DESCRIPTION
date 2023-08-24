@@ -1,11 +1,14 @@
 Package: countries
 Type: Package
-Title: A package to deal with country data in an easy way
+Title: Deal with Country Data in an Easy Way
 Version: 0.3
 Authors@R: 
-    person("Francesco Saverio", "Bellelli", , "fsabellelli@gmail.com", role = c("aut", "cre"),
+    person("Francesco Saverio", "Bellelli", , "fsabellelli@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(Website = "https://fbellelli.com/"))
-Description: Wrangle country data more effectively and quickly. This package containts functions to easily identify and convert country names, pull country info and datasets, merge country data from different sources, and make quick world maps.
+Description: Wrangle country data more effectively and quickly. 
+    This package contains functions to easily identify and convert country names,
+    download country information, merge country data from different sources, 
+    and make quick world maps.
 License: GPL-3
 Encoding: UTF-8
 RoxygenNote: 7.2.3
@@ -21,6 +24,8 @@ Imports:
     lubridate,
     testthat,
     utils,
+    methods,
+    stats,
     httr,
     jsonlite,
     ggplot2,

@@ -10,7 +10,7 @@
 #' @param simplify Logical value. If set to \code{TRUE} the function will return the match table as a \code{data.frame} object. If set to \code{FALSE}, the function will return a list object containing the match table and additional details on the country matching process. Default is \code{TRUE}.
 #' @param poor_matches Logical value. If set to \code{TRUE} (the default option), the function will always return the closest matching country name, even if the matching is poor. If set to \code{FALSE}, the function will return \code{NA} in case of poor matching.
 #' @param custom_table Custom conversion table to be used. This needs to be a data.frame object. Default is \code{NULL}.
-#' @return Returns a conversion table for countries names to the desired naming conventions. If \code{simplify=FALSE} it returns a list object.
+#' @returns Returns a conversion table for countries names to the desired naming conventions. If \code{simplify=FALSE} it returns a list object.
 #' @seealso \link[countries]{country_name}, \link[countries]{is_country}
 #' @export
 #' @importFrom stats na.omit quantile
@@ -68,7 +68,7 @@ match_table <- function(x,
     columns <- colnames(custom_table) #make list of columns to pivot
     custom_table$ID <- row.names(custom_table) #create entry ID number
     custom_table <- tidyr::pivot_longer(custom_table,
-                                        cols = all_of(columns) ,
+                                        cols = dplyr::all_of(columns) ,
                                         names_to = "nomenclature",
                                         values_to = "name")
     table_references <- custom_table[!(is.na(custom_table$name)|custom_table$name==""),]
@@ -104,7 +104,7 @@ match_table <- function(x,
   }
 
   #create table adding conversion columns for each of the desired naming conventions
-  conversion_table <- data.frame(list_countries, simplified = stringr::str_trim(stringr::str_to_lower(list_countries), side = "both"), exact_match=NA, closest_match=NA, dist=NA, setNames(rep(list(NA), length(to)),to))
+  conversion_table <- data.frame(list_countries, simplified = stringr::str_trim(stringr::str_to_lower(list_countries), side = "both"), exact_match=NA, closest_match=NA, dist=NA, stats::setNames(rep(list(NA), length(to)),to))
 
 
 
@@ -125,7 +125,7 @@ match_table <- function(x,
   #find index for closest matches
   if (any(is.na(exact_matches_index)) & fuzzy_match == TRUE){
     #remove stopwords
-    stopwords <- c("of","and","republic","the","islands","de","&","island", "îles","islas", "república","del", "république")
+    stopwords <- stopwords_country_names
     conversion_table$simplified[is.na(exact_matches_index)] <- unlist(lapply(strsplit(conversion_table$simplified[is.na(exact_matches_index)], " "),
                                                                              function(x){paste(x[!x %in% stopwords], collapse = " ")}))
     #Compute distance matrix
@@ -149,7 +149,7 @@ match_table <- function(x,
   if (any(!is.na(matches_ID))){
     temp <- table_references[table_references$ID %in% matches_ID & table_references$nomenclature %in% to,]
     if (nrow(temp)>0){
-      temp <- tidyr::pivot_wider(temp[,c("ID","nomenclature","name")], values_from = name, names_from = nomenclature)
+      temp <- tidyr::pivot_wider(temp[,c("ID","nomenclature","name")], values_from = "name", names_from = "nomenclature")
 
       # if no country in x is present in a nomenclature, temp will not have all - to - columns. HEre we deal with this edge case
       if (ncol(temp) - 1 < length(to) ) {

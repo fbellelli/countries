@@ -3,25 +3,30 @@
 #' \code{quick_map()} allows to plot country \href{https://en.wikipedia.org/wiki/Choropleth_map}{chloropleth maps} with one line of code.
 #' The only inputs required are a \code{data.frame} object and the name of the column to plot.
 #' The function uses \code{country_name()}'s capabilities to automatically match country names to one of the territories in the \href{https://en.wikipedia.org/wiki/ISO_3166-1}{ISO standard 3166-1}. This allows fuzzy matching of country names in multiple languages and nomenclatures.
+#' For some map examples, see \href{https://fbellelli.github.io/countries/articles/quick_map.html}{this article}.
 #' @param data Table (data.frame) containing the data to plot. Each row in the table should correspond to a country. One of the columns should contain country names.
 #' @param plot_col Name of the column to plot.
-#' @param theme A numeric value or name identifying one of the predefined visual themes for the map. Can be a number between 1 and 11, or one of the predefined theme's names: \code{c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")}. If \code{0} or \code{"NoTheme"} is passed, no theme will be applied (default ggplot2 settingsare used).
+#' @param theme A numeric value or name identifying one of the predefined visual themes for the map. Can be a number between 1 and 11, or one of the predefined theme's names: \code{c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")}. If \code{0} or \code{"NoTheme"} is passed, no theme will be applied (default `ggplot2`'s settings are used).
 #' @param zoom This argument defines the zoom applied to the map. It can be either a string identifying one of the predefined zoom boxes (\code{"Default", "World", "Africa", "Asia", "Europe", "SEAsia", "NAmerica", "CAmerica", "SAmerica", "Oceania"}). Alternatively, the user may provide a numeric vector of length 4 describing the min/max longitude and latitude (e.g. \code{c(-80, -35, -55, 10)} defines a zoom on South America).
+#' @param verbose Logical value indicating whether to print messages to the console. Default is \code{FALSE}.
 #' @param save_to Path to the file where the plot is to be saved. This need to be in an existing directory. The default is \code{NULL}, which does not save the plot.
 #' @param width_plot  Width (in cm) when plot is saved to a file. The ratio between height and width is fixed. This argument is only relevant if \code{save_to} is different from \code{NULL}. Default is \code{30}. For custom saving options the function \code{ggsave()} can be used.
 #' @param reverse_palette Logical value indicating whether to reverse the order of the colours in the palette. Default is \code{FALSE}.
 #' @param col_breaks Only relevant for numeric data. This argument allows the user to provide manual breaks for the colour scale. Needs to be a numeric vector (\code{c(0, 100, 500, 1000)}). Default is \code{NULL}, which will result in breaks being automatically selected by the function. Note that data with 6 or less unique values will be treated as factor by the function.
 #' @param col_border Colour of border line separating countries and landmasses. Default is \code{"black"}.
 #' @param col_na Colour for countries with missing data (NAs). Default is \code{"grey97"}.
-#' @return ggplot object
+#' @param width_border Numeric value giving the width of the border lines between countries. Default is `0.1`.
+#' @returns ggplot object
 #' @export
 #' @import ggplot2
 #' @details
 #' \strong{Good to know}
+#'
 #' \code{quick_map()} only allows plotting of territories in the ISO standard 3166-1. It does not support plotting of other regions.
 #' The output of the function is a ggplot object. This means means that users can then customise the look of the output by applying any of ggplot's methods.
-
+#'
 #' \strong{Disclaimer}
+#'
 #' Territories' borders and shapes are intended for illustrative purpose. They might be outdated and do not imply the expression of any opinion on the part of the package developers.
 #' @examples
 #' # downloading some sample data to plot
@@ -38,14 +43,15 @@
 #' quick_map(example_data, "population", col_breaks = c(0, 1e5, 1e6, 1e7, 1e8, 1e9))
 quick_map <- function(data, plot_col,
                       theme = 1,
-                      zoom = "default",
-                      verbose = TRUE,
+                      zoom = "Default",
+                      verbose = FALSE,
                       save_to = NULL,
                       width_plot = 30,
                       reverse_palette = FALSE,
                       col_breaks = NULL,
                       col_border = "black",
-                      col_na = "grey97"){
+                      col_na = "grey97",
+                      width_border = 0.1){
 
 
 
@@ -59,15 +65,15 @@ quick_map <- function(data, plot_col,
   if (!is.logical(reverse_palette) | length(reverse_palette)!=1) stop("Function argument - reverse_palette - needs to be a logical statement (TRUE/FALSE)")
   if (is.na(reverse_palette)|is.null(reverse_palette)) stop("The argument - reverse_palette - cannot be NA or NULL. It needs to be a logical value")
   if (!is.atomic(zoom)) stop("invalid input for - zoom - needs to be a vector of lat/long values or a name of one of the predefined regions")
-  if (class(width_plot) != "numeric" | length(width_plot) != 1 | any(is.na(width_plot))) stop("invalid input for - width_plot - needs to be a positive numeric value")
+  if (!methods::is(width_plot, "numeric") | length(width_plot) != 1 | any(is.na(width_plot))) stop("invalid input for - width_plot - needs to be a positive numeric value")
   if (width_plot <= 0) stop("invalid input for - width_plot - needs to be a positive numeric value")
   if (!is.null(save_to)){
-    if (class(save_to) != "character" | length(save_to) > 1 | any(is.na(save_to))) stop("invalid input for - save_to - needs to be a string containing the path to where you wish to save the map")
+    if (!methods::is(save_to, "character") | length(save_to) > 1 | any(is.na(save_to))) stop("invalid input for - save_to - needs to be a string containing the path to where you wish to save the map")
   }
-  if (is.na(col_border)|!is.atomic(col_border)|class(col_border) != "character"|is.logical(col_border)|length(col_border)>1) stop("invalid input for - col_border - it needs to be a single colour name")
-  if (is.na(col_na)|!is.atomic(col_na)|class(col_na) != "character"|is.logical(col_na)|length(col_na)>1) stop("invalid input for - col_na - it needs to be a single colour name")
+  if (is.na(col_border)|!is.atomic(col_border)| !methods::is(col_border, "character") |is.logical(col_border)|length(col_border)>1) stop("invalid input for - col_border - it needs to be a single colour name")
+  if (is.na(col_na)|!is.atomic(col_na)| !methods::is(col_na, "character")|is.logical(col_na)|length(col_na)>1) stop("invalid input for - col_na - it needs to be a single colour name")
   if (!is.null(col_breaks)){
-    if (!is.atomic(col_breaks)|class(col_breaks) != "numeric") stop("invalid input for - col_breaks - please provide numberic breaks for the colour scale")
+    if (!is.atomic(col_breaks)| !methods::is(col_breaks,"numeric")) stop("invalid input for - col_breaks - please provide numberic breaks for the colour scale")
     if (any(is.na(col_breaks))) stop("invalid input for - col_break - no NAs allowed")
   }
 
@@ -155,7 +161,7 @@ quick_map <- function(data, plot_col,
   # DISCRETISE COLOURS FOR CONTINOUS VARIABLES -------------------
 
   # make a list of unique data values
-  values <- unique(world[,plot_col])
+  values <- na.omit(unique(unlist(world[,plot_col])))
   n_values <- length(values)
 
   # Bucketise continous scale
@@ -220,8 +226,8 @@ quick_map <- function(data, plot_col,
   # MAKE BASE PLOT ----------------------------
 
   # produce base plot
-  p <- ggplot(world, aes(x = long, y = lat, group = group, fill = .data[[plot_col]], linetype = is.na(.data[[plot_col]])))+
-    geom_polygon(colour = col_border, linewidth = 0.1)+
+  p <- ggplot(world, aes(x = .data$long, y = .data$lat, group = .data$group, fill = .data[[plot_col]], linetype = is.na(.data[[plot_col]])))+
+    geom_polygon(colour = col_border, linewidth = width_border)+
     scale_linetype_manual(guide = "none", values = c("solid", "dotted"))+
     labs(x="", y="", fill = plot_col)+
     coord_fixed(xlim = zoom_plot[1:2], ylim = zoom_plot[3:4]) # Allows zoom while plotting points outside window (like coord_cartesian). coord fixed also maintains the ratio to avoid distortions
@@ -251,7 +257,7 @@ quick_map <- function(data, plot_col,
     print_ratio <- ifelse(legend_on_side, 0.95 , 1.3) * (zoom_plot[4] - zoom_plot[3])/(zoom_plot[2] - zoom_plot[1])
 
     # save
-    ggsave(plot = p, filename = save_to, width = width_plot, height = width_plot * print_ratio, unit = "cm", dpi = 1000)
+    ggsave(plot = p, filename = save_to, width = width_plot, height = width_plot * print_ratio, units = "cm", dpi = 1000)
 
     if (verbose) message(paste0("Map saved to: ", save_to))
   }

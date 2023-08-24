@@ -11,7 +11,7 @@
 #' @param verbose Logical value. If set to \code{TRUE} (the default), a message will be displayed on the console indicating which columns are being pivoted. If set to \code{FALSE}, the messages are turned off.
 #' @param pivoting_info Logical value indicating whether to return the list of names of the column that have been pivoted. Default is \code{FALSE}. If set to \code{TRUE}, the output will be a list instead of simple data.frame. Teh list will contain 1) the pivoted table, 2) the list of pivoted columns.
 #' @returns A table transformed into a "long" format by pivoting country or year columns. If year columns are found, a numeric column called \code{"year_pivoted_colnames"} is added isolating the years extracted from the table header's.
-#' @seealso \link[countries]{auto_merge}, \link[countries]{find_countrycol},\link[countries]{find_yearcol}
+#' @seealso \link[countries]{auto_merge}, \link[countries]{find_countrycol},\link[countries]{find_timecol}
 #' @export
 #' @examples
 #' # example data
@@ -52,13 +52,13 @@ auto_melt <- function(
   data <- as.data.frame(x)
 
   #check column names for countries/years
-  temp <- countries:::check.wide.format(data)
+  temp <- check.wide.format(data)
 
   # proceed if there is any column to pivot
   if (!is.null(temp)){
 
     # pivot table if countries or years were found and adjust name
-    data <- as.data.frame(tidyr::pivot_longer(data, all_of(temp$col_name), names_to = names_to, values_to = values_to))
+    data <- as.data.frame(tidyr::pivot_longer(data, dplyr::all_of(temp$col_name), names_to = names_to, values_to = values_to))
 
     # move pivoted keys to front of table
     data <- data[, c(names_to, colnames(data)[colnames(data) != names_to])]

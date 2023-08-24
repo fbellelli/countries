@@ -3,7 +3,7 @@
 #' This function checks if a value is a date by attempting to convert it to a date format. The user can specify which date formats should be tested with the argument \code{formats}.
 #' @param x A vector of values to be tested
 #' @param formats Date formats to be checked for (expressed in R date notation).
-#' @return Returns a logical vector indicating whether the values can be converted to any of the date formats provided. Notice that unless specified, the default allowed formats do not include simple year numbers (e.g. 2022 or 1993) because number vectors could wrongly be identified as dates. Also, notice that testing \code{NA} values will return \code{FALSE}.
+#' @returns Returns a logical vector indicating whether the values can be converted to any of the date formats provided. Notice that unless specified, the default allowed formats do not include simple year numbers (e.g. 2022 or 1993) because number vectors could wrongly be identified as dates. Also, notice that testing \code{NA} values will return \code{FALSE}.
 #' @export
 #' @seealso \link[countries]{find_timecol}, \link[countries]{find_keycol}, \link[countries]{is_country}
 #' @examples

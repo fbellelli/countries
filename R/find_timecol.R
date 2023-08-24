@@ -6,7 +6,7 @@
 #' @param return_index A logical value indicating whether the function should return the index of time columns instead of the column names. Default is \code{FALSE}, column names are returned.
 #' @param allow_NA Logical value indicating whether to allow time columns to contain \code{NA} values. Default is \code{allow_NA=FALSE}, the function will not return time column containing \code{NA} values.
 #' @param sample_size Either \code{NA} or a numeric value indicating the sample size used for evaluating columns. Default is \code{1000}. If \code{NA} is passed, the function will evaluate the full table. The minimum accepted value is \code{100} (i.e. 100 randomly sampled rows are used to evaluate the columns). This parameter can be tuned to speed up computation on long datasets. Taking a sample could result in inexact identification of key columns, accuracy improves with larger samples.
-#' @return Returns a vector of names (\code{return_index=FALSE}) or indices (\code{return_index=TRUE}) of columns containing date or year information. Only the most likely year column is returned.
+#' @returns Returns a vector of names (\code{return_index=FALSE}) or indices (\code{return_index=TRUE}) of columns containing date or year information. Only the most likely year column is returned.
 #' @seealso \link[countries]{is_date}, \link[countries]{find_countrycol}
 #' @export
 #' @examples
@@ -96,7 +96,7 @@ find_timecol <- function(x,
       #if it is numeric column search for year
       if (is.numeric(x[,i])){
         #test if it could be a year column
-        if(countries:::is.yearcol(x[,i], regularity=FALSE, allow_NA=allow_NA)) time_cols <- c(time_cols, i)
+        if(is.yearcol(x[,i], regularity=FALSE, allow_NA=allow_NA)) time_cols <- c(time_cols, i)
       } else {
         # otherwise check for dates formats
         #test if column contains dates

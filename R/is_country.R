@@ -7,7 +7,7 @@
 #' @param x A character vector to be tested (also supports UN/ISO country codes)
 #' @param check_for A vector of country names to narrow down testing. The function will return \code{TRUE} only if the string relates to a country in this vector. Default is NULL.
 #' @param fuzzy_match A logical value indicating whether to tolerate small discrepancies in the country name matching. The default and fastest option is \code{FALSE}.
-#' @return Returns a logical vector indicating whether the string is a country name
+#' @returns Returns a logical vector indicating whether the string is a country name
 #' @seealso \link[countries]{match_table}, \link[countries]{country_name}, \link[countries]{find_countrycol}
 #' @export
 #' @examples

@@ -6,7 +6,7 @@
 #' @param x A vector
 #' @param na.rm Logical value indicating whether \code{NA} values should be omitted. Default is \code{FALSE}.
 #' @param first_only Logical value indicating whether only the first mode should be returned if \code{x} has multiple modes (i.e. there are multiple values with the highest number of observations). Default is FALSE.
-#' @return Returns the mode of the vector \code{x}
+#' @returns Returns the mode of the vector \code{x}
 #' @export
 #' @examples
 #' countries::Mode(c("a","a",2,3))

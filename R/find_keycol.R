@@ -8,7 +8,7 @@
 #' @param search_only This parameter can be used to restrict the search of table keys to a subset of columns. The default is \code{NA}, which will result in the entire table being searched. Alternatively, users may restrict the search by providing a vector containing the name or the numeric index of columns to check. For example, search could be restricted to the first ten columns by passing \code{1:10}. This could be useful in speeding up the search in wide tables.
 #' @param sample_size Either \code{NA} or a numeric value indicating the sample size used for evaluating columns. Default is \code{1000}. If \code{NA} is passed, the function will evaluate the full table. The minimum accepted value is \code{100} (i.e. 100 randomly sampled rows are used to evaluate the columns). This parameter can be tuned to speed up computation on long datasets. Taking a sample could result in inexact identification of key columns, accuracy improves with larger samples.
 #' @param allow_NA Logical value indicating whether to allow key columns to have \code{NA} values. Default is \code{allow_NA=FALSE}. If set to \code{TRUE}, \code{NA} is considered as a distinct value.
-#' @return Returns a vector of column names (or indices) that uniquely identify the entries in the table. If no key is found, the function will return \code{NULL}. The output is a named vector indicating whether the identified key columns contain country names (\code{"country"}), year and dates (\code{"time"}), or other type of information (\code{"other"}).
+#' @returns Returns a vector of column names (or indices) that uniquely identify the entries in the table. If no key is found, the function will return \code{NULL}. The output is a named vector indicating whether the identified key columns contain country names (\code{"country"}), year and dates (\code{"time"}), or other type of information (\code{"other"}).
 #' @seealso \link[countries]{find_timecol}, \link[countries]{find_countrycol}, \link[countries]{is_keycol}
 #' @export
 #' @examples
@@ -138,7 +138,7 @@ find_keycol <- function(x,
   if (key_found == FALSE & length(country_cols)>1){
 
     #Make a list of all pairs of possible country column combinations
-    grid_dyad <- as.data.frame(t(combn(country_cols,2)))
+    grid_dyad <- as.data.frame(t(utils::combn(country_cols,2)))
     grid_dyad$is_different <- FALSE
 
     #to save time, first test if country pair is identical by taking a sample
@@ -204,7 +204,7 @@ find_keycol <- function(x,
 
         # 2) check other columns two by two
         if (length(cols)>1  & key_found==FALSE){
-        grid <- t(combn(cols,2))
+        grid <- t(utils::combn(cols,2))
         i <- 1
         while (i<=nrow(grid) & key_found==FALSE){
           if (length(country_cols)==0 & length(time_cols)==0){temp <- c("other"=grid[i,1], "other"=grid[i,2])}
@@ -248,7 +248,7 @@ find_keycol <- function(x,
 
           # 2) check other columns two by two
           if (length(cols)>1  & key_found==FALSE)
-          grid <- t(combn(cols,2))
+          grid <- t(utils::combn(cols,2))
           i <- 1
           while (i<=nrow(grid) & key_found==FALSE){
             if (length(time_cols)==0){temp <- c("country"=grid_dyad[grid_dyad$is_different,][j,1], "country"=grid_dyad[grid_dyad$is_different,][j,2], "other"=grid[i,1], "other"=grid[i,2])}

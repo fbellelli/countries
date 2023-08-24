@@ -1,3 +1,6 @@
+# countries 1.0
+* Publication on CRAN
+
 # countries 0.3
 
 * Added function *country_info()* to download information about countries (e.g. capital city, currency, neighbouring countries, etc.)
@@ -6,7 +9,7 @@
 * Added function *auto_melt()* to automatically pivot tables containing country names and years in their headers
 * Added function *quick_map()* to easily plot coloured country maps
 * Added function *palettes_countries()* providing access to the package's colour themes
-* Added vignette on merging country data with *auto_merge()*
+* Added vignette on plotting chloropleth maps with *quick_map* and merging country data with *auto_merge()* 
 * Bug fixes
 
 # countries 0.2

@@ -31,6 +31,7 @@ NOTE: Internet access is needed to download information from the API."><meta pro
     <a class="dropdown-item" href="../articles/auto_merge.html">Easy joining with auto_merge()</a>
     <a class="dropdown-item" href="../articles/data_structure.html">Detecting the structure of data tables</a>
     <a class="dropdown-item" href="../articles/dealing_with_names.html">Dealing with country names</a>
+    <a class="dropdown-item" href="../articles/quick_map.html">Easy country chloropleth maps</a>
   </div>
 </li>
 <li class="nav-item">
@@ -66,7 +67,7 @@ It allows to request and download information about countries, such as: currency
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">country_info</span><span class="op">(</span></span>
-<span>  x <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  countries <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fields <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fuzzy_match <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  match_info <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -76,7 +77,7 @@ It allows to request and download information about countries, such as: currency
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>x</dt>
+    <dl><dt>countries</dt>
 <dd><p>A vector of countries for which we wish to download information. The function also supports fuzzy matching capabilities to facilitate querying. Information is only returned for the 249 countries in the ISO standard <code>3166</code>.</p></dd>
 
 
@@ -89,7 +90,7 @@ It allows to request and download information about countries, such as: currency
 
 
 <dt>match_info</dt>
-<dd><p>Logical value indicating whether to return information on country names matched to each input in <code>x</code>. If <code>TRUE</code>, two additional columns will be added to the output (<code>matched_country</code> and <code>is_country</code>). Default is <code>FALSE</code>.</p></dd>
+<dd><p>Logical value indicating whether to return information on country names matched to each input in <code>countries</code>. If <code>TRUE</code>, two additional columns will be added to the output (<code>matched_country</code> and <code>is_country</code>). Default is <code>FALSE</code>.</p></dd>
 
 
 <dt>collapse</dt>
@@ -100,7 +101,7 @@ It allows to request and download information about countries, such as: currency
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>Returns the requested information about the countries in a table. The rows of the table correspond to entries in <code>x</code>, columns correspond to requested <code>fields</code>.</p>
+<p>Returns the requested information about the countries in a table. The rows of the table correspond to entries in <code>countries</code>, columns correspond to requested <code>fields</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -110,16 +111,16 @@ It allows to request and download information about countries, such as: currency
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># The example below queries information on the currency used in Brazil, US and France:</span></span></span>
-<span class="r-in"><span><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu">country_info</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Brazil"</span>, fields <span class="op">=</span> <span class="st">"capital"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu">country_info</span><span class="op">(</span>countries <span class="op">=</span> <span class="st">"Brazil"</span>, fields <span class="op">=</span> <span class="st">"capital"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># data for multiple countries can be requested</span></span></span>
-<span class="r-in"><span><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu">country_info</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Brazil"</span>, <span class="st">"USA"</span>, <span class="st">"FR"</span><span class="op">)</span>, fields <span class="op">=</span> <span class="st">"capital"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu">country_info</span><span class="op">(</span>countries <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Brazil"</span>, <span class="st">"USA"</span>, <span class="st">"FR"</span><span class="op">)</span>, fields <span class="op">=</span> <span class="st">"capital"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">#' # Data can be returned for all countries by leaving x empty</span></span></span>
+<span class="r-in"><span><span class="co">#' # Data can be returned for all countries by leaving - countries - empty</span></span></span>
 <span class="r-in"><span><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu">country_info</span><span class="op">(</span>fields <span class="op">=</span> <span class="st">"capital"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># All available fields can be requested by leaving fields empty</span></span></span>
-<span class="r-in"><span><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu">country_info</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Brazil"</span>, <span class="st">"USA"</span>, <span class="st">"FR"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu">country_info</span><span class="op">(</span>countries <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Brazil"</span>, <span class="st">"USA"</span>, <span class="st">"FR"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># All information for all countries can be downloaded by leaving both arguments empty</span></span></span>
 <span class="r-in"><span><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu">country_info</span><span class="op">(</span><span class="op">)</span></span></span>

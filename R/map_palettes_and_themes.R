@@ -2,7 +2,7 @@
 #'
 #' @param n Desired Number of colours desired
 #' @param n_colours_palette Total number of colours in the palette
-#' @return Returns n indices that can be used to select colours from a palette of n_colours_palette length
+#' @returns Returns n indices that can be used to select colours from a palette of n_colours_palette length
 #' @seealso \link[countries]{palettes_countries}
 #' @examples
 #' countries:::pick_colours(5, 10)
@@ -33,7 +33,7 @@ pick_colours <- function(n, n_colours_palette){
 #' @param n Number of desired colours
 #' @param theme A numeric value or name identifying the theme's colours. Can be a number between 1 and 11, or one of the theme's names: \code{c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")}.
 #' @param reverse Logical value indicating whether to reverse the order of the palette's colours Default is FALSE.
-#' @return Returns n colours from the requested theme
+#' @returns Returns n colours from the requested theme
 #' @seealso \link[countries]{quick_map}
 #' @export
 #' @examples
@@ -107,7 +107,7 @@ palettes_countries <- function(n, theme = 1, reverse = FALSE){
 #' Internal function - ggplot themes for quick_map
 #'
 #' @param theme A numeric value or name identifying the theme's colours. Can be a number between 1 and 11, or one of the theme's names: \code{c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")}.
-#' @return Returns n indices that can be used to select colours from a palette of n_colours_palette length
+#' @returns Returns n indices that can be used to select colours from a palette of n_colours_palette length
 #' @seealso \link[countries]{quick_map}
 #' @examples
 #' countries:::themes_countries(theme = 1)
@@ -159,12 +159,12 @@ themes_countries <- function(theme = 1){
 
   } else if (theme == 7 | theme == "Blues"){
     output <- output +
-      theme(plot.background = element_rect(fill = "#FFF5EC"),
+      theme(panel.background = element_rect(fill = "#FFF5EC"),
             legend.position = "right")
 
   } else if (theme == 8 | theme == "Greens"){
     output <- output +
-      theme(plot.background = element_rect(fill = "#D0E8FA"),
+      theme(panel.background = element_rect(fill = "#D0E8FA"),
             legend.position = "right")
 
   } else if (theme %in% c(9, 10) | theme %in% c("Viridis", "Cividis")){

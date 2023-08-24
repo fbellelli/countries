@@ -4,7 +4,7 @@
 #' @param limit A minimum and maximum year value \code{c(1800,2200)}
 #' @param regularity Require that no gap is present in the year values (e.g. 2005, 2000, 2010, 2020 would return FALSE because 2015 is missing). Default is \code{FALSE} (regularity is not required).
 #' @param allow_NA If set to true the date vector is allowed to contain \code{NA} values. If set to \code{FALSE} the function returns a FALSE if any value is NA. Default is \code{TRUE}.
-#' @return Returns a logical vector indicating whether the vector could be containing year information
+#' @returns Returns a logical vector indicating whether the vector could be containing year information
 #' @seealso \link[countries]{is_country}, \link[countries]{find_countrycol}
 #' @examples
 #' countries:::is.yearcol(1990:2020)

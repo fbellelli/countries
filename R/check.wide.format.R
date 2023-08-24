@@ -4,7 +4,7 @@
 #' The function will only return year/country column names if at least 3 country/year column names are detected.
 #' @param x A dataframe
 #' @param adjacency Logical value indicating whether column names containing country or year information need to be adjacent to each other. Default is \code{TRUE}
-#' @return Returns a data.frame identifying the columns names that contain country or year information.
+#' @returns Returns a data.frame identifying the columns names that contain country or year information.
 #' @seealso \link[countries]{find_keycol}, \link[countries]{find_countrycol}, \link[countries]{find_timecol}
 #' @importFrom fastmatch %fin%
 #' @examples

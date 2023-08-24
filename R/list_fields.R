@@ -3,7 +3,7 @@
 #' This function queries \href{https://restcountries.com/}{REST Countries API} and returns a list of all possible fields that can be used in the function \code{country_info}.
 #' \strong{NOTE:} Internet access is needed to download information from the API.
 #'
-#' @return A vector of accepted fields for the function \code{country_info()}
+#' @returns A vector of accepted fields for the function \code{country_info()}
 #' @seealso \link[countries]{country_info}
 #' @export
 #' @examples

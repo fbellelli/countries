@@ -5,7 +5,7 @@
 #'
 #' @param x A numeric or vector
 #' @param first_only Logical value indicating whether only the first value should be returned (i.e. if \code{TRUE} the function behaves like \code{which.min()} and \code{which.max()}). Default is FALSE.
-#' @return Returns the position of the minimum, maximum and mode values of a vector \code{x}
+#' @returns Returns the position of the minimum, maximum and mode values of a vector \code{x}
 #' @seealso \link[countries]{Mode}, \link[base]{which.min}, \link[base]{which.max}
 #' @export
 #' @examples

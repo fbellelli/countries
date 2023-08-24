@@ -11,6 +11,7 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/",
   out.width = "100%"
 )
+library(countries)
 ```
 
 # countries 
@@ -18,24 +19,17 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-`countries` is an R package designed to quickly wrangle, merge and explore country data. This package contains functions to easily identify and convert country names, pull country info and datasets, merge country data from different sources, and make quick world maps.
+`countries` is an R package designed to quickly wrangle, merge and explore country data. This package contains functions to easily identify and convert country names, pull country info and datasets, merge country data from different sources, and easily make world maps.
 
 ## Installing and loading the package
 
-Since the package is not yet on CRAN, the development version needs to be downloaded directly from the Github repository. This can be done with the `devtools` package.
+The package can now be installed from CRAN.
 
 ```{r , eval=FALSE}
-# Install and load devtools
-install.packages("devtools")
-library(devtools)
+# Install package from CRAN
+install.packages("countries")
 
-# Install countries
-devtools::install_github("fbellelli/countries", build_vignettes = TRUE)
-```
-
-The package can then be loaded normally
-
-```{r}
+# load package
 library(countries)
 ```
 
@@ -84,6 +78,20 @@ country_info(c("Canada", "Mozambique", "India"), c("capital", "currencies"))
 
 You can find [more information about this function](https://fbellelli.github.io/countries/reference/country_info.html) in the documentation.
 
+
+## Easy country maps
+
+With `quick_map()`, it takes only one line of code to produce [chloropleth maps](https://en.wikipedia.org/wiki/Choropleth_map). It automatically recognises country names in multiple languages and nomenclatures. This allows to produce publication-grade map in seconds. Moreover, the output is a ggplot object, so the visual look can be customised in infinite ways.
+
+```{r, dpi = 700, warning = FALSE, message = FALSE, fig.asp=0.5}
+# downloading some sample data to plot
+example_data <- country_info(fields = c("car"))
+
+# make a map
+quick_map(example_data, plot_col = "car.side")
+```
+
+You can find [more examples in this article](https://fbellelli.github.io/countries/articles/quick_map.html).
 
 ## Merging country data
 
