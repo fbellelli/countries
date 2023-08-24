@@ -24,7 +24,7 @@ quick_map(
 
 \item{plot_col}{Name of the column to plot.}
 
-\item{theme}{A numeric value or name identifying one of the predefined visual themes for the map. Can be a number between 1 and 11, or one of the predefined theme's names: \code{c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")}. If \code{0} or \code{"NoTheme"} is passed, no theme will be applied (default ggplot2 settings are used).}
+\item{theme}{A numeric value or name identifying one of the predefined visual themes for the map. Can be a number between 1 and 11, or one of the predefined theme's names: \code{c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")}. If \code{0} or \code{"NoTheme"} is passed, no theme will be applied (default `ggplot2`'s settings are used).}
 
 \item{zoom}{This argument defines the zoom applied to the map. It can be either a string identifying one of the predefined zoom boxes (\code{"Default", "World", "Africa", "Asia", "Europe", "SEAsia", "NAmerica", "CAmerica", "SAmerica", "Oceania"}). Alternatively, the user may provide a numeric vector of length 4 describing the min/max longitude and latitude (e.g. \code{c(-80, -35, -55, 10)} defines a zoom on South America).}
 
@@ -70,7 +70,7 @@ example_data <- country_info(fields = "population")
 # make a map
 quick_map(example_data, "population")
 
-# The function provides many predefined themes
+# The function provides several predefined themes
 quick_map(example_data, "population", theme = 3)
 quick_map(example_data, "population", theme = "Reds")
 

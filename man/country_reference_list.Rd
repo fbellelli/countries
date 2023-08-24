@@ -39,7 +39,7 @@ A data frame with columns corresponding to different country naming conventions.
   \item{name_lt}{Translation of ISO country names in \strong{Lithuanian}. (currently 249 territories)}
   \item{name_nl}{Translation of ISO country names in \strong{Dutch}. (currently 249 territories)}
   \item{name_no}{Translation of ISO country names in \strong{Norwegian}. (currently 249 territories)}
-  \item{name_po}{Translation of ISO country names in \strong{Polish}. (currently 249 territories)}
+  \item{name_pl}{Translation of ISO country names in \strong{Polish}. (currently 249 territories)}
   \item{name_pt}{Translation of ISO country names in \strong{Portuguese}. (currently 249 territories)}
   \item{name_ro}{Translation of ISO country names in \strong{Romanian}. (currently 249 territories)}
   \item{name_ru}{Translation of ISO country names in \strong{Russian}. (currently 249 territories)}
@@ -51,7 +51,6 @@ A data frame with columns corresponding to different country naming conventions.
   \item{name_zh-tw}{Translation of ISO country names in \strong{traditional Chinese}. (currently 249 territories)}
   \item{GTAP}{\href{https://www.gtap.agecon.purdue.edu/databases/regions.aspx?version=9.211}{GTAP} country and region codes.}
   \item{Name0}{Other variants of the country name included to improve the matching process}
-  \item{Name1}{Other variants of the country name included to improve the matching process}
   \item{Name1}{Other variants of the country name included to improve the matching process}
   \item{Name2}{Other variants of the country name included to improve the matching process}
   \item{Name3}{Other variants of the country name included to improve the matching process}
@@ -71,7 +70,6 @@ A data frame with columns corresponding to different country naming conventions.
   \item{Name17}{Other variants of the country name included to improve the matching process}
   \item{Name18}{Other variants of the country name included to improve the matching process}
   \item{Name19}{Other variants of the country name included to improve the matching process}
-  \item{Name20}{Other variants of the country name included to improve the matching process}
 }
 }
 \usage{

@@ -35,7 +35,7 @@
 #' # make a map
 #' quick_map(example_data, "population")
 #'
-#' # The function provides many predefined themes
+#' # The function provides several predefined themes
 #' quick_map(example_data, "population", theme = 3)
 #' quick_map(example_data, "population", theme = "Reds")
 #'

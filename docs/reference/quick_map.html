@@ -96,7 +96,7 @@ For some map examples, see <a href="https://fbellelli.github.io/countries/articl
 
 
 <dt>theme</dt>
-<dd><p>A numeric value or name identifying one of the predefined visual themes for the map. Can be a number between 1 and 11, or one of the predefined theme's names: <code>c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")</code>. If <code>0</code> or <code>"NoTheme"</code> is passed, no theme will be applied (default ggplot2 settings are used).</p></dd>
+<dd><p>A numeric value or name identifying one of the predefined visual themes for the map. Can be a number between 1 and 11, or one of the predefined theme's names: <code>c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")</code>. If <code>0</code> or <code>"NoTheme"</code> is passed, no theme will be applied (default `ggplot2`'s settings are used).</p></dd>
 
 
 <dt>zoom</dt>
@@ -162,7 +162,7 @@ The output of the function is a ggplot object. This means means that users can t
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Set - verbose - to TRUE for more details</span>
 <span class="r-plt img"><img src="quick_map-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># The function provides many predefined themes</span></span></span>
+<span class="r-in"><span><span class="co"># The function provides several predefined themes</span></span></span>
 <span class="r-in"><span><span class="fu">quick_map</span><span class="op">(</span><span class="va">example_data</span>, <span class="st">"population"</span>, theme <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Some country IDs have no match in one or more country naming conventions</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>

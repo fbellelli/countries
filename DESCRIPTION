@@ -1,7 +1,7 @@
 Package: countries
 Type: Package
 Title: Deal with Country Data in an Easy Way
-Version: 0.3
+Version: 1.0
 Authors@R: 
     person("Francesco Saverio", "Bellelli", , "fsabellelli@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(Website = "https://fbellelli.com/"))
@@ -16,13 +16,10 @@ Imports:
     stringdist,
     tidyr,
     stringr,
-    data.table,
     dplyr,
     knitr,
-    rmarkdown,
     fastmatch,
     lubridate,
-    testthat,
     utils,
     methods,
     stats,
@@ -31,6 +28,10 @@ Imports:
     ggplot2,
     viridis,
     grDevices
+Suggests:
+    data.table,
+    rmarkdown,
+    testthat
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr

@@ -36,7 +36,7 @@
 #'   \item{name_lt}{Translation of ISO country names in \strong{Lithuanian}. (currently 249 territories)}
 #'   \item{name_nl}{Translation of ISO country names in \strong{Dutch}. (currently 249 territories)}
 #'   \item{name_no}{Translation of ISO country names in \strong{Norwegian}. (currently 249 territories)}
-#'   \item{name_po}{Translation of ISO country names in \strong{Polish}. (currently 249 territories)}
+#'   \item{name_pl}{Translation of ISO country names in \strong{Polish}. (currently 249 territories)}
 #'   \item{name_pt}{Translation of ISO country names in \strong{Portuguese}. (currently 249 territories)}
 #'   \item{name_ro}{Translation of ISO country names in \strong{Romanian}. (currently 249 territories)}
 #'   \item{name_ru}{Translation of ISO country names in \strong{Russian}. (currently 249 territories)}
@@ -67,7 +67,6 @@
 #'   \item{Name17}{Other variants of the country name included to improve the matching process}
 #'   \item{Name18}{Other variants of the country name included to improve the matching process}
 #'   \item{Name19}{Other variants of the country name included to improve the matching process}
-#'   \item{Name20}{Other variants of the country name included to improve the matching process}
 #' }
 "country_reference_list"
 
