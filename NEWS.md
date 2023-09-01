@@ -1,6 +1,7 @@
 # countries 1.0.3
 * Fixed hyperlinks in for resubmission
 * Eliminated references to unexported objects in documentation
+* Package accepted on CRAN!!
 
 # countries 1.0
 * First CRAN submission
