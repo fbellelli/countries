@@ -98,7 +98,7 @@ auto_merge(data)
 
 ### Country names
 
-`auto_merge()` will automatically recognise country names and convert them to the same nomenclature for merging. For example, the country names in `tab1` and `tab2` have a different format, but with `auto_merge()` there is no need of converting the names beforehand. The function will perform this automatically. This feature is based on the function `country_name()`, which is described in [this article](/articles/dealing_with_names.html). 
+`auto_merge()` will automatically recognise country names and convert them to the same nomenclature for merging. For example, the country names in `tab1` and `tab2` have a different format, but with `auto_merge()` there is no need of converting the names beforehand. The function will perform this automatically. This feature is based on the function `country_name()`, which is described in [this article](https://fbellelli.github.io/countries/articles/dealing_with_names.html). 
 
 
 It is possible to change the destination nomenclature with the argument `country_to`. By default, all country names will be converted to ISO 3166-1 alpha-3 standard. Any of the nomenclatures supported by `country_name()` can be requested. 

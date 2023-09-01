@@ -1,6 +1,6 @@
 ## Resubmission
 This is a resubmission. In this version I have:
-* Fixed an invalid URL in inst/doc/auto_merge.html. Sorry for missing this the first time.
+* Fixed invalid URLs. Sorry for missing them.
 
 
 ## R CMD check results

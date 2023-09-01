@@ -1,8 +1,8 @@
-# countries 1.0.1
+# countries 1.0.2
 * Fixed link in inst/doc/auto_merge.html file for resubmission to CRAN
 
 # countries 1.0
-* CRAN submission
+* First CRAN submission
 
 # countries 0.3
 

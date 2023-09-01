@@ -13,11 +13,26 @@ data from different sources, and easily make world maps.
 
 ## Installing and loading the package
 
-The package can now be installed from CRAN.
+The package can soon be installed from CRAN.
 
 ``` r
 # Install package from CRAN
 install.packages("countries")
+
+# load package
+library(countries)
+```
+
+Alternatively, the development version can be downloaded directly from
+the Github repository. This can be done with the `devtools` package.
+
+``` r
+# Install and load devtools
+install.packages("devtools")
+library(devtools)
+
+# Install countries
+devtools::install_github("fbellelli/countries", build_vignettes = TRUE)
 
 # load package
 library(countries)
@@ -112,7 +127,7 @@ example_data <- country_info(fields = c("car"))
 quick_map(example_data, plot_col = "car.side")
 ```
 
-<img src="man/figures/unnamed-chunk-6-1.png" width="100%" />
+<img src="man/figures/unnamed-chunk-7-1.png" width="100%" />
 
 You can find [more examples in this
 article](https://fbellelli.github.io/countries/articles/quick_map.html).
@@ -153,14 +168,14 @@ auto_merge(tab1, tab2, tab3, tab4)
 #>    country world_cups HS_chapter volume time Table4_pivoted_values
 #> 1      ITA          4          9   1000   NA                    NA
 #> 2      ITA          4         85   2000   NA                    NA
-#> 3      PAK          0         NA     NA 2010             0.8531421
-#> 4      PAK          0         NA     NA 2011             0.7631570
-#> 5      BRA          5         NA     NA 2010             0.4660966
-#> 6      BRA          5         NA     NA 2011             0.7523389
-#> 7      DEU         NA          9    800 2010             0.4448022
-#> 8      DEU         NA          9    800 2011             0.4098941
-#> 9      DEU         NA         85   5000 2010             0.4448022
-#> 10     DEU         NA         85   5000 2011             0.4098941
+#> 3      PAK          0         NA     NA 2010             0.3456468
+#> 4      PAK          0         NA     NA 2011             0.4289851
+#> 5      BRA          5         NA     NA 2010             0.9541858
+#> 6      BRA          5         NA     NA 2011             0.7919756
+#> 7      DEU         NA          9    800 2010             0.7880156
+#> 8      DEU         NA          9    800 2011             0.0687606
+#> 9      DEU         NA         85   5000 2010             0.7880156
+#> 10     DEU         NA         85   5000 2011             0.0687606
 #>             Description
 #> 1  Coffee, tea and mate
 #> 2  Electrical machinery

@@ -23,11 +23,25 @@ library(countries)
 
 ## Installing and loading the package
 
-The package can now be installed from CRAN.
+The package can soon be installed from CRAN.
 
 ```{r , eval=FALSE}
 # Install package from CRAN
 install.packages("countries")
+
+# load package
+library(countries)
+```
+
+Alternatively, the development version can be downloaded directly from the Github repository. This can be done with the `devtools` package.
+
+```{r , eval=FALSE}
+# Install and load devtools
+install.packages("devtools")
+library(devtools)
+
+# Install countries
+devtools::install_github("fbellelli/countries", build_vignettes = TRUE)
 
 # load package
 library(countries)
