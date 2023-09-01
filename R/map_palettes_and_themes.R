@@ -4,6 +4,8 @@
 #' @param n_colours_palette Total number of colours in the palette
 #' @returns Returns n indices that can be used to select colours from a palette of n_colours_palette length
 #' @seealso \link[countries]{palettes_countries}
+#' @noRd
+#' @keywords Internal
 #' @examples
 #' countries:::pick_colours(5, 10)
 pick_colours <- function(n, n_colours_palette){
@@ -109,6 +111,8 @@ palettes_countries <- function(n, theme = 1, reverse = FALSE){
 #' @param theme A numeric value or name identifying the theme's colours. Can be a number between 1 and 11, or one of the theme's names: \code{c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")}.
 #' @returns Returns n indices that can be used to select colours from a palette of n_colours_palette length
 #' @seealso \link[countries]{quick_map}
+#' @noRd
+#' @keywords Internal
 #' @examples
 #' countries:::themes_countries(theme = 1)
 themes_countries <- function(theme = 1){

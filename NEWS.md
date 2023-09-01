@@ -1,5 +1,6 @@
-# countries 1.0.2
-* Fixed link in inst/doc/auto_merge.html file for resubmission to CRAN
+# countries 1.0.3
+* Fixed hyperlinks in for resubmission
+* Eliminated references to unexported objects in documentation
 
 # countries 1.0
 * First CRAN submission

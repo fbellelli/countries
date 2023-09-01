@@ -52,7 +52,7 @@ auto_melt <- function(
   data <- as.data.frame(x)
 
   #check column names for countries/years
-  temp <- check.wide.format(data)
+  temp <- check_wide_format(data)
 
   # proceed if there is any column to pivot
   if (!is.null(temp)){

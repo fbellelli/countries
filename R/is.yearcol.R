@@ -6,6 +6,8 @@
 #' @param allow_NA If set to true the date vector is allowed to contain \code{NA} values. If set to \code{FALSE} the function returns a FALSE if any value is NA. Default is \code{TRUE}.
 #' @returns Returns a logical vector indicating whether the vector could be containing year information
 #' @seealso \link[countries]{is_country}, \link[countries]{find_countrycol}
+#' @noRd
+#' @keywords Internal
 #' @examples
 #' countries:::is.yearcol(1990:2020)
 #' countries:::is.yearcol(c("a",2000))

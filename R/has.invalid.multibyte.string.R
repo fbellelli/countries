@@ -2,6 +2,8 @@
 #'
 #' @param x String vector to be tested
 #' @param return.elements Logical value. If `TRUE`, then the function returns a logical value for each element of x, otherwise a single logical is returned for the entire vector.
+#' @noRd
+#' @keywords Internal
 has.invalid.multibyte.string  <- function(x, return.elements = FALSE)
 {
   if (is.null(x))
