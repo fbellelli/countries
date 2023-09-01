@@ -23,7 +23,7 @@ library(countries)
 
 ## Installing and loading the package
 
-The package be installed from CRAN.
+The package can be installed from CRAN.
 
 ```{r , eval=FALSE}
 # Install package from CRAN
