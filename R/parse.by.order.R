@@ -43,7 +43,7 @@ parse.by.order <- function(data, by = NULL){
 
         #add identified columns to list preserving original destination name
         new_by[[length(new_by)+1]] <- temp
-        names(new_by)[length(new_by)] <- if (!is.null(names(i))) names(i) else temp[!is.na(temp)][1]
+        names(new_by)[length(new_by)] <- if (!is.null(names(by))) names(by)[length(new_by)] else temp[!is.na(temp)][1]
       }
       by <- new_by
     }

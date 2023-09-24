@@ -1,3 +1,6 @@
+# countries 1.0.4
+* Fixed bug in *auto_merge* that was preventing column names to be passed in *by* order for regular expressions.
+
 # countries 1.0.3
 * Fixed hyperlinks in for resubmission
 * Eliminated references to unexported objects in documentation

@@ -1,7 +1,7 @@
 Package: countries
 Type: Package
 Title: Deal with Country Data in an Easy Way
-Version: 1.0.3
+Version: 1.0.4
 Authors@R: 
     person("Francesco Saverio", "Bellelli", , "fsabellelli@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(Website = "https://fbellelli.com/"))
