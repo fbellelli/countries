@@ -64,13 +64,16 @@ quick_map <- function(data, plot_col,
   if (!is.logical(verbose) | length(verbose)!=1) stop("Function argument - verbose - needs to be a logical statement (TRUE/FALSE)")
   if (!is.logical(reverse_palette) | length(reverse_palette)!=1) stop("Function argument - reverse_palette - needs to be a logical statement (TRUE/FALSE)")
   if (is.na(reverse_palette)|is.null(reverse_palette)) stop("The argument - reverse_palette - cannot be NA or NULL. It needs to be a logical value")
+  if (is.null(zoom)) stop("NULL is an invalid input for - zoom - needs to be a vector of lat/long values or a name of one of the predefined regions. Use - 'Default' - instead?")
   if (!is.atomic(zoom)) stop("invalid input for - zoom - needs to be a vector of lat/long values or a name of one of the predefined regions")
   if (!methods::is(width_plot, "numeric") | length(width_plot) != 1 | any(is.na(width_plot))) stop("invalid input for - width_plot - needs to be a positive numeric value")
   if (width_plot <= 0) stop("invalid input for - width_plot - needs to be a positive numeric value")
   if (!is.null(save_to)){
     if (!methods::is(save_to, "character") | length(save_to) > 1 | any(is.na(save_to))) stop("invalid input for - save_to - needs to be a string containing the path to where you wish to save the map")
   }
-  if (is.na(col_border)|!is.atomic(col_border)| !methods::is(col_border, "character") |is.logical(col_border)|length(col_border)>1) stop("invalid input for - col_border - it needs to be a single colour name")
+  if (is.null(col_border)) stop("Input - col_na - cannot be NULL")
+  if (is.na(col_border)| !(is.atomic(col_border) || is.null(col_border)) | !methods::is(col_border, "character") |is.logical(col_border)) stop("invalid input for - col_border - it needs to be a single colour name")
+  if (is.null(col_na)) stop("Input - col_na - cannot be NULL")
   if (is.na(col_na)|!is.atomic(col_na)| !methods::is(col_na, "character")|is.logical(col_na)|length(col_na)>1) stop("invalid input for - col_na - it needs to be a single colour name")
   if (!is.null(col_breaks)){
     if (!is.atomic(col_breaks)| !methods::is(col_breaks,"numeric")) stop("invalid input for - col_breaks - please provide numberic breaks for the colour scale")
@@ -82,6 +85,7 @@ quick_map <- function(data, plot_col,
   # predefined themes
   theme_numbers <- 1:11
   theme_names <- c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")
+  if (is.null(theme)) stop("Input - theme - cannot be NULL. Use 1 instead?")
   if (!is.atomic(theme)|is.logical(theme)|length(theme)>1) stop("invalid input for - theme - it needs to be a valid theme name or integer")
   if (!(theme %in% c(0, theme_numbers) | theme %in% c("NoTheme", theme_names))) stop("invalid input for - theme - it needs to be a valid theme name or integer")
 

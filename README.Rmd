@@ -60,7 +60,7 @@ is_country(x=c("ITA","Estados Unidos","bungalow","dog",542))
 is_country(x=c("Ceylon","LKA","Indonesia","Inde"), check_for=c("India","Sri Lanka"))
 ```
 
-The function `country_name()` can be used to convert country names to different naming conventions or to translate them to different languages. `country_name()` can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures.  
+The function `country_name()` can be used to convert country names to different naming conventions or to translate them to different languages. `country_name()` can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures.  Learn more about how to deal with country names in [this article](https://fbellelli.github.io/countries/articles/dealing_with_names.html).
 
 ```{r}
 example <- c("US","C@ète d^Ivoire", "Morocco","FYROM", "Arabie Saoudite")
@@ -75,12 +75,12 @@ country_name(x= example, to="name_es")
 country_name(x= example, to=c("ISO3","ISO2","UN_en"))
 ```
 
-Learn more about how to deal with country names in [this article](https://fbellelli.github.io/countries/articles/dealing_with_names.html).
+
 
 
 ## Getting information about countries
 
-`country_info()` allows to download a variety of information about countries, such as: currencies used, capital city, language spoken, flag, neighbouring countries, and much more.
+`country_info()` allows to download a variety of information about countries, such as: currencies used, capital city, language spoken, flag, neighbouring countries, and much more. You can find [more information about this function](https://fbellelli.github.io/countries/reference/country_info.html) in the documentation.
 
 ```{r}
 # What are the official languages of Switzerland?
@@ -90,12 +90,12 @@ country_info("Switzerland", "languages")
 country_info(c("Canada", "Mozambique", "India"), c("capital", "currencies"))
 ```
 
-You can find [more information about this function](https://fbellelli.github.io/countries/reference/country_info.html) in the documentation.
+
 
 
 ## Easy country maps
 
-With `quick_map()`, it takes only one line of code to produce [chloropleth maps](https://en.wikipedia.org/wiki/Choropleth_map). It automatically recognises country names in multiple languages and nomenclatures. This allows to produce publication-grade map in seconds. Moreover, the output is a ggplot object, so the visual look can be customised in infinite ways.
+With `quick_map()`, it takes only one line of code to produce [chloropleth maps](https://en.wikipedia.org/wiki/Choropleth_map). It automatically recognises country names in multiple languages and nomenclatures. This allows to produce publication-grade maps in seconds. Moreover, the output is a ggplot object, so the visual look can be customised in infinite ways. You can find [more examples in this article](https://fbellelli.github.io/countries/articles/quick_map.html).
 
 ```{r, dpi = 700, warning = FALSE, message = FALSE, fig.asp=0.5}
 # downloading some sample data to plot
@@ -105,11 +105,12 @@ example_data <- country_info(fields = c("car"))
 quick_map(example_data, plot_col = "car.side")
 ```
 
-You can find [more examples in this article](https://fbellelli.github.io/countries/articles/quick_map.html).
+
 
 ## Merging country data
 
-The function `auto_merge()` simplifies the merging of country data tables by: **1)** allowing merging of 2+ tables at the same time, **2)** Supporting automatic detection of columns to merge, **3)** automatically handling different country naming conventions and date formats, **4)** automatic pivoting of country names or years in tables' headers.
+The function `auto_merge()` simplifies the merging of country data tables by: **1)** allowing merging of 2+ tables at the same time, **2)** Supporting automatic detection of columns to merge, **3)** automatically handling different country naming conventions and date formats, **4)** automatic pivoting of country names or years in tables' headers. Learn more about country names functions in [this article](https://fbellelli.github.io/countries/articles/auto_merge.html).
+
 
 ```{r}
 # Let's create 4 tables with different formats and country names
@@ -124,6 +125,5 @@ auto_merge(tab1, tab2, tab3, tab4)
 ```
 
 
-Learn more about country names functions in [this article](https://fbellelli.github.io/countries/articles/auto_merge.html).
 
 

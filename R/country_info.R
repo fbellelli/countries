@@ -32,10 +32,15 @@ country_info <- function(countries = NULL, fields = NULL, fuzzy_match = TRUE, ma
   # check input format
   if (!is.logical(fuzzy_match) | length(fuzzy_match)!=1) stop("Function argument - fuzzy_match - needs to be a single logical statement (TRUE/FALSE)")
   if (!is.logical(match_info) | length(match_info)!=1) stop("Function argument - match_info - needs to be a single logical statement (TRUE/FALSE)")
-  if (!is.atomic(countries)) stop("Function argument - countries - needs to be a vector of country names")
-  if (!is.atomic(fields)) stop("Function argument - fields - needs to be a character vector")
-  if (all(is.na(countries)) & !is.null(countries)) stop("Only NAs in function argument - countries -")
-  if (all(is.na(fields)) & !is.null(fields)) stop("Only NAs in function argument - fields -")
+  if (!(is.atomic(countries) || is.null(countries))) stop("Function argument - countries - needs to be a vector of country names")
+  if (length(countries)>0){
+    if (all(is.na(countries))) stop("All elements in input - countries - are NAs")
+  }
+  if (!is.null(fields)){
+    if (!is.atomic(fields)) stop("Function argument - fields - needs to be a character vector")
+    if (all(is.na(fields))) stop("Only NAs in function argument - fields -")
+  }
+
 
   # convert inputs to character
   countries <- as.character(countries)

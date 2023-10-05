@@ -15,6 +15,7 @@
 which_min <- function(x, first_only=FALSE){
 
   #CHECK INPUTS ----
+  if (is.null(x)) return(NULL)
   if (!is.atomic(x)|is.character(x)|is.factor(x)){stop("Argument - x - needs to be a numeric or logical vector")}
   if (!is.logical(first_only)|any(is.na(first_only))|is.null(first_only)){stop("Argument - first_only - needs to be a logical value: TRUE / FALSE")}
   if (length(first_only)>1){stop("Argument - first_only - needs to be of length 1")}
@@ -35,6 +36,7 @@ which_min <- function(x, first_only=FALSE){
 which_max <- function(x, first_only=FALSE){
 
   #CHECK INPUTS ----
+  if (is.null(x)) return(NULL)
   if (!is.atomic(x)|is.character(x)|is.factor(x)){stop("Argument - x - needs to be a numeric or logical vector")}
   if (!is.logical(first_only)|any(is.na(first_only))|is.null(first_only)){stop("Argument - first_only - needs to be a logical value: TRUE / FALSE")}
   if (length(first_only)>1){stop("Argument - first_only - needs to be of length 1")}

@@ -35,7 +35,7 @@ country_name <- function(x,
 
   if (all(is.na(x))){
 
-    message("All values in argument - x - are NA")
+    message("All values in argument - x - are NA or NULL")
     return(rep(NA, length(x)))
 
   } else{

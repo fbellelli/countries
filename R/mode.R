@@ -18,6 +18,7 @@ Mode <- function(x,
 
   # CHECK INPUTS ----
 
+  if (is.null(x)){return(NULL)}
   if (!is.atomic(x)){stop("Argument - x - needs to be a vector")}
   if (!is.logical(na.rm)|any(is.na(na.rm))|is.null(na.rm)){stop("Argument - na.rm - needs to be a logical value: TRUE / FALSE")}
   if (length(na.rm)>1){stop("Argument - na.rm - needs to be of length 1")}

@@ -44,6 +44,7 @@ palettes_countries <- function(n, theme = 1, reverse = FALSE){
 
   # perform checks on inputs
   if (!is.numeric(n)|length(n)!=1|is.na(n)) stop("invalid input for - n - it needs to be a number")
+  if (is.null(theme)) stop("NULL is an invalid input for - theme - it needs to be one of the themes' names or an integer value")
   if (!is.atomic(theme)|is.logical(theme)|length(theme)>1) stop("invalid input for - theme - it needs to be a valid theme name or integer")
   if (!is.logical(reverse) | length(reverse)!=1) stop("Function argument - reverse - needs to be a logical statement (TRUE/FALSE)")
   if (is.na(reverse)|is.null(reverse)) stop("The argument - reverse - cannot be NA or NULL. It needs to be a logical value")

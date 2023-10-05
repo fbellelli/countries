@@ -21,7 +21,15 @@ is_country <- function(x, check_for=NULL, fuzzy_match=FALSE){
   #check inputs
   if (!is.logical(fuzzy_match) | length(fuzzy_match)!=1) stop("Function argument - fuzzy_match - needs to be a logical statement (TRUE/FALSE)")
   if (all(is.na(check_for))&!is.null(check_for)) stop("Function argument - check_for - needs to be a vector of country names.")
-  if (!is.atomic(x)) stop("Function argument - x - needs to be a character vector")
+  if (is.null(x)){
+    return(logical(0))
+  } else {
+    if (!is.atomic(x)) {
+      stop("Function argument - x - needs to be a character vector")
+    } else {
+        if (all(is.na(x))) return(rep(NA, length(x)))
+    }
+  }
   x <- as.character(x)
 
   #clean inputs and give error if a country is not recognised exactly

@@ -1,3 +1,8 @@
+# countries 1.0.5
+
+# countries 1.0.4
+* Patch to address change in behaviour of function *is.atomic*
+
 # countries 1.0.4
 * Fixed bug in *auto_merge* that was preventing column names to be passed in *by* order for regular expressions.
 

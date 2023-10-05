@@ -27,9 +27,9 @@ match_table <- function(x,
 
   #CHECK VALIDITY OF FUNCTION ARGUMENTS :-------------------
   if (is.factor(x)) x <- as.character(x)
+  if (is.null(x)) stop("NULL provided in argument - x")
   if (!is.atomic(x)) stop("The function argument - x - needs to be a vector")
-  if (all(is.na(x))) stop("All values in argument - x - are NA")
-  if (is.null(x)) stop("No value provided in argument - x")
+  if (all(is.na(x))) return(rep(NA_character_, length(x)))
   if (!is.logical(fuzzy_match) | length(fuzzy_match)!=1) stop("Function argument - fuzzy_match - needs to be a logical statement (TRUE/FALSE)")
   if (!is.logical(verbose) | length(verbose)!=1) stop("Function argument - verbose - needs to be a logical statement (TRUE/FALSE)")
   if (!is.logical(matching_info) & length(matching_info)!=1) stop("Function argument - matching_info - needs to be a logical statement (TRUE/FALSE)")

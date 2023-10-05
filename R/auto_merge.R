@@ -76,9 +76,9 @@ auto_merge <- function(... , by=NULL, country_to = "ISO3", inner_join = FALSE, m
 
   if (length(data)<2) stop("At least two tables need to be provided for merging")
   if (any(sapply(data, ncol)<2) | any(sapply(data, nrow)==0)) stop("Unable to proceed: input data tables need to have at least two columns and one row")
-  if (!is.atomic(by)&!is.list(by)) stop("Function argument - by - is invalid. It needs to be either a vector of regular expressions, or a list of column names. Refer to the documentation for more information.")
+  if (!(is.atomic(by)||is.null(by))& !is.list(by)) stop("Function argument - by - is invalid. It needs to be either a vector of regular expressions, or a list of column names. Refer to the documentation for more information.")
   if (is.list(by)){
-    if (!all(sapply(by,is.atomic))) stop("Function argument - by - is invalid. List input needs to contain vectors of column names to merge")
+    if (!all(sapply(by, is.atomic))) stop("Function argument - by - is invalid. List input needs to contain vectors of column names to merge")
     if (any(sapply(by,function(x){all(is.na(x))}))) stop("Function argument - by - is invalid. One of the name vectors contains all NAs")
     if (length(unique(sapply(by, length))) != 1) stop("Function argument - by - is invalid. Length of name vectors differ from the number of provided tables.")
   }

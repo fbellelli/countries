@@ -1,6 +1,6 @@
 ## Resubmission
 This is a resubmission. In this version I have:
-* Fixed a small bug in one of the functions of the package (auto_merge)
+* Small adaptation to accommodate changes in behaviour of *base::is.atomic(NULL)*, which will return FALSE
 
 
 ## R CMD check results
