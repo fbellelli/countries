@@ -1,6 +1,5 @@
-# countries 1.0.5
 
-# countries 1.0.4
+# countries 1.0.5
 * Patch to address change in behaviour of function *is.atomic*
 
 # countries 1.0.4
