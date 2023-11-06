@@ -1,6 +1,6 @@
 ## Resubmission
 This is a resubmission. In this version I have:
-* Small adaptation to accommodate changes in behaviour of *base::is.atomic(NULL)*, which will return FALSE
+* Added two new functions (list_countries and random_countries) and made some small additions to some old functions (quick_map and palettes_countries).
 
 
 ## R CMD check results

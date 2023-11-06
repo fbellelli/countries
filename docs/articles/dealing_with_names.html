@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">countries</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,7 +94,7 @@
 <h2 id="identifying-country-names">Identifying country names<a class="anchor" aria-label="anchor" href="#identifying-country-names"></a>
 </h2>
 <p>The function <code><a href="../reference/is_country.html">is_country()</a></code> allows to check whether a
-string is a country name. The argument <code>fuzzy_mmatch</code> can be
+string is a country name. The argument <code>fuzzy_match</code> can be
 used to increase tolerance and allow for small typos in the names.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/is_country.html">is_country</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States"</span>,<span class="st">"Unated States"</span>,<span class="st">"dot"</span>,<span class="st">"DNK"</span>,<span class="fl">123</span><span class="op">)</span>, fuzzy_match <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># FALSE is the default and will run faster</span></span>
@@ -113,12 +113,283 @@ allowing for different naming conventions and languages.</p>
 in a data frame contain country names.</p>
 </div>
 <div class="section level2">
+<h2 id="getting-a-list-of-country-names">Getting a list of country names<a class="anchor" aria-label="anchor" href="#getting-a-list-of-country-names"></a>
+</h2>
+<p>The functions <code><a href="../reference/list_countries.html">list_countries()</a></code> and
+<code><a href="../reference/random_countries.html">random_countries()</a></code> allow to get a list of country names.
+The former will return a list of ALL countries, while the second
+provides <code>n</code> randomly picked countries.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Lao People's Democratic Republic" "Uganda"                          </span></span>
+<span><span class="co">#&gt; [3] "Netherlands"                      "Nicaragua"                       </span></span>
+<span><span class="co">#&gt; [5] "Tunisia"</span></span>
+<span><span class="fu"><a href="../reference/list_countries.html">list_countries</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   [1] "Afghanistan"                                         </span></span>
+<span><span class="co">#&gt;   [2] "Åland Islands"                                       </span></span>
+<span><span class="co">#&gt;   [3] "Albania"                                             </span></span>
+<span><span class="co">#&gt;   [4] "Algeria"                                             </span></span>
+<span><span class="co">#&gt;   [5] "American Samoa"                                      </span></span>
+<span><span class="co">#&gt;   [6] "Andorra"                                             </span></span>
+<span><span class="co">#&gt;   [7] "Angola"                                              </span></span>
+<span><span class="co">#&gt;   [8] "Anguilla"                                            </span></span>
+<span><span class="co">#&gt;   [9] "Antarctica"                                          </span></span>
+<span><span class="co">#&gt;  [10] "Antigua and Barbuda"                                 </span></span>
+<span><span class="co">#&gt;  [11] "Argentina"                                           </span></span>
+<span><span class="co">#&gt;  [12] "Armenia"                                             </span></span>
+<span><span class="co">#&gt;  [13] "Aruba"                                               </span></span>
+<span><span class="co">#&gt;  [14] "Australia"                                           </span></span>
+<span><span class="co">#&gt;  [15] "Austria"                                             </span></span>
+<span><span class="co">#&gt;  [16] "Azerbaijan"                                          </span></span>
+<span><span class="co">#&gt;  [17] "Bahamas"                                             </span></span>
+<span><span class="co">#&gt;  [18] "Bahrain"                                             </span></span>
+<span><span class="co">#&gt;  [19] "Bangladesh"                                          </span></span>
+<span><span class="co">#&gt;  [20] "Barbados"                                            </span></span>
+<span><span class="co">#&gt;  [21] "Belarus"                                             </span></span>
+<span><span class="co">#&gt;  [22] "Belgium"                                             </span></span>
+<span><span class="co">#&gt;  [23] "Belize"                                              </span></span>
+<span><span class="co">#&gt;  [24] "Benin"                                               </span></span>
+<span><span class="co">#&gt;  [25] "Bermuda"                                             </span></span>
+<span><span class="co">#&gt;  [26] "Bhutan"                                              </span></span>
+<span><span class="co">#&gt;  [27] "Bolivia (Plurinational State of)"                    </span></span>
+<span><span class="co">#&gt;  [28] "Bonaire, Sint Eustatius and Saba"                    </span></span>
+<span><span class="co">#&gt;  [29] "Bosnia and Herzegovina"                              </span></span>
+<span><span class="co">#&gt;  [30] "Botswana"                                            </span></span>
+<span><span class="co">#&gt;  [31] "Bouvet Island"                                       </span></span>
+<span><span class="co">#&gt;  [32] "Brazil"                                              </span></span>
+<span><span class="co">#&gt;  [33] "British Indian Ocean Territory"                      </span></span>
+<span><span class="co">#&gt;  [34] "Virgin Islands (British)"                            </span></span>
+<span><span class="co">#&gt;  [35] "Brunei Darussalam"                                   </span></span>
+<span><span class="co">#&gt;  [36] "Bulgaria"                                            </span></span>
+<span><span class="co">#&gt;  [37] "Burkina Faso"                                        </span></span>
+<span><span class="co">#&gt;  [38] "Burundi"                                             </span></span>
+<span><span class="co">#&gt;  [39] "Cabo Verde"                                          </span></span>
+<span><span class="co">#&gt;  [40] "Cambodia"                                            </span></span>
+<span><span class="co">#&gt;  [41] "Cameroon"                                            </span></span>
+<span><span class="co">#&gt;  [42] "Canada"                                              </span></span>
+<span><span class="co">#&gt;  [43] "Cayman Islands"                                      </span></span>
+<span><span class="co">#&gt;  [44] "Central African Republic"                            </span></span>
+<span><span class="co">#&gt;  [45] "Chad"                                                </span></span>
+<span><span class="co">#&gt;  [46] "Chile"                                               </span></span>
+<span><span class="co">#&gt;  [47] "China"                                               </span></span>
+<span><span class="co">#&gt;  [48] "Hong Kong"                                           </span></span>
+<span><span class="co">#&gt;  [49] "Macao"                                               </span></span>
+<span><span class="co">#&gt;  [50] "Christmas Island"                                    </span></span>
+<span><span class="co">#&gt;  [51] "Cocos (Keeling) Islands"                             </span></span>
+<span><span class="co">#&gt;  [52] "Colombia"                                            </span></span>
+<span><span class="co">#&gt;  [53] "Comoros"                                             </span></span>
+<span><span class="co">#&gt;  [54] "Congo"                                               </span></span>
+<span><span class="co">#&gt;  [55] "Cook Islands"                                        </span></span>
+<span><span class="co">#&gt;  [56] "Costa Rica"                                          </span></span>
+<span><span class="co">#&gt;  [57] "Côte d'Ivoire"                                       </span></span>
+<span><span class="co">#&gt;  [58] "Croatia"                                             </span></span>
+<span><span class="co">#&gt;  [59] "Cuba"                                                </span></span>
+<span><span class="co">#&gt;  [60] "Curaçao"                                             </span></span>
+<span><span class="co">#&gt;  [61] "Cyprus"                                              </span></span>
+<span><span class="co">#&gt;  [62] "Czechia"                                             </span></span>
+<span><span class="co">#&gt;  [63] "Korea (Democratic People's Republic of)"             </span></span>
+<span><span class="co">#&gt;  [64] "Congo, Democratic Republic of the"                   </span></span>
+<span><span class="co">#&gt;  [65] "Denmark"                                             </span></span>
+<span><span class="co">#&gt;  [66] "Djibouti"                                            </span></span>
+<span><span class="co">#&gt;  [67] "Dominica"                                            </span></span>
+<span><span class="co">#&gt;  [68] "Dominican Republic"                                  </span></span>
+<span><span class="co">#&gt;  [69] "Ecuador"                                             </span></span>
+<span><span class="co">#&gt;  [70] "Egypt"                                               </span></span>
+<span><span class="co">#&gt;  [71] "El Salvador"                                         </span></span>
+<span><span class="co">#&gt;  [72] "Equatorial Guinea"                                   </span></span>
+<span><span class="co">#&gt;  [73] "Eritrea"                                             </span></span>
+<span><span class="co">#&gt;  [74] "Estonia"                                             </span></span>
+<span><span class="co">#&gt;  [75] "Eswatini"                                            </span></span>
+<span><span class="co">#&gt;  [76] "Ethiopia"                                            </span></span>
+<span><span class="co">#&gt;  [77] "Falkland Islands (Malvinas)"                         </span></span>
+<span><span class="co">#&gt;  [78] "Faroe Islands"                                       </span></span>
+<span><span class="co">#&gt;  [79] "Fiji"                                                </span></span>
+<span><span class="co">#&gt;  [80] "Finland"                                             </span></span>
+<span><span class="co">#&gt;  [81] "France"                                              </span></span>
+<span><span class="co">#&gt;  [82] "French Guiana"                                       </span></span>
+<span><span class="co">#&gt;  [83] "French Polynesia"                                    </span></span>
+<span><span class="co">#&gt;  [84] "French Southern Territories"                         </span></span>
+<span><span class="co">#&gt;  [85] "Gabon"                                               </span></span>
+<span><span class="co">#&gt;  [86] "Gambia"                                              </span></span>
+<span><span class="co">#&gt;  [87] "Georgia"                                             </span></span>
+<span><span class="co">#&gt;  [88] "Germany"                                             </span></span>
+<span><span class="co">#&gt;  [89] "Ghana"                                               </span></span>
+<span><span class="co">#&gt;  [90] "Gibraltar"                                           </span></span>
+<span><span class="co">#&gt;  [91] "Greece"                                              </span></span>
+<span><span class="co">#&gt;  [92] "Greenland"                                           </span></span>
+<span><span class="co">#&gt;  [93] "Grenada"                                             </span></span>
+<span><span class="co">#&gt;  [94] "Guadeloupe"                                          </span></span>
+<span><span class="co">#&gt;  [95] "Guam"                                                </span></span>
+<span><span class="co">#&gt;  [96] "Guatemala"                                           </span></span>
+<span><span class="co">#&gt;  [97] "Guernsey"                                            </span></span>
+<span><span class="co">#&gt;  [98] "Guinea"                                              </span></span>
+<span><span class="co">#&gt;  [99] "Guinea-Bissau"                                       </span></span>
+<span><span class="co">#&gt; [100] "Guyana"                                              </span></span>
+<span><span class="co">#&gt; [101] "Haiti"                                               </span></span>
+<span><span class="co">#&gt; [102] "Heard Island and McDonald Islands"                   </span></span>
+<span><span class="co">#&gt; [103] "Holy See"                                            </span></span>
+<span><span class="co">#&gt; [104] "Honduras"                                            </span></span>
+<span><span class="co">#&gt; [105] "Hungary"                                             </span></span>
+<span><span class="co">#&gt; [106] "Iceland"                                             </span></span>
+<span><span class="co">#&gt; [107] "India"                                               </span></span>
+<span><span class="co">#&gt; [108] "Indonesia"                                           </span></span>
+<span><span class="co">#&gt; [109] "Iran (Islamic Republic of)"                          </span></span>
+<span><span class="co">#&gt; [110] "Iraq"                                                </span></span>
+<span><span class="co">#&gt; [111] "Ireland"                                             </span></span>
+<span><span class="co">#&gt; [112] "Isle of Man"                                         </span></span>
+<span><span class="co">#&gt; [113] "Israel"                                              </span></span>
+<span><span class="co">#&gt; [114] "Italy"                                               </span></span>
+<span><span class="co">#&gt; [115] "Jamaica"                                             </span></span>
+<span><span class="co">#&gt; [116] "Japan"                                               </span></span>
+<span><span class="co">#&gt; [117] "Jersey"                                              </span></span>
+<span><span class="co">#&gt; [118] "Jordan"                                              </span></span>
+<span><span class="co">#&gt; [119] "Kazakhstan"                                          </span></span>
+<span><span class="co">#&gt; [120] "Kenya"                                               </span></span>
+<span><span class="co">#&gt; [121] "Kiribati"                                            </span></span>
+<span><span class="co">#&gt; [122] "Kuwait"                                              </span></span>
+<span><span class="co">#&gt; [123] "Kyrgyzstan"                                          </span></span>
+<span><span class="co">#&gt; [124] "Lao People's Democratic Republic"                    </span></span>
+<span><span class="co">#&gt; [125] "Latvia"                                              </span></span>
+<span><span class="co">#&gt; [126] "Lebanon"                                             </span></span>
+<span><span class="co">#&gt; [127] "Lesotho"                                             </span></span>
+<span><span class="co">#&gt; [128] "Liberia"                                             </span></span>
+<span><span class="co">#&gt; [129] "Libya"                                               </span></span>
+<span><span class="co">#&gt; [130] "Liechtenstein"                                       </span></span>
+<span><span class="co">#&gt; [131] "Lithuania"                                           </span></span>
+<span><span class="co">#&gt; [132] "Luxembourg"                                          </span></span>
+<span><span class="co">#&gt; [133] "Madagascar"                                          </span></span>
+<span><span class="co">#&gt; [134] "Malawi"                                              </span></span>
+<span><span class="co">#&gt; [135] "Malaysia"                                            </span></span>
+<span><span class="co">#&gt; [136] "Maldives"                                            </span></span>
+<span><span class="co">#&gt; [137] "Mali"                                                </span></span>
+<span><span class="co">#&gt; [138] "Malta"                                               </span></span>
+<span><span class="co">#&gt; [139] "Marshall Islands"                                    </span></span>
+<span><span class="co">#&gt; [140] "Martinique"                                          </span></span>
+<span><span class="co">#&gt; [141] "Mauritania"                                          </span></span>
+<span><span class="co">#&gt; [142] "Mauritius"                                           </span></span>
+<span><span class="co">#&gt; [143] "Mayotte"                                             </span></span>
+<span><span class="co">#&gt; [144] "Mexico"                                              </span></span>
+<span><span class="co">#&gt; [145] "Micronesia (Federated States of)"                    </span></span>
+<span><span class="co">#&gt; [146] "Monaco"                                              </span></span>
+<span><span class="co">#&gt; [147] "Mongolia"                                            </span></span>
+<span><span class="co">#&gt; [148] "Montenegro"                                          </span></span>
+<span><span class="co">#&gt; [149] "Montserrat"                                          </span></span>
+<span><span class="co">#&gt; [150] "Morocco"                                             </span></span>
+<span><span class="co">#&gt; [151] "Mozambique"                                          </span></span>
+<span><span class="co">#&gt; [152] "Myanmar"                                             </span></span>
+<span><span class="co">#&gt; [153] "Namibia"                                             </span></span>
+<span><span class="co">#&gt; [154] "Nauru"                                               </span></span>
+<span><span class="co">#&gt; [155] "Nepal"                                               </span></span>
+<span><span class="co">#&gt; [156] "Netherlands"                                         </span></span>
+<span><span class="co">#&gt; [157] "New Caledonia"                                       </span></span>
+<span><span class="co">#&gt; [158] "New Zealand"                                         </span></span>
+<span><span class="co">#&gt; [159] "Nicaragua"                                           </span></span>
+<span><span class="co">#&gt; [160] "Niger"                                               </span></span>
+<span><span class="co">#&gt; [161] "Nigeria"                                             </span></span>
+<span><span class="co">#&gt; [162] "Niue"                                                </span></span>
+<span><span class="co">#&gt; [163] "Norfolk Island"                                      </span></span>
+<span><span class="co">#&gt; [164] "North Macedonia"                                     </span></span>
+<span><span class="co">#&gt; [165] "Northern Mariana Islands"                            </span></span>
+<span><span class="co">#&gt; [166] "Norway"                                              </span></span>
+<span><span class="co">#&gt; [167] "Oman"                                                </span></span>
+<span><span class="co">#&gt; [168] "Pakistan"                                            </span></span>
+<span><span class="co">#&gt; [169] "Palau"                                               </span></span>
+<span><span class="co">#&gt; [170] "Panama"                                              </span></span>
+<span><span class="co">#&gt; [171] "Papua New Guinea"                                    </span></span>
+<span><span class="co">#&gt; [172] "Paraguay"                                            </span></span>
+<span><span class="co">#&gt; [173] "Peru"                                                </span></span>
+<span><span class="co">#&gt; [174] "Philippines"                                         </span></span>
+<span><span class="co">#&gt; [175] "Pitcairn"                                            </span></span>
+<span><span class="co">#&gt; [176] "Poland"                                              </span></span>
+<span><span class="co">#&gt; [177] "Portugal"                                            </span></span>
+<span><span class="co">#&gt; [178] "Puerto Rico"                                         </span></span>
+<span><span class="co">#&gt; [179] "Qatar"                                               </span></span>
+<span><span class="co">#&gt; [180] "Korea, Republic of"                                  </span></span>
+<span><span class="co">#&gt; [181] "Moldova, Republic of"                                </span></span>
+<span><span class="co">#&gt; [182] "Réunion"                                             </span></span>
+<span><span class="co">#&gt; [183] "Romania"                                             </span></span>
+<span><span class="co">#&gt; [184] "Russian Federation"                                  </span></span>
+<span><span class="co">#&gt; [185] "Rwanda"                                              </span></span>
+<span><span class="co">#&gt; [186] "Saint Barthélemy"                                    </span></span>
+<span><span class="co">#&gt; [187] "Saint Helena, Ascension and Tristan da Cunha"        </span></span>
+<span><span class="co">#&gt; [188] "Saint Kitts and Nevis"                               </span></span>
+<span><span class="co">#&gt; [189] "Saint Lucia"                                         </span></span>
+<span><span class="co">#&gt; [190] "Saint Martin (French part)"                          </span></span>
+<span><span class="co">#&gt; [191] "Saint Pierre and Miquelon"                           </span></span>
+<span><span class="co">#&gt; [192] "Saint Vincent and the Grenadines"                    </span></span>
+<span><span class="co">#&gt; [193] "Samoa"                                               </span></span>
+<span><span class="co">#&gt; [194] "San Marino"                                          </span></span>
+<span><span class="co">#&gt; [195] "Sao Tome and Principe"                               </span></span>
+<span><span class="co">#&gt; [196] "Saudi Arabia"                                        </span></span>
+<span><span class="co">#&gt; [197] "Senegal"                                             </span></span>
+<span><span class="co">#&gt; [198] "Serbia"                                              </span></span>
+<span><span class="co">#&gt; [199] "Seychelles"                                          </span></span>
+<span><span class="co">#&gt; [200] "Sierra Leone"                                        </span></span>
+<span><span class="co">#&gt; [201] "Singapore"                                           </span></span>
+<span><span class="co">#&gt; [202] "Sint Maarten (Dutch part)"                           </span></span>
+<span><span class="co">#&gt; [203] "Slovakia"                                            </span></span>
+<span><span class="co">#&gt; [204] "Slovenia"                                            </span></span>
+<span><span class="co">#&gt; [205] "Solomon Islands"                                     </span></span>
+<span><span class="co">#&gt; [206] "Somalia"                                             </span></span>
+<span><span class="co">#&gt; [207] "South Africa"                                        </span></span>
+<span><span class="co">#&gt; [208] "South Georgia and the South Sandwich Islands"        </span></span>
+<span><span class="co">#&gt; [209] "South Sudan"                                         </span></span>
+<span><span class="co">#&gt; [210] "Spain"                                               </span></span>
+<span><span class="co">#&gt; [211] "Sri Lanka"                                           </span></span>
+<span><span class="co">#&gt; [212] "Palestine, State of"                                 </span></span>
+<span><span class="co">#&gt; [213] "Sudan"                                               </span></span>
+<span><span class="co">#&gt; [214] "Suriname"                                            </span></span>
+<span><span class="co">#&gt; [215] "Svalbard and Jan Mayen"                              </span></span>
+<span><span class="co">#&gt; [216] "Sweden"                                              </span></span>
+<span><span class="co">#&gt; [217] "Switzerland"                                         </span></span>
+<span><span class="co">#&gt; [218] "Syrian Arab Republic"                                </span></span>
+<span><span class="co">#&gt; [219] "Tajikistan"                                          </span></span>
+<span><span class="co">#&gt; [220] "Thailand"                                            </span></span>
+<span><span class="co">#&gt; [221] "Timor-Leste"                                         </span></span>
+<span><span class="co">#&gt; [222] "Togo"                                                </span></span>
+<span><span class="co">#&gt; [223] "Tokelau"                                             </span></span>
+<span><span class="co">#&gt; [224] "Tonga"                                               </span></span>
+<span><span class="co">#&gt; [225] "Trinidad and Tobago"                                 </span></span>
+<span><span class="co">#&gt; [226] "Tunisia"                                             </span></span>
+<span><span class="co">#&gt; [227] "Turkey"                                              </span></span>
+<span><span class="co">#&gt; [228] "Turkmenistan"                                        </span></span>
+<span><span class="co">#&gt; [229] "Turks and Caicos Islands"                            </span></span>
+<span><span class="co">#&gt; [230] "Tuvalu"                                              </span></span>
+<span><span class="co">#&gt; [231] "Uganda"                                              </span></span>
+<span><span class="co">#&gt; [232] "Ukraine"                                             </span></span>
+<span><span class="co">#&gt; [233] "United Arab Emirates"                                </span></span>
+<span><span class="co">#&gt; [234] "United Kingdom of Great Britain and Northern Ireland"</span></span>
+<span><span class="co">#&gt; [235] "Tanzania, United Republic of"                        </span></span>
+<span><span class="co">#&gt; [236] "United States Minor Outlying Islands"                </span></span>
+<span><span class="co">#&gt; [237] "United States of America"                            </span></span>
+<span><span class="co">#&gt; [238] "Virgin Islands (U.S.)"                               </span></span>
+<span><span class="co">#&gt; [239] "Uruguay"                                             </span></span>
+<span><span class="co">#&gt; [240] "Uzbekistan"                                          </span></span>
+<span><span class="co">#&gt; [241] "Vanuatu"                                             </span></span>
+<span><span class="co">#&gt; [242] "Venezuela (Bolivarian Republic of)"                  </span></span>
+<span><span class="co">#&gt; [243] "Viet Nam"                                            </span></span>
+<span><span class="co">#&gt; [244] "Wallis and Futuna"                                   </span></span>
+<span><span class="co">#&gt; [245] "Western Sahara"                                      </span></span>
+<span><span class="co">#&gt; [246] "Yemen"                                               </span></span>
+<span><span class="co">#&gt; [247] "Zambia"                                              </span></span>
+<span><span class="co">#&gt; [248] "Zimbabwe"                                            </span></span>
+<span><span class="co">#&gt; [249] "Taiwan, Province of China"</span></span></code></pre></div>
+<p>The function allows to request country names in different languages
+and nomenclatures. The list of all possible languages and nomenclatures
+is available in the next section.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span>, nomenclature <span class="op">=</span> <span class="st">"ISO3"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "CUW" "SJM" "TUR" "SRB" "JPN"</span></span>
+<span><span class="fu"><a href="../reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span>, nomenclature <span class="op">=</span> <span class="st">"name_ar"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "البرازيل"  "العراق"    "جزر كوكوس" "البحرين"   "الكاميرون"</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="converting-and-translating-country-names">Converting and translating country names<a class="anchor" aria-label="anchor" href="#converting-and-translating-country-names"></a>
 </h2>
 <p>The function <code><a href="../reference/country_name.html">country_name()</a></code> can be used to convert
 country names to different naming conventions or to translate them to
 different languages.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States"</span>,<span class="st">"DR Congo"</span>, <span class="st">"Morocco"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Getting 3-letters ISO code</span></span>
@@ -132,7 +403,7 @@ different languages.</p>
 <p>If multiple arguments are passed to the argument <code>to</code>, the
 function will output a <code>data.frame</code> object, with one column
 corresponding to every naming convention.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Requesting 2-letter ISO codes and translation to Spanish and French</span></span>
 <span><span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">example</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ISO2"</span>,<span class="st">"name_es"</span>,<span class="st">"name_fr"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   ISO2                         name_es                          name_fr</span></span>
@@ -233,7 +504,7 @@ table</td>
 provided in mixed formats or in different languages. It is robust to
 small misspellings and recognises many alternative country names and old
 nomenclatures.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fuzzy_example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"US"</span>,<span class="st">"C@ète d^Ivoire"</span>,<span class="st">"Zaire"</span>,<span class="st">"FYROM"</span>,<span class="st">"Estados Unidos"</span>,<span class="st">"ITA"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">fuzzy_example</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN_en"</span><span class="op">)</span><span class="op">)</span></span>
@@ -261,7 +532,7 @@ distance between the provided string (<code>"C@ète d^Ivoire"</code>) and
 the closest reference (<code>"Côte d'Ivoire"</code>). Lower DISTANCE
 statistics indicate more reliable fuzzy matching.</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">fuzzy_example</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN_en"</span><span class="op">)</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; In total 6 unique country names were provided</span></span>
@@ -315,7 +586,7 @@ In verbose mode, the function will print all the country names affected
 by this problem. The user might consider using custom tables to solve
 this type of issues (refer to the next section).</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Taiwan"</span>,<span class="st">"lsajdèd"</span><span class="op">)</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN_en"</span><span class="op">)</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Some country IDs have no match in one or more country naming conventions</span></span>
 <span><span class="co">#&gt; There is low confidence on the matching of some country names</span></span>
@@ -348,7 +619,7 @@ or no valid conversion might exist for the provided territory. In these
 cases, it might be useful to tweak the conversion table. The package
 contains a utility function called <code><a href="../reference/match_table.html">match_table()</a></code>, which can
 be used to generate conversion tables for small adjustments.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_custom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Siam"</span>,<span class="st">"Burma"</span>,<span class="st">"H#@°)Koe2"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#suppose we are unhappy with how "H#@°)Koe2" is interpreted by the function</span></span>

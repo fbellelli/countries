@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">countries</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -199,7 +199,8 @@ are used (no theme is applied to the map).</p>
 <code><a href="../reference/quick_map.html">quick_map()</a></code>. For instance, In case you are not happy with
 the colour ordering, it can be reversed with
 <code>reverse_palette = TRUE</code>. <code>col_na</code> can be used to
-set the colour for countries with missing data (NAs), finally,
+set the colour for countries with missing data (NAs), the variable name
+can be changed with <code>name_legend</code>, finally,
 <code>col_na</code> and <code>width_border</code> set the colour and
 thickness of the border lines between territories (or remove them
 altogether).</p>
@@ -207,6 +208,7 @@ altogether).</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">150</span>,<span class="op">]</span>, plot_col <span class="op">=</span> <span class="st">"population"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>          theme <span class="op">=</span> <span class="st">"Greyscale"</span>,</span>
 <span>          reverse_palette <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>          name_legend <span class="op">=</span> <span class="st">"Countries' populations\nas of 2022"</span>, </span>
 <span>          col_na <span class="op">=</span> <span class="st">"darkred"</span>,</span>
 <span>          col_border <span class="op">=</span> <span class="st">"NA"</span><span class="op">)</span> <span class="co"># here we are removing the border lines</span></span></code></pre></div>
 <p><img src="quick_map_files/figure-html/unnamed-chunk-8-1.png" width="100%"></p>

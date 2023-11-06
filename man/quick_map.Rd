@@ -12,6 +12,7 @@ quick_map(
   verbose = FALSE,
   save_to = NULL,
   width_plot = 30,
+  name_legend = NULL,
   reverse_palette = FALSE,
   col_breaks = NULL,
   col_border = "black",
@@ -24,7 +25,7 @@ quick_map(
 
 \item{plot_col}{Name of the column to plot.}
 
-\item{theme}{A numeric value or name identifying one of the predefined visual themes for the map. Can be a number between 1 and 11, or one of the predefined theme's names: \code{c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")}. If \code{0} or \code{"NoTheme"} is passed, no theme will be applied (default `ggplot2`'s settings are used).}
+\item{theme}{A numeric value or name identifying one of the predefined visual themes for the map. Can be a number between 1 and 11, or one of the predefined theme's names: \code{c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct", "Distinct2", "Paired")}. If \code{0} or \code{"NoTheme"} is passed, no theme will be applied (default `ggplot2`'s settings are used).}
 
 \item{zoom}{This argument defines the zoom applied to the map. It can be either a string identifying one of the predefined zoom boxes (\code{"Default", "World", "Africa", "Asia", "Europe", "SEAsia", "NAmerica", "CAmerica", "SAmerica", "Oceania"}). Alternatively, the user may provide a numeric vector of length 4 describing the min/max longitude and latitude (e.g. \code{c(-80, -35, -55, 10)} defines a zoom on South America).}
 
@@ -33,6 +34,8 @@ quick_map(
 \item{save_to}{Path to the file where the plot is to be saved. This need to be in an existing directory. The default is \code{NULL}, which does not save the plot.}
 
 \item{width_plot}{Width (in cm) when plot is saved to a file. The ratio between height and width is fixed. This argument is only relevant if \code{save_to} is different from \code{NULL}. Default is \code{30}. For custom saving options the function \code{ggsave()} can be used.}
+
+\item{name_legend}{String giving the name to be used for the plotted variable in the legend of the map. If nothing is provided, the default is to use the name in \code{plot_col}.}
 
 \item{reverse_palette}{Logical value indicating whether to reverse the order of the colours in the palette. Default is \code{FALSE}.}
 

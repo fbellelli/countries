@@ -93,16 +93,18 @@ quick_map(data, plot_col = "population", verbose = FALSE,
 
 ``` 
 
-Some basic visual elements can be modified within `quick_map()`. For instance, In case you are not happy with the colour ordering, it can be reversed with `reverse_palette = TRUE`. `col_na` can be used to set the colour for countries with missing data (NAs), finally, `col_na` and `width_border` set the colour and thickness of the border lines between territories (or remove them altogether). 
+Some basic visual elements can be modified within `quick_map()`. For instance, In case you are not happy with the colour ordering, it can be reversed with `reverse_palette = TRUE`. `col_na` can be used to set the colour for countries with missing data (NAs), the variable name can be changed with `name_legend`, finally, `col_na` and `width_border` set the colour and thickness of the border lines between territories (or remove them altogether). 
 
 ```{r, dpi = 600, warning = FALSE, message = FALSE, fig.asp = 0.5, fig.width = 7,  out.width="100%"}
 quick_map(data[1:150,], plot_col = "population", verbose = FALSE,
           theme = "Greyscale",
           reverse_palette = TRUE,
+          name_legend = "Countries' populations\nas of 2022", 
           col_na = "darkred",
           col_border = "NA") # here we are removing the border lines
 
 ``` 
+
 
 ### Colour scale breaks
 

@@ -46,12 +46,30 @@ names or subsets of countries:
 
 ``` r
 #Detect strings that are country names
-is_country(x=c("ITA","Estados Unidos","bungalow","dog",542))
+is_country(x = c("ITA","Estados Unidos","bungalow","dog",542))
 #> [1]  TRUE  TRUE FALSE FALSE FALSE
 
 #Checking for a specific subset of countries
-is_country(x=c("Ceylon","LKA","Indonesia","Inde"), check_for=c("India","Sri Lanka"))
+is_country(x = c("Ceylon","LKA","Indonesia","Inde"), check_for = c("India","Sri Lanka"))
 #> [1]  TRUE  TRUE FALSE  TRUE
+```
+
+The functions `list_countries()` and `random_countries()` allow to get a
+list of country names. The former will return a list of ALL countries,
+while the second provides `n` randomly picked countries.
+
+``` r
+# Get 5 random country names in different languages/nomenclatures
+random_countries(5)
+#> [1] "Poland"                         "Saint Martin (French part)"    
+#> [3] "British Indian Ocean Territory" "Malaysia"                      
+#> [5] "Croatia"
+random_countries(5, nomenclature = "ISO3")
+#> [1] "BEN" "LCA" "PHL" "SEN" "IND"
+random_countries(5, nomenclature = "name_ar")
+#> [1] "بنغلاديش"                "الصين"                  
+#> [3] "تشيلي"                   "القارة القطبية الجنوبية"
+#> [5] "فانواتو"
 ```
 
 The function `country_name()` can be used to convert country names to
@@ -125,7 +143,7 @@ example_data <- country_info(fields = c("car"))
 quick_map(example_data, plot_col = "car.side")
 ```
 
-<img src="man/figures/unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/unnamed-chunk-8-1.png" width="100%" />
 
 ## Merging country data
 
@@ -165,14 +183,14 @@ auto_merge(tab1, tab2, tab3, tab4)
 #>    country world_cups HS_chapter volume time Table4_pivoted_values
 #> 1      ITA          4          9   1000   NA                    NA
 #> 2      ITA          4         85   2000   NA                    NA
-#> 3      PAK          0         NA     NA 2010            0.92299971
-#> 4      PAK          0         NA     NA 2011            0.58269361
-#> 5      BRA          5         NA     NA 2010            0.04081302
-#> 6      BRA          5         NA     NA 2011            0.18879947
-#> 7      DEU         NA          9    800 2010            0.42013538
-#> 8      DEU         NA          9    800 2011            0.66047615
-#> 9      DEU         NA         85   5000 2010            0.42013538
-#> 10     DEU         NA         85   5000 2011            0.66047615
+#> 3      PAK          0         NA     NA 2010             0.7762814
+#> 4      PAK          0         NA     NA 2011             0.2701757
+#> 5      BRA          5         NA     NA 2010             0.4908933
+#> 6      BRA          5         NA     NA 2011             0.7437787
+#> 7      DEU         NA          9    800 2010             0.3068419
+#> 8      DEU         NA          9    800 2011             0.2100806
+#> 9      DEU         NA         85   5000 2010             0.3068419
+#> 10     DEU         NA         85   5000 2011             0.2100806
 #>             Description
 #> 1  Coffee, tea and mate
 #> 2  Electrical machinery

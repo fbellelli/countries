@@ -9,7 +9,7 @@ palettes_countries(n, theme = 1, reverse = FALSE)
 \arguments{
 \item{n}{Number of desired colours}
 
-\item{theme}{A numeric value or name identifying the theme's colours. Can be a number between 1 and 11, or one of the theme's names: \code{c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")}.}
+\item{theme}{A numeric value or name identifying the theme's colours. Can be a number between 1 and 11, or one of the theme's names: \code{c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct", "Distinct2", "Paired")}.}
 
 \item{reverse}{Logical value indicating whether to reverse the order of the palette's colours Default is FALSE.}
 }

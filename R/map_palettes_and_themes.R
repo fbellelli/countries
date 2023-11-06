@@ -33,7 +33,7 @@ pick_colours <- function(n, n_colours_palette){
 #'
 #' This function provides access to the discrete colours palettes used in this packages' 11 themes.
 #' @param n Number of desired colours
-#' @param theme A numeric value or name identifying the theme's colours. Can be a number between 1 and 11, or one of the theme's names: \code{c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")}.
+#' @param theme A numeric value or name identifying the theme's colours. Can be a number between 1 and 11, or one of the theme's names: \code{c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct", "Distinct2", "Paired")}.
 #' @param reverse Logical value indicating whether to reverse the order of the palette's colours Default is FALSE.
 #' @returns Returns n colours from the requested theme
 #' @seealso \link[countries]{quick_map}
@@ -88,6 +88,14 @@ palettes_countries <- function(n, theme = 1, reverse = FALSE){
 
   } else if (theme == 11 | theme == "Distinct"){
     colours <- c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#808080', '#000075')
+    colours <- colours[pick_colours(n, length(colours))]
+
+  } else if (theme == 12 | theme == "Distinct2"){
+    colours <- c("grey20", "#6ea8ffff", "red","grey75", "#ffcccc","#ffe599", "#b6d7a8", "#5b6b54", "#b4a7d6")
+    colours <- colours[pick_colours(n, length(colours))]
+
+  } else if (theme == 13 | theme == "Paired"){
+    colours <- c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F" ,"#FF7F00" ,"#CAB2D6", "#6A3D9A", "#FFFF99", "#B15928")
     colours <- colours[pick_colours(n, length(colours))]
 
   } else {
@@ -177,6 +185,14 @@ themes_countries <- function(theme = 1){
       theme(legend.position = "right")
 
   } else if (theme == 11 | theme == "Distinct"){
+    output <- output +
+      theme(legend.background = element_rect(fill = "transparent", colour = "black"))
+
+  } else if (theme == 12 | theme == "Distinct2"){
+    output <- output +
+      theme(legend.background = element_rect(fill = "transparent"))
+
+  } else if (theme == 13 | theme == "Paired"){
     output <- output +
       theme(legend.background = element_rect(fill = "transparent", colour = "black"))
 

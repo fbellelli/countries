@@ -39,7 +39,7 @@
     
     <a class="navbar-brand me-2" href="index.html">countries</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -118,14 +118,27 @@
 <p>The package contains several functions to work with country names. For instance, the function <code><a href="reference/is_country.html">is_country()</a></code> can be used to test for country names or subsets of countries:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Detect strings that are country names</span></span>
-<span><span class="fu"><a href="reference/is_country.html">is_country</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ITA"</span>,<span class="st">"Estados Unidos"</span>,<span class="st">"bungalow"</span>,<span class="st">"dog"</span>,<span class="fl">542</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/is_country.html">is_country</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ITA"</span>,<span class="st">"Estados Unidos"</span>,<span class="st">"bungalow"</span>,<span class="st">"dog"</span>,<span class="fl">542</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1]  TRUE  TRUE FALSE FALSE FALSE</span></span>
 <span></span>
 <span><span class="co">#Checking for a specific subset of countries</span></span>
-<span><span class="fu"><a href="reference/is_country.html">is_country</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ceylon"</span>,<span class="st">"LKA"</span>,<span class="st">"Indonesia"</span>,<span class="st">"Inde"</span><span class="op">)</span>, check_for<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"India"</span>,<span class="st">"Sri Lanka"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/is_country.html">is_country</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ceylon"</span>,<span class="st">"LKA"</span>,<span class="st">"Indonesia"</span>,<span class="st">"Inde"</span><span class="op">)</span>, check_for <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"India"</span>,<span class="st">"Sri Lanka"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1]  TRUE  TRUE FALSE  TRUE</span></span></code></pre></div>
-<p>The function <code><a href="reference/country_name.html">country_name()</a></code> can be used to convert country names to different naming conventions or to translate them to different languages. <code><a href="reference/country_name.html">country_name()</a></code> can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures.</p>
+<p>The functions <code><a href="reference/list_countries.html">list_countries()</a></code> and <code><a href="reference/random_countries.html">random_countries()</a></code> allow to get a list of country names. The former will return a list of ALL countries, while the second provides <code>n</code> randomly picked countries.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Get 5 random country names in different languages/nomenclatures</span></span>
+<span><span class="fu"><a href="reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Poland"                         "Saint Martin (French part)"    </span></span>
+<span><span class="co">#&gt; [3] "British Indian Ocean Territory" "Malaysia"                      </span></span>
+<span><span class="co">#&gt; [5] "Croatia"</span></span>
+<span><span class="fu"><a href="reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span>, nomenclature <span class="op">=</span> <span class="st">"ISO3"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "BEN" "LCA" "PHL" "SEN" "IND"</span></span>
+<span><span class="fu"><a href="reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span>, nomenclature <span class="op">=</span> <span class="st">"name_ar"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "بنغلاديش"                "الصين"                  </span></span>
+<span><span class="co">#&gt; [3] "تشيلي"                   "القارة القطبية الجنوبية"</span></span>
+<span><span class="co">#&gt; [5] "فانواتو"</span></span></code></pre></div>
+<p>The function <code><a href="reference/country_name.html">country_name()</a></code> can be used to convert country names to different naming conventions or to translate them to different languages. <code><a href="reference/country_name.html">country_name()</a></code> can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures. Learn more about how to deal with country names in <a href="https://fbellelli.github.io/countries/articles/dealing_with_names.html">this article</a>.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"US"</span>,<span class="st">"C@ète d^Ivoire"</span>, <span class="st">"Morocco"</span>,<span class="st">"FYROM"</span>, <span class="st">"Arabie Saoudite"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Getting 3-letters ISO code</span></span>
@@ -145,13 +158,12 @@
 <span><span class="co">#&gt; 3  MAR   MA                  Morocco</span></span>
 <span><span class="co">#&gt; 4  MKD   MK          North Macedonia</span></span>
 <span><span class="co">#&gt; 5  SAU   SA             Saudi Arabia</span></span></code></pre></div>
-<p>Learn more about how to deal with country names in <a href="https://fbellelli.github.io/countries/articles/dealing_with_names.html">this article</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="getting-information-about-countries">Getting information about countries<a class="anchor" aria-label="anchor" href="#getting-information-about-countries"></a>
 </h2>
-<p><code><a href="reference/country_info.html">country_info()</a></code> allows to download a variety of information about countries, such as: currencies used, capital city, language spoken, flag, neighbouring countries, and much more.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<p><code><a href="reference/country_info.html">country_info()</a></code> allows to download a variety of information about countries, such as: currencies used, capital city, language spoken, flag, neighbouring countries, and much more. You can find <a href="https://fbellelli.github.io/countries/reference/country_info.html">more information about this function</a> in the documentation.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># What are the official languages of Switzerland?</span></span>
 <span><span class="fu"><a href="reference/country_info.html">country_info</a></span><span class="op">(</span><span class="st">"Switzerland"</span>, <span class="st">"languages"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     countries                              languages</span></span>
@@ -163,26 +175,24 @@
 <span><span class="co">#&gt; 1     Canada    Ottawa    Canadian dollar                 $</span></span>
 <span><span class="co">#&gt; 2 Mozambique    Maputo Mozambican metical                MT</span></span>
 <span><span class="co">#&gt; 3      India New Delhi       Indian rupee                 ₹</span></span></code></pre></div>
-<p>You can find <a href="https://fbellelli.github.io/countries/reference/country_info.html">more information about this function</a> in the documentation.</p>
 </div>
 <div class="section level2">
 <h2 id="easy-country-maps">Easy country maps<a class="anchor" aria-label="anchor" href="#easy-country-maps"></a>
 </h2>
-<p>With <code><a href="reference/quick_map.html">quick_map()</a></code>, it takes only one line of code to produce <a href="https://en.wikipedia.org/wiki/Choropleth_map" class="external-link">chloropleth maps</a>. It automatically recognises country names in multiple languages and nomenclatures. This allows to produce publication-grade map in seconds. Moreover, the output is a ggplot object, so the visual look can be customised in infinite ways.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p>With <code><a href="reference/quick_map.html">quick_map()</a></code>, it takes only one line of code to produce <a href="https://en.wikipedia.org/wiki/Choropleth_map" class="external-link">chloropleth maps</a>. It automatically recognises country names in multiple languages and nomenclatures. This allows to produce publication-grade maps in seconds. Moreover, the output is a ggplot object, so the visual look can be customised in infinite ways. You can find <a href="https://fbellelli.github.io/countries/articles/quick_map.html">more examples in this article</a>.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># downloading some sample data to plot</span></span>
 <span><span class="va">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/country_info.html">country_info</a></span><span class="op">(</span>fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"car"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># make a map</span></span>
 <span><span class="fu"><a href="reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">example_data</span>, plot_col <span class="op">=</span> <span class="st">"car.side"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/unnamed-chunk-7-1.png" width="100%"></p>
-<p>You can find <a href="https://fbellelli.github.io/countries/articles/quick_map.html">more examples in this article</a>.</p>
+<p><img src="reference/figures/unnamed-chunk-8-1.png" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="merging-country-data">Merging country data<a class="anchor" aria-label="anchor" href="#merging-country-data"></a>
 </h2>
-<p>The function <code><a href="reference/auto_merge.html">auto_merge()</a></code> simplifies the merging of country data tables by: <strong>1)</strong> allowing merging of 2+ tables at the same time, <strong>2)</strong> Supporting automatic detection of columns to merge, <strong>3)</strong> automatically handling different country naming conventions and date formats, <strong>4)</strong> automatic pivoting of country names or years in tables’ headers.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<p>The function <code><a href="reference/auto_merge.html">auto_merge()</a></code> simplifies the merging of country data tables by: <strong>1)</strong> allowing merging of 2+ tables at the same time, <strong>2)</strong> Supporting automatic detection of columns to merge, <strong>3)</strong> automatically handling different country naming conventions and date formats, <strong>4)</strong> automatic pivoting of country names or years in tables’ headers. Learn more about country names functions in <a href="https://fbellelli.github.io/countries/articles/auto_merge.html">this article</a>.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Let's create 4 tables with different formats and country names</span></span>
 <span><span class="va">tab1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Italy"</span>, <span class="st">"Pakistan"</span>, <span class="st">"Brazil"</span><span class="op">)</span>, world_cups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">tab2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>exporter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DEU"</span>, <span class="st">"DEU"</span>, <span class="st">"ITA"</span>, <span class="st">"ITA"</span><span class="op">)</span>, HS_chapter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">85</span>, <span class="fl">9</span>, <span class="fl">85</span><span class="op">)</span>, volume <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">800</span>, <span class="fl">5000</span>, <span class="fl">1000</span>, <span class="fl">2000</span><span class="op">)</span><span class="op">)</span></span>
@@ -210,14 +220,14 @@
 <span><span class="co">#&gt;    country world_cups HS_chapter volume time Table4_pivoted_values</span></span>
 <span><span class="co">#&gt; 1      ITA          4          9   1000   NA                    NA</span></span>
 <span><span class="co">#&gt; 2      ITA          4         85   2000   NA                    NA</span></span>
-<span><span class="co">#&gt; 3      PAK          0         NA     NA 2010            0.48049659</span></span>
-<span><span class="co">#&gt; 4      PAK          0         NA     NA 2011            0.03826281</span></span>
-<span><span class="co">#&gt; 5      BRA          5         NA     NA 2010            0.63698791</span></span>
-<span><span class="co">#&gt; 6      BRA          5         NA     NA 2011            0.01098373</span></span>
-<span><span class="co">#&gt; 7      DEU         NA          9    800 2010            0.69594957</span></span>
-<span><span class="co">#&gt; 8      DEU         NA          9    800 2011            0.14367662</span></span>
-<span><span class="co">#&gt; 9      DEU         NA         85   5000 2010            0.69594957</span></span>
-<span><span class="co">#&gt; 10     DEU         NA         85   5000 2011            0.14367662</span></span>
+<span><span class="co">#&gt; 3      PAK          0         NA     NA 2010             0.7762814</span></span>
+<span><span class="co">#&gt; 4      PAK          0         NA     NA 2011             0.2701757</span></span>
+<span><span class="co">#&gt; 5      BRA          5         NA     NA 2010             0.4908933</span></span>
+<span><span class="co">#&gt; 6      BRA          5         NA     NA 2011             0.7437787</span></span>
+<span><span class="co">#&gt; 7      DEU         NA          9    800 2010             0.3068419</span></span>
+<span><span class="co">#&gt; 8      DEU         NA          9    800 2011             0.2100806</span></span>
+<span><span class="co">#&gt; 9      DEU         NA         85   5000 2010             0.3068419</span></span>
+<span><span class="co">#&gt; 10     DEU         NA         85   5000 2011             0.2100806</span></span>
 <span><span class="co">#&gt;             Description</span></span>
 <span><span class="co">#&gt; 1  Coffee, tea and mate</span></span>
 <span><span class="co">#&gt; 2  Electrical machinery</span></span>
@@ -229,7 +239,6 @@
 <span><span class="co">#&gt; 8  Coffee, tea and mate</span></span>
 <span><span class="co">#&gt; 9  Electrical machinery</span></span>
 <span><span class="co">#&gt; 10 Electrical machinery</span></span></code></pre></div>
-<p>Learn more about country names functions in <a href="https://fbellelli.github.io/countries/articles/auto_merge.html">this article</a>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

@@ -6,11 +6,12 @@
 #' For some map examples, see \href{https://fbellelli.github.io/countries/articles/quick_map.html}{this article}.
 #' @param data Table (data.frame) containing the data to plot. Each row in the table should correspond to a country. One of the columns should contain country names.
 #' @param plot_col Name of the column to plot.
-#' @param theme A numeric value or name identifying one of the predefined visual themes for the map. Can be a number between 1 and 11, or one of the predefined theme's names: \code{c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")}. If \code{0} or \code{"NoTheme"} is passed, no theme will be applied (default `ggplot2`'s settings are used).
+#' @param theme A numeric value or name identifying one of the predefined visual themes for the map. Can be a number between 1 and 11, or one of the predefined theme's names: \code{c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct", "Distinct2", "Paired")}. If \code{0} or \code{"NoTheme"} is passed, no theme will be applied (default `ggplot2`'s settings are used).
 #' @param zoom This argument defines the zoom applied to the map. It can be either a string identifying one of the predefined zoom boxes (\code{"Default", "World", "Africa", "Asia", "Europe", "SEAsia", "NAmerica", "CAmerica", "SAmerica", "Oceania"}). Alternatively, the user may provide a numeric vector of length 4 describing the min/max longitude and latitude (e.g. \code{c(-80, -35, -55, 10)} defines a zoom on South America).
 #' @param verbose Logical value indicating whether to print messages to the console. Default is \code{FALSE}.
 #' @param save_to Path to the file where the plot is to be saved. This need to be in an existing directory. The default is \code{NULL}, which does not save the plot.
 #' @param width_plot  Width (in cm) when plot is saved to a file. The ratio between height and width is fixed. This argument is only relevant if \code{save_to} is different from \code{NULL}. Default is \code{30}. For custom saving options the function \code{ggsave()} can be used.
+#' @param name_legend String giving the name to be used for the plotted variable in the legend of the map. If nothing is provided, the default is to use the name in \code{plot_col}.
 #' @param reverse_palette Logical value indicating whether to reverse the order of the colours in the palette. Default is \code{FALSE}.
 #' @param col_breaks Only relevant for numeric data. This argument allows the user to provide manual breaks for the colour scale. Needs to be a numeric vector (\code{c(0, 100, 500, 1000)}). Default is \code{NULL}, which will result in breaks being automatically selected by the function. Note that data with 6 or less unique values will be treated as factor by the function.
 #' @param col_border Colour of border line separating countries and landmasses. Default is \code{"black"}.
@@ -47,6 +48,7 @@ quick_map <- function(data, plot_col,
                       verbose = FALSE,
                       save_to = NULL,
                       width_plot = 30,
+                      name_legend = NULL,
                       reverse_palette = FALSE,
                       col_breaks = NULL,
                       col_border = "black",
@@ -79,12 +81,16 @@ quick_map <- function(data, plot_col,
     if (!is.atomic(col_breaks)| !methods::is(col_breaks,"numeric")) stop("invalid input for - col_breaks - please provide numberic breaks for the colour scale")
     if (any(is.na(col_breaks))) stop("invalid input for - col_break - no NAs allowed")
   }
+  if (!is.null(name_legend)){
+    if (!is.character(name_legend)) stop("Argument - name_legend - needs to be a string")
+    if (length(name_legend) > 1) stop("Argument - name_legend - needs to be a single string")
+  }
 
   # CHECK THEME NAME OR NUMBER
 
   # predefined themes
-  theme_numbers <- 1:11
-  theme_names <- c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")
+  theme_numbers <- 1:13
+  theme_names <- c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct", "Distinct2", "Paired")
   if (is.null(theme)) stop("Input - theme - cannot be NULL. Use 1 instead?")
   if (!is.atomic(theme)|is.logical(theme)|length(theme)>1) stop("invalid input for - theme - it needs to be a valid theme name or integer")
   if (!(theme %in% c(0, theme_numbers) | theme %in% c("NoTheme", theme_names))) stop("invalid input for - theme - it needs to be a valid theme name or integer")
@@ -235,6 +241,13 @@ quick_map <- function(data, plot_col,
     scale_linetype_manual(guide = "none", values = c("solid", "dotted"))+
     labs(x="", y="", fill = plot_col)+
     coord_fixed(xlim = zoom_plot[1:2], ylim = zoom_plot[3:4]) # Allows zoom while plotting points outside window (like coord_cartesian). coord fixed also maintains the ratio to avoid distortions
+
+  # NAME OF VARIABLE IN LEGEND ---------------
+
+  # if provided, change name of variable in legend
+  if (!is.null(name_legend)){
+    p <- p + labs(fill = name_legend)
+  }
 
 
   # APPLY THEMES ------------------------------

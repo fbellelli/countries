@@ -18,7 +18,7 @@ library(countries)
 
 ## Identifying country names
 
-The function `is_country()` allows to check whether a string is a country name. The argument `fuzzy_mmatch` can be used to increase tolerance and allow for small typos in the names.  
+The function `is_country()` allows to check whether a string is a country name. The argument `fuzzy_match` can be used to increase tolerance and allow for small typos in the names.  
 
 ```{r}
 is_country(c("United States","Unated States","dot","DNK",123), fuzzy_match = FALSE) # FALSE is the default and will run faster
@@ -32,6 +32,23 @@ is_country(x=c("Ceylon","LKA","Indonesia","Inde"), check_for=c("India","Sri Lank
 ```
 
 Finally, the package also provides the function `find_countrycol()`, which can be used to find which columns in a data frame contain country names.
+
+
+## Getting a list of country names
+
+The functions `list_countries()` and `random_countries()` allow to get a list of country names. The former will return a list of ALL countries, while the second provides `n` randomly picked countries.
+
+```{r}
+random_countries(5)
+list_countries()
+```
+
+The function allows to request country names in different languages and nomenclatures. The list of all possible languages and nomenclatures is available in the next section.
+
+```{r}
+random_countries(5, nomenclature = "ISO3")
+random_countries(5, nomenclature = "name_ar")
+```
 
 ## Converting and translating country names
 

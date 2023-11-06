@@ -303,3 +303,20 @@ test_that("output from quick_map() are as expected",{
   expect_equal(class(quick_map(example2, "price", col_breaks = c(1, 5, 150,500, 1e6))), c("gg", "ggplot"))
   expect_equal(class(quick_map(example, "test",col_na = "black")), c("gg", "ggplot"))
 })
+
+# LIST_COUNTRIES ----------------------------
+
+test_that("output from list_countries() are as expected",{
+  expect_equal(length(list_countries("UN_en")), 248)
+  expect_equal(is.character(list_countries("UN_en")), TRUE)
+  expect_equal(list_countries("ISO3")[1], "AFG")
+  expect_equal(list_countries()[1], "Afghanistan")
+})
+
+
+# RANDOM_COUNTRIES ----------------------------
+
+test_that("output from list_countries() are as expected",{
+  expect_equal(length(random_countries(500, replace = T)), 500)
+  expect_equal(random_countries(3, seed = 2), c("Gabon", "South Africa", "Serbia"))
+})
