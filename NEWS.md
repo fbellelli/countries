@@ -1,4 +1,4 @@
-# countries 1.1.0
+# countries 1.1.1
 * Added function *list_countries* to obtain a list of countries
 * Added function *random_countries* to obtain random country names
 * Corrected small nomenclature mistake in the country reference list
