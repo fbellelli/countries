@@ -149,7 +149,7 @@ quick_map <- function(data, plot_col,
   if (! "country" %in% names(keys)) stop("No country column found in the table")
 
   # Stop execution if there are multiple keys (i.e. multiple data point per country)
-  if (length(keys)>1) stop("Multiple data point per country was found in - data -. Please provide a table with one input per country.")
+  if (length(keys)>1) stop("Multiple data points per country were found in - data -. Please provide a table with one input per country.")
 
 
 
@@ -161,6 +161,13 @@ quick_map <- function(data, plot_col,
   # convert country names to ISO3 code for plotting
   country_col_ISO <- paste0(country_col, "_ISO3")
   data[, country_col_ISO] <- country_name(data[,country_col], poor_matches = TRUE, verbose = verbose)
+
+  # check if plot_col is identical to one of the columns in world table
+  plot_col_original <- plot_col
+  if (plot_col %in% colnames(countries::world)){
+    plot_col <- paste0("DATA_", plot_col)
+    colnames(data)[colnames(data) == plot_col_original] <- plot_col
+  }
 
   # Merge plotting data with world map
   world <- dplyr::left_join(countries::world, data[,c(country_col_ISO, plot_col)],
@@ -247,6 +254,8 @@ quick_map <- function(data, plot_col,
   # if provided, change name of variable in legend
   if (!is.null(name_legend)){
     p <- p + labs(fill = name_legend)
+  } else {
+    p <- p + labs(fill = plot_col_original)
   }
 
 
