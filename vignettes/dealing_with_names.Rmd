@@ -40,7 +40,7 @@ The functions `list_countries()` and `random_countries()` allow to get a list of
 
 ```{r}
 random_countries(5)
-list_countries()
+list_countries()[1:5]
 ```
 
 The function allows to request country names in different languages and nomenclatures. The list of all possible languages and nomenclatures is available in the next section.

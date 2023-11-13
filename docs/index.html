@@ -115,30 +115,8 @@
 <div class="section level2">
 <h2 id="dealing-with-country-names">Dealing with country names<a class="anchor" aria-label="anchor" href="#dealing-with-country-names"></a>
 </h2>
-<p>The package contains several functions to work with country names. For instance, the function <code><a href="reference/is_country.html">is_country()</a></code> can be used to test for country names or subsets of countries:</p>
+<p>The package contains several functions to work with country names. For instance, the function <code><a href="reference/country_name.html">country_name()</a></code> can be used to convert country names to different naming conventions or to translate them to different languages. <code><a href="reference/country_name.html">country_name()</a></code> can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures. Learn more about how to deal with country names in <a href="https://fbellelli.github.io/countries/articles/dealing_with_names.html">this article</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#Detect strings that are country names</span></span>
-<span><span class="fu"><a href="reference/is_country.html">is_country</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ITA"</span>,<span class="st">"Estados Unidos"</span>,<span class="st">"bungalow"</span>,<span class="st">"dog"</span>,<span class="fl">542</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1]  TRUE  TRUE FALSE FALSE FALSE</span></span>
-<span></span>
-<span><span class="co">#Checking for a specific subset of countries</span></span>
-<span><span class="fu"><a href="reference/is_country.html">is_country</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ceylon"</span>,<span class="st">"LKA"</span>,<span class="st">"Indonesia"</span>,<span class="st">"Inde"</span><span class="op">)</span>, check_for <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"India"</span>,<span class="st">"Sri Lanka"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1]  TRUE  TRUE FALSE  TRUE</span></span></code></pre></div>
-<p>The functions <code><a href="reference/list_countries.html">list_countries()</a></code> and <code><a href="reference/random_countries.html">random_countries()</a></code> allow to get a list of country names. The former will return a list of ALL countries, while the second provides <code>n</code> randomly picked countries.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Get 5 random country names in different languages/nomenclatures</span></span>
-<span><span class="fu"><a href="reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Poland"                         "Saint Martin (French part)"    </span></span>
-<span><span class="co">#&gt; [3] "British Indian Ocean Territory" "Malaysia"                      </span></span>
-<span><span class="co">#&gt; [5] "Croatia"</span></span>
-<span><span class="fu"><a href="reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span>, nomenclature <span class="op">=</span> <span class="st">"ISO3"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "BEN" "LCA" "PHL" "SEN" "IND"</span></span>
-<span><span class="fu"><a href="reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span>, nomenclature <span class="op">=</span> <span class="st">"name_ar"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "بنغلاديش"                "الصين"                  </span></span>
-<span><span class="co">#&gt; [3] "تشيلي"                   "القارة القطبية الجنوبية"</span></span>
-<span><span class="co">#&gt; [5] "فانواتو"</span></span></code></pre></div>
-<p>The function <code><a href="reference/country_name.html">country_name()</a></code> can be used to convert country names to different naming conventions or to translate them to different languages. <code><a href="reference/country_name.html">country_name()</a></code> can identify countries even when they are provided in mixed formats or in different languages. It is robust to small misspellings and recognises many alternative country names and old nomenclatures. Learn more about how to deal with country names in <a href="https://fbellelli.github.io/countries/articles/dealing_with_names.html">this article</a>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"US"</span>,<span class="st">"C@ète d^Ivoire"</span>, <span class="st">"Morocco"</span>,<span class="st">"FYROM"</span>, <span class="st">"Arabie Saoudite"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Getting 3-letters ISO code</span></span>
@@ -158,6 +136,28 @@
 <span><span class="co">#&gt; 3  MAR   MA                  Morocco</span></span>
 <span><span class="co">#&gt; 4  MKD   MK          North Macedonia</span></span>
 <span><span class="co">#&gt; 5  SAU   SA             Saudi Arabia</span></span></code></pre></div>
+<p>The function <code><a href="reference/is_country.html">is_country()</a></code> can be used to test for country names or subsets of countries:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#Detect strings that are country names</span></span>
+<span><span class="fu"><a href="reference/is_country.html">is_country</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ITA"</span>,<span class="st">"Estados Unidos"</span>,<span class="st">"bungalow"</span>,<span class="st">"dog"</span>,<span class="fl">542</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  TRUE  TRUE FALSE FALSE FALSE</span></span>
+<span></span>
+<span><span class="co">#Checking for a specific subset of countries</span></span>
+<span><span class="fu"><a href="reference/is_country.html">is_country</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ceylon"</span>,<span class="st">"LKA"</span>,<span class="st">"Indonesia"</span>,<span class="st">"Inde"</span><span class="op">)</span>, check_for <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"India"</span>,<span class="st">"Sri Lanka"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  TRUE  TRUE FALSE  TRUE</span></span></code></pre></div>
+<p>The functions <code><a href="reference/list_countries.html">list_countries()</a></code> and <code><a href="reference/random_countries.html">random_countries()</a></code> allow to get a list of country names. The former will return a list of ALL countries, while the second provides <code>n</code> randomly picked countries.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Get 5 random country names in different languages/nomenclatures</span></span>
+<span><span class="fu"><a href="reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Egypt"                     "Cuba"                     </span></span>
+<span><span class="co">#&gt; [3] "United States of America"  "Eritrea"                  </span></span>
+<span><span class="co">#&gt; [5] "Saint Pierre and Miquelon"</span></span>
+<span><span class="fu"><a href="reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span>, nomenclature <span class="op">=</span> <span class="st">"ISO3"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "TTO" "TUR" "SLB" "BDI" "MOZ"</span></span>
+<span><span class="fu"><a href="reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span>, nomenclature <span class="op">=</span> <span class="st">"name_ar"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "كاليدونيا الجديدة"        "المجر"                   </span></span>
+<span><span class="co">#&gt; [3] "الإمارات العربية المتحدة" "الرأس الأخضر"            </span></span>
+<span><span class="co">#&gt; [5] "رواندا"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="getting-information-about-countries">Getting information about countries<a class="anchor" aria-label="anchor" href="#getting-information-about-countries"></a>
@@ -220,14 +220,14 @@
 <span><span class="co">#&gt;    country world_cups HS_chapter volume time Table4_pivoted_values</span></span>
 <span><span class="co">#&gt; 1      ITA          4          9   1000   NA                    NA</span></span>
 <span><span class="co">#&gt; 2      ITA          4         85   2000   NA                    NA</span></span>
-<span><span class="co">#&gt; 3      PAK          0         NA     NA 2010             0.7762814</span></span>
-<span><span class="co">#&gt; 4      PAK          0         NA     NA 2011             0.2701757</span></span>
-<span><span class="co">#&gt; 5      BRA          5         NA     NA 2010             0.4908933</span></span>
-<span><span class="co">#&gt; 6      BRA          5         NA     NA 2011             0.7437787</span></span>
-<span><span class="co">#&gt; 7      DEU         NA          9    800 2010             0.3068419</span></span>
-<span><span class="co">#&gt; 8      DEU         NA          9    800 2011             0.2100806</span></span>
-<span><span class="co">#&gt; 9      DEU         NA         85   5000 2010             0.3068419</span></span>
-<span><span class="co">#&gt; 10     DEU         NA         85   5000 2011             0.2100806</span></span>
+<span><span class="co">#&gt; 3      PAK          0         NA     NA 2010             0.8413264</span></span>
+<span><span class="co">#&gt; 4      PAK          0         NA     NA 2011             0.7987542</span></span>
+<span><span class="co">#&gt; 5      BRA          5         NA     NA 2010             0.1849059</span></span>
+<span><span class="co">#&gt; 6      BRA          5         NA     NA 2011             0.6192601</span></span>
+<span><span class="co">#&gt; 7      DEU         NA          9    800 2010             0.6886051</span></span>
+<span><span class="co">#&gt; 8      DEU         NA          9    800 2011             0.7025495</span></span>
+<span><span class="co">#&gt; 9      DEU         NA         85   5000 2010             0.6886051</span></span>
+<span><span class="co">#&gt; 10     DEU         NA         85   5000 2011             0.7025495</span></span>
 <span><span class="co">#&gt;             Description</span></span>
 <span><span class="co">#&gt; 1  Coffee, tea and mate</span></span>
 <span><span class="co">#&gt; 2  Electrical machinery</span></span>
