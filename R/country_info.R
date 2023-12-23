@@ -101,7 +101,15 @@ country_info <- function(countries = NULL, fields = NULL, fuzzy_match = TRUE, ma
 
   # GET RESULTS ----------------------------------
 
-  results <- httr::GET(url = query)
+  # get results for query
+  results <- "start query"
+  try(results <- httr::GET(url = query), silent = TRUE)
+
+
+  if (identical(results,  "start query")){
+    warning("Unable to connect to API. There might be a problem with your connection or with Countries REST API.")
+    return(NULL)
+  }
 
   # check query status
   status <- httr::status_code(results)
