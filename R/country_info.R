@@ -13,6 +13,9 @@
 #' @seealso \link[countries]{list_fields}
 #' @export
 #' @examples
+#' # Run examples only if an internet connection is available:
+#' if (curl::has_internet()){
+#'
 #' # The example below queries information on the currency used in Brazil, US and France:
 #' info <- country_info(countries = "Brazil", fields = "capital")
 #'
@@ -27,6 +30,8 @@
 #'
 #' # All information for all countries can be downloaded by leaving both arguments empty
 #' info <- country_info()
+#'
+#' }
 country_info <- function(countries = NULL, fields = NULL, fuzzy_match = TRUE, match_info = FALSE, collapse = TRUE){
 
   # check input format

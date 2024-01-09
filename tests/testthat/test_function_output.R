@@ -123,8 +123,8 @@ test_that("output from is_key seems to correspond to expectations", {
 
 # FIND_KEYCOL -------------------------------------------------------
 example <-data.frame(nation=c(rep(c("FRA","ALB","JOR"),3),"GBR"),
-                    year=c(rep(2000,3),rep(2005,3),rep(2010,3),NA),
-                    var=runif(10))
+                     year=c(rep(2000,3),rep(2005,3),rep(2010,3),NA),
+                     var=runif(10))
 test_that("output from find_keycol seems to correspond to expectations", {
   expect_equal(length(find_keycol(example))<=ncol(example), TRUE)
   expect_equal(is.null(find_keycol(example)), TRUE)
@@ -236,22 +236,26 @@ test_that("output from auto_melt are as expected", {
 
 
 test_that("output from list_fields() are as expected", {
-  expect_equal(length(list_fields())>0, TRUE)
+  if (curl::has_internet()){
+    expect_equal(length(list_fields())>0, TRUE)
+  }
 })
 
 
 # COUNTRY_INFO ------------------------------
 
 test_that("output from country_info() are as expected", {
-  expect_equal(is.data.frame(country_info("USA", "capital")), TRUE)
-  expect_equal(dim(country_info("Belgium", "languages")), c(1, 2))
-  expect_equal(dim(country_info("Belgium", "languages", collapse = FALSE)), c(1, 4))
-  expect_equal(dim(country_info(c("Bel", "Taiwan"), c("capital", "unMember"))), c(2, 3))
-  expect_equal(dim(country_info(c("Bel", "China"), c("capital", "unMember"), match_info = TRUE)), c(2, 5))
-  expect_equal(all(c("matched_country", "is_country") %in% colnames(country_info(c("Bel", "China"), c("capital", "unMember"), match_info = TRUE))), TRUE)
-  expect_equal(unlist(country_info(c("France", "Australia", "Italy"), "capital")$capital), c("Paris", "Canberra", "Rome"))
-  expect_equal(nrow(country_info(fields = "capital"))>190, TRUE)
-  expect_equal(ncol(country_info("USA"))>50, TRUE)
+  if (curl::has_internet()){
+    expect_equal(is.data.frame(country_info("USA", "capital")), TRUE)
+    expect_equal(dim(country_info("Belgium", "languages")), c(1, 2))
+    expect_equal(dim(country_info("Belgium", "languages", collapse = FALSE)), c(1, 4))
+    expect_equal(dim(country_info(c("Bel", "Taiwan"), c("capital", "unMember"))), c(2, 3))
+    expect_equal(dim(country_info(c("Bel", "China"), c("capital", "unMember"), match_info = TRUE)), c(2, 5))
+    expect_equal(all(c("matched_country", "is_country") %in% colnames(country_info(c("Bel", "China"), c("capital", "unMember"), match_info = TRUE))), TRUE)
+    expect_equal(unlist(country_info(c("France", "Australia", "Italy"), "capital")$capital), c("Paris", "Canberra", "Rome"))
+    expect_equal(nrow(country_info(fields = "capital"))>190, TRUE)
+    expect_equal(ncol(country_info("USA"))>50, TRUE)
+  }
 })
 
 

@@ -10,3 +10,5 @@
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
 ^revdep$
+^vignettes/quick_map\.Rmd
+^vignettes/data_structure\.Rmd

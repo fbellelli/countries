@@ -32,6 +32,9 @@ It allows to request and download information about countries, such as: currency
 \strong{NOTE:} Internet access is needed to download information from the API.
 }
 \examples{
+# Run examples only if an internet connection is available:
+if (curl::has_internet()){
+
 # The example below queries information on the currency used in Brazil, US and France:
 info <- country_info(countries = "Brazil", fields = "capital")
 
@@ -46,6 +49,8 @@ info <- country_info(countries = c("Brazil", "USA", "FR"))
 
 # All information for all countries can be downloaded by leaving both arguments empty
 info <- country_info()
+
+}
 }
 \seealso{
 \link[countries]{list_fields}

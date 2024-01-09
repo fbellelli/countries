@@ -67,8 +67,8 @@ The output of the function is a ggplot object. This means means that users can t
 Territories' borders and shapes are intended for illustrative purpose. They might be outdated and do not imply the expression of any opinion on the part of the package developers.
 }
 \examples{
-# downloading some sample data to plot
-example_data <- country_info(fields = "population")
+# creating some sample data to plot
+example_data <- data.frame(country = random_countries(100), population = runif(100))
 
 # make a map
 quick_map(example_data, "population")

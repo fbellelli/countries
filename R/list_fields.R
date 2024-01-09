@@ -7,7 +7,12 @@
 #' @seealso \link[countries]{country_info}
 #' @export
 #' @examples
+#' # Run example only if internet connection is available
+#' if (curl::has_internet()){
+#'
 #' list_fields()
+#'
+#' }
 list_fields <- function(){
 
   # download all country data to get all possible fields
