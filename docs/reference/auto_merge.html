@@ -5,7 +5,7 @@ Supports automatic detection of columns to merge.
 It is able to handle different country naming conventions and date formats. For example, it will be able to recognise that "Italy" and "ITA" refer to the same country and will merge the two entries across tables.
 It detects if data is in a wide format with country names or years in the column names and will automatically pivot the data.
 
-'><title>Simplified merging supporting different country nomenclatures and date formats — auto_merge • countries</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Simplified merging supporting different country nomenclatures and date formats — auto_merge"><meta property="og:description" content='The aim of this function is to simplify country data merging for quick analyses. Compared to a normal merge function auto_merge():
+'><title>Simplified merging supporting different country nomenclatures and date formats — auto_merge • countries</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Simplified merging supporting different country nomenclatures and date formats — auto_merge"><meta property="og:description" content='The aim of this function is to simplify country data merging for quick analyses. Compared to a normal merge function auto_merge():
 Is able to perform the merging of multiple data tables at once.
 Supports automatic detection of columns to merge.
 It is able to handle different country naming conventions and date formats. For example, it will be able to recognise that "Italy" and "ITA" refer to the same country and will merge the two entries across tables.
@@ -22,7 +22,7 @@ It detects if data is in a wide format with country names or years in the column
     
     <a class="navbar-brand me-2" href="../index.html">countries</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -162,15 +162,15 @@ If an argument is provided to <code>by</code>, it needs to be either 1) a list o
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======  =======  ========</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                               Performing merge: 2/2                                               Performing merge: 1/2                                               Merge complete</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Set merging_info to TRUE to save merging details)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Industry country        tot national_avg      rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1     ITA 0.72279471           NA 0.2620349</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1     FRA 0.89983954    0.4359880 0.2620349</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2     ITA 0.01881842           NA 0.7783997</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        2     FRA 0.20338753    0.4359880 0.7783997</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     &lt;NA&gt;     USA         NA    0.1821746        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     &lt;NA&gt;     IND         NA    0.8419206        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        3    &lt;NA&gt;         NA           NA 0.1868891</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        4    &lt;NA&gt;         NA           NA 0.5208324</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Industry country       tot national_avg      rate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1     ITA 0.2582184           NA 0.2748313</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1     FRA 0.5566973   0.29526340 0.2748313</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2     ITA 0.5340845           NA 0.6669086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        2     FRA 0.1482689   0.29526340 0.6669086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     &lt;NA&gt;     USA        NA   0.21047983        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     &lt;NA&gt;     IND        NA   0.08883339        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        3    &lt;NA&gt;        NA           NA 0.6069640</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        4    &lt;NA&gt;        NA           NA 0.1415762</span>
 <span class="r-in"><span><span class="fu">auto_merge</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">tab1</span>, <span class="va">tab2</span>, <span class="va">tab3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Identifying columns to merge</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Data type for variable Industry differ across tables - converting to character</span>
@@ -186,15 +186,15 @@ If an argument is provided to <code>by</code>, it needs to be either 1) a list o
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======  =======  ========</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                               Performing merge: 2/2                                               Performing merge: 1/2                                               Merge complete</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Set merging_info to TRUE to save merging details)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Industry country        tot national_avg      rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1     ITA 0.72279471           NA 0.2620349</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1     FRA 0.89983954    0.4359880 0.2620349</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2     ITA 0.01881842           NA 0.7783997</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        2     FRA 0.20338753    0.4359880 0.7783997</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     &lt;NA&gt;     USA         NA    0.1821746        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     &lt;NA&gt;     IND         NA    0.8419206        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        3    &lt;NA&gt;         NA           NA 0.1868891</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        4    &lt;NA&gt;         NA           NA 0.5208324</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Industry country       tot national_avg      rate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1     ITA 0.2582184           NA 0.2748313</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1     FRA 0.5566973   0.29526340 0.2748313</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2     ITA 0.5340845           NA 0.6669086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        2     FRA 0.1482689   0.29526340 0.6669086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     &lt;NA&gt;     USA        NA   0.21047983        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     &lt;NA&gt;     IND        NA   0.08883339        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        3    &lt;NA&gt;        NA           NA 0.6069640</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        4    &lt;NA&gt;        NA           NA 0.1415762</span>
 <span class="r-in"><span><span class="fu">auto_merge</span><span class="op">(</span><span class="va">tab1</span>, <span class="va">tab2</span>, <span class="va">tab3</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"countries"</span><span class="op">=</span><span class="st">"Nation|COUNTRY"</span>, <span class="st">"sector"</span><span class="op">=</span><span class="st">"[Ii]ndustry"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Identifying columns to merge</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Data type for variable sector differ across tables - converting to character</span>
@@ -210,15 +210,15 @@ If an argument is provided to <code>by</code>, it needs to be either 1) a list o
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======  =========  ========</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                               Performing merge: 2/2                                               Performing merge: 1/2                                               Merge complete</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Set merging_info to TRUE to save merging details)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sector countries        tot national_avg      rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1       ITA 0.72279471           NA 0.2620349</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1       FRA 0.89983954    0.4359880 0.2620349</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      2       ITA 0.01881842           NA 0.7783997</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      2       FRA 0.20338753    0.4359880 0.7783997</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   &lt;NA&gt;       USA         NA    0.1821746        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   &lt;NA&gt;       IND         NA    0.8419206        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7      3      &lt;NA&gt;         NA           NA 0.1868891</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8      4      &lt;NA&gt;         NA           NA 0.5208324</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sector countries       tot national_avg      rate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1       ITA 0.2582184           NA 0.2748313</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1       FRA 0.5566973   0.29526340 0.2748313</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      2       ITA 0.5340845           NA 0.6669086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      2       FRA 0.1482689   0.29526340 0.6669086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   &lt;NA&gt;       USA        NA   0.21047983        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   &lt;NA&gt;       IND        NA   0.08883339        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      3      &lt;NA&gt;        NA           NA 0.6069640</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      4      &lt;NA&gt;        NA           NA 0.1415762</span>
 <span class="r-in"><span><span class="fu">auto_merge</span><span class="op">(</span><span class="va">tab1</span>, <span class="va">tab2</span>, <span class="va">tab3</span>, country_to <span class="op">=</span> <span class="st">"UN_fr"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Identifying columns to merge</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Data type for variable Industry differ across tables - converting to character</span>
@@ -234,15 +234,15 @@ If an argument is provided to <code>by</code>, it needs to be either 1) a list o
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======  =======  ========</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                               Performing merge: 2/2                                               Performing merge: 1/2                                               Merge complete</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Set merging_info to TRUE to save merging details)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Industry               country        tot national_avg      rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1                Italie 0.72279471           NA 0.2620349</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1                France 0.89983954    0.4359880 0.2620349</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2                Italie 0.01881842           NA 0.7783997</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        2                France 0.20338753    0.4359880 0.7783997</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     &lt;NA&gt; États-Unis d’Amérique         NA    0.1821746        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     &lt;NA&gt;                  Inde         NA    0.8419206        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        3                  &lt;NA&gt;         NA           NA 0.1868891</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        4                  &lt;NA&gt;         NA           NA 0.5208324</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Industry               country       tot national_avg      rate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1                Italie 0.2582184           NA 0.2748313</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1                France 0.5566973   0.29526340 0.2748313</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2                Italie 0.5340845           NA 0.6669086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        2                France 0.1482689   0.29526340 0.6669086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     &lt;NA&gt; États-Unis d’Amérique        NA   0.21047983        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     &lt;NA&gt;                  Inde        NA   0.08883339        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        3                  &lt;NA&gt;        NA           NA 0.6069640</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        4                  &lt;NA&gt;        NA           NA 0.1415762</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
