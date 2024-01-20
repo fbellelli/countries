@@ -2,7 +2,7 @@
 #'
 #' This function is an interface for \href{https://restcountries.com/}{REST Countries API}.
 #' It allows to request and download information about countries, such as: currency, capital city, language spoken, flag, neighbouring countries, and much more.
-#' \strong{NOTE:} Internet access is needed to download information from the API.
+#' \strong{NOTE:} Internet access is needed to download information from the API. At times the API may be unstable or slow to respond.
 #'
 #' @param countries A vector of countries for which we wish to download information. The function also supports fuzzy matching capabilities to facilitate querying. Information is only returned for the 249 countries in the ISO standard \code{3166}.
 #' @param fields Character vector indicating the fields to query. A description of the \href{https://gitlab.com/restcountries/restcountries/-/blob/master/FIELDS.md}{accepted fields can be found here}. Alternatively, a list of accepted field names can be obtained with the function \code{list_fields()}.
@@ -10,11 +10,11 @@
 #' @param match_info Logical value indicating whether to return information on country names matched to each input in \code{countries}. If \code{TRUE}, two additional columns will be added to the output (\code{matched_country} and \code{is_country}). Default is \code{FALSE}.
 #' @param collapse Logical value indicating whether to collapse multiple columns relating to a same field together. Default is \code{TRUE}. For some specific fields (currencies, languages, names), multiple columns will be returned. This happens because countries can take multiple values for these fields. For example, \code{country_info("Switzerland", "languages", collapse = FALSE)} will return 4 columns for the field languages. When \code{collapse = TRUE}, these four columns will be collapsed into one string, with values separated by semicolons.
 #' @returns Returns the requested information about the countries in a table. The rows of the table correspond to entries in \code{countries}, columns correspond to requested \code{fields}.
-#' @seealso \link[countries]{list_fields}
+#' @seealso \link[countries]{list_fields}, \link[countries]{check_countries_api}
 #' @export
 #' @examples
-#' # Run examples only if an internet connection is available:
-#' if (curl::has_internet()){
+#' # Run examples only if a connection to the API is available:
+#' if (check_countries_api(warnings = FALSE)){
 #'
 #' # The example below queries information on the currency used in Brazil, US and France:
 #' info <- country_info(countries = "Brazil", fields = "capital")
@@ -106,13 +106,17 @@ country_info <- function(countries = NULL, fields = NULL, fuzzy_match = TRUE, ma
 
   # GET RESULTS ----------------------------------
 
+  if (!curl::has_internet()){
+    warning("Unable to connect to API. There might be a problem with your internet connection.")
+    return(NULL)
+  }
+
   # get results for query
   results <- "start query"
   try(results <- httr::GET(url = query), silent = TRUE)
 
-
   if (identical(results,  "start query")){
-    warning("Unable to connect to API. There might be a problem with your connection or with Countries REST API.")
+    warning("Unable to connect to API. There might be a problem with Countries REST API.")
     return(NULL)
   }
 

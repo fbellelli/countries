@@ -3,6 +3,7 @@
 export(Mode)
 export(auto_melt)
 export(auto_merge)
+export(check_countries_api)
 export(check_wide_format)
 export(country_info)
 export(country_name)

@@ -29,11 +29,11 @@ Returns the requested information about the countries in a table. The rows of th
 \description{
 This function is an interface for \href{https://restcountries.com/}{REST Countries API}.
 It allows to request and download information about countries, such as: currency, capital city, language spoken, flag, neighbouring countries, and much more.
-\strong{NOTE:} Internet access is needed to download information from the API.
+\strong{NOTE:} Internet access is needed to download information from the API. At times the API may be unstable or slow to respond.
 }
 \examples{
-# Run examples only if an internet connection is available:
-if (curl::has_internet()){
+# Run examples only if a connection to the API is available:
+if (check_countries_api(warnings = FALSE)){
 
 # The example below queries information on the currency used in Brazil, US and France:
 info <- country_info(countries = "Brazil", fields = "capital")
@@ -53,5 +53,5 @@ info <- country_info()
 }
 }
 \seealso{
-\link[countries]{list_fields}
+\link[countries]{list_fields}, \link[countries]{check_countries_api}
 }

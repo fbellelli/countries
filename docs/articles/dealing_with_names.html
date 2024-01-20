@@ -121,8 +121,8 @@ The former will return a list of ALL countries, while the second
 provides <code>n</code> randomly picked countries.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Western Sahara" "San Marino"     "Gibraltar"      "Tonga"         </span></span>
-<span><span class="co">#&gt; [5] "Israel"</span></span>
+<span><span class="co">#&gt; [1] "Korea, Republic of" "Somalia"            "Poland"            </span></span>
+<span><span class="co">#&gt; [4] "Namibia"            "Philippines"</span></span>
 <span><span class="fu"><a href="../reference/list_countries.html">list_countries</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
 <span><span class="co">#&gt; [1] "Afghanistan"    "Åland Islands"  "Albania"        "Algeria"       </span></span>
 <span><span class="co">#&gt; [5] "American Samoa"</span></span></code></pre></div>
@@ -131,10 +131,9 @@ and nomenclatures. The list of all possible languages and nomenclatures
 is available in the next section.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span>, nomenclature <span class="op">=</span> <span class="st">"ISO3"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "AUT" "ASM" "AUS" "BHS" "NCL"</span></span>
+<span><span class="co">#&gt; [1] "COM" "KOR" "VNM" "JPN" "MDV"</span></span>
 <span><span class="fu"><a href="../reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span>, nomenclature <span class="op">=</span> <span class="st">"name_ar"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "ليبيا"           "مارتينيك"        "الصحراء الغربية" "كازاخستان"      </span></span>
-<span><span class="co">#&gt; [5] "النيجر"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "سلوفاكيا"     "صربيا"        "مارتينيك"     "الرأس الأخضر" "اليابان"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="converting-and-translating-country-names">Converting and translating country names<a class="anchor" aria-label="anchor" href="#converting-and-translating-country-names"></a>
@@ -255,50 +254,57 @@ table</td>
 </h3>
 <p><code><a href="../reference/country_name.html">country_name()</a></code> can identify countries even when they are
 provided in mixed formats or in different languages. It is robust to
-small misspellings and recognises many alternative country names and old
+small misspellings and recognises alternative name formulations and old
 nomenclatures.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fuzzy_example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"US"</span>,<span class="st">"C@ète d^Ivoire"</span>,<span class="st">"Zaire"</span>,<span class="st">"FYROM"</span>,<span class="st">"Estados Unidos"</span>,<span class="st">"ITA"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">fuzzy_example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"US"</span>,<span class="st">"C@ète d^Ivoire"</span>,<span class="st">"Zaire"</span>,<span class="st">"FYROM"</span>,<span class="st">"Estados Unidos"</span>,<span class="st">"ITA"</span>,<span class="st">"blablabla"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">fuzzy_example</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN_en"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Multiple country IDs have been matched to the same country name</span></span>
+<span><span class="co">#&gt; Multiple country IDs have been matched to the same country name.</span></span>
+<span><span class="co">#&gt; There is low confidence on the matching of some country names, NA returned.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Set - verbose - to TRUE for more details</span></span>
 <span><span class="co">#&gt; [1] "United States of America"         "Côte d’Ivoire"                   </span></span>
 <span><span class="co">#&gt; [3] "Democratic Republic of the Congo" "North Macedonia"                 </span></span>
-<span><span class="co">#&gt; [5] "United States of America"         "Italy"</span></span></code></pre></div>
+<span><span class="co">#&gt; [5] "United States of America"         "Italy"                           </span></span>
+<span><span class="co">#&gt; [7] NA</span></span></code></pre></div>
 <p>More information on the country matching process can be obtained by
 setting <code>verbose=TRUE</code>. The function will print information
 on:</p>
 <ul>
 <li>The number of unique values provided by the user. In the example
-below 6 distinct strings have been provided.</li>
+below 7 distinct strings have been provided.</li>
 <li>How many country names correspond exactly to the ones in the
-function’s reference list and how many have been recognised with fuzzy
-matching. In the example below, <code>"C@ète d^Ivoire"</code> is the
-only name recognised with fuzzy matching. The function’s reference table
-can be accessed with the command
-<code>data(country_reference_list)</code>.</li>
-<li>The function prints summary statistics on fuzzy matching. The
-DISTANCE metric is the <a href="https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance" class="external-link">Jaro-Winkler</a>
-distance between the provided string (<code>"C@ète d^Ivoire"</code>) and
-the closest reference (<code>"Côte d'Ivoire"</code>). Lower DISTANCE
-statistics indicate more reliable fuzzy matching.</li>
+function’s reference list and how many have been processed with fuzzy
+matching. In the example below, <code>"C@ète d^Ivoire"</code> and
+<code>"blablabla"</code> are the only names processed with fuzzy
+matching. The function’s reference table can be accessed with the
+command <code>data(country_reference_list)</code>. Finally, if any match
+is poor, the function will print the number of country names which are
+probably mismatched (in this example only <code>"blablabla"</code>).
+<!-- * The function prints summary statistics on fuzzy matching. The DISTANCE metric is the [Jaro-Winkler](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance) distance between the provided string (`"C@ète d^Ivoire"`) and the closest reference (`"Côte d'Ivoire"`). Lower DISTANCE statistics indicate more reliable fuzzy matching.   -->
+</li>
 </ul>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">fuzzy_example</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN_en"</span><span class="op">)</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; In total 6 unique country names were provided</span></span>
-<span><span class="co">#&gt; 5/6 have been matched with EXACT matching</span></span>
-<span><span class="co">#&gt; 1/6 have been matched with FUZZY matching</span></span>
+<span><span class="co">#&gt; In total 7 unique country names were provided</span></span>
+<span><span class="co">#&gt; 5/7 have been matched with EXACT matching</span></span>
+<span><span class="co">#&gt; 2/7 have been matched with FUZZY matching, out of which:</span></span>
+<span><span class="co">#&gt; 1/2 are a POOR match (likely wrongly identified)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Multiple arguments have been matched to the same country name:</span></span>
 <span><span class="co">#&gt;   - Estados Unidos : United States of America </span></span>
 <span><span class="co">#&gt;   - US : United States of America</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; No close match found for the following countries, NA returned:</span></span>
+<span><span class="co">#&gt; (set - poor_matches - to TRUE if you want the closest match to be returned or set - na_fill - to TRUE if you wish to fill the NAs with the original name supplied in - x)</span></span>
+<span><span class="co">#&gt;  - blablabla</span></span>
 <span><span class="co">#&gt; [1] "United States of America"         "Côte d’Ivoire"                   </span></span>
 <span><span class="co">#&gt; [3] "Democratic Republic of the Congo" "North Macedonia"                 </span></span>
-<span><span class="co">#&gt; [5] "United States of America"         "Italy"</span></span></code></pre></div>
+<span><span class="co">#&gt; [5] "United States of America"         "Italy"                           </span></span>
+<span><span class="co">#&gt; [7] NA</span></span></code></pre></div>
 <p>In addition, setting <code>verbose=TRUE</code> will also print
 additional informations relating to specific warnings that are normally
 given by the function:</p>
@@ -313,7 +319,7 @@ vector of country names is a unique identifier, this could indicate that
 some country name was not recognised correctly. The user might consider
 using custom tables (refer to the next section).</li>
 <li>
-<code>Some country IDs have no match in one or more country naming conventions</code>:
+<code>Unable to find an EXACT match for all country names</code>:
 indicates that it is impossible to find an exact match for one or more
 country names with <code>fuzzy_match=FALSE</code>. The user might
 consider using <code>fuzzy_match=TRUE</code> or custom tables (refer to
@@ -329,7 +335,9 @@ example below). If <code>poor_matches</code> is set to
 <code>poor_matches=TRUE</code> the function will always return the
 closest match, even if poor. The user might consider using custom tables
 to solve issues with misidentification of country names (refer to the
-next section).</li>
+next section). Alternatively, the user can set <code>na_fill=TRUE</code>
+to replace the resulting <code>NA</code>s with the original name
+provided in <code>x</code>.</li>
 <li>
 <code>Some country IDs have no match in one or more country naming conventions</code>:
 Conversion is requested to a nomenclature for which there is no
@@ -337,15 +345,24 @@ information on the country. For instance, in the example below “Taiwan”
 has no correspondence in the <a href="https://unstats.un.org/unsd/methodology/m49/" class="external-link">UN M49 standard</a>.
 In verbose mode, the function will print all the country names affected
 by this problem. The user might consider using custom tables to solve
-this type of issues (refer to the next section).</li>
+this type of issues (refer to the next section). Alternatively, the user
+can set <code>na_fill=TRUE</code> to replace the resulting
+<code>NA</code>s with the original name provided in <code>x</code>.</li>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Taiwan"</span>,<span class="st">"lsajdèd"</span><span class="op">)</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN_en"</span><span class="op">)</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Some country IDs have no match in one or more country naming conventions</span></span>
-<span><span class="co">#&gt; There is low confidence on the matching of some country names</span></span>
+<span><span class="co">#&gt; Some country IDs have no match in one or more of the requested country naming conventions, NA returned.</span></span>
+<span><span class="co">#&gt; There is low confidence on the matching of some country names, NA returned.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Set - verbose - to TRUE for more details</span></span>
-<span><span class="co">#&gt; [1] NA NA</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] NA NA</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Taiwan"</span>,<span class="st">"lsajdèd"</span><span class="op">)</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN_en"</span><span class="op">)</span>, verbose<span class="op">=</span><span class="cn">FALSE</span>, na_fill <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Some country IDs have no match in one or more of the requested country naming conventions, used original name to fill the NAs.</span></span>
+<span><span class="co">#&gt; There is low confidence on the matching of some country names, keeping the original names in - x.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Set - verbose - to TRUE for more details</span></span>
+<span><span class="co">#&gt; [1] "Taiwan"  "lsajdèd"</span></span></code></pre></div>
 <p>All the information from verbose mode can be accessed by setting
 ´simplify=FALSE´. This will return a list object containing:</p>
 <ul>
@@ -377,14 +394,14 @@ be used to generate conversion tables for small adjustments.</p>
 <span></span>
 <span><span class="co">#suppose we are unhappy with how "H#@°)Koe2" is interpreted by the function</span></span>
 <span><span class="fu"><a href="../reference/country_name.html">country_name</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">example_custom</span>, to <span class="op">=</span> <span class="st">"name_en"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; There is low confidence on the matching of some country names</span></span>
+<span><span class="co">#&gt; There is low confidence on the matching of some country names, NA returned.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Set - verbose - to TRUE for more details</span></span>
 <span><span class="co">#&gt; [1] "Thailand" "Myanmar"  NA</span></span>
 <span></span>
 <span><span class="co">#match_table can be used to generate a table for small adjustments</span></span>
 <span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/match_table.html">match_table</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">example_custom</span>, to <span class="op">=</span> <span class="st">"name_en"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; There is low confidence on the matching of some country names</span></span>
+<span><span class="co">#&gt; There is low confidence on the matching of some country names, returning the closest match.</span></span>
 <span><span class="va">tab</span><span class="op">$</span><span class="va">name_en</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Hong Kong"</span></span>
 <span></span>
 <span><span class="co">#which can then be used for conversion</span></span>

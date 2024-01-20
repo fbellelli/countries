@@ -149,25 +149,23 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get 5 random country names in different languages/nomenclatures</span></span>
 <span><span class="fu"><a href="reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Burkina Faso" "Andorra"      "Martinique"   "Italy"        "Armenia"</span></span>
+<span><span class="co">#&gt; [1] "Sweden"  "Macao"   "Iceland" "Egypt"   "Ecuador"</span></span>
 <span><span class="fu"><a href="reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span>, nomenclature <span class="op">=</span> <span class="st">"ISO3"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "DNK" "RWA" "LCA" "HTI" "COG"</span></span>
+<span><span class="co">#&gt; [1] "CZE" "GBR" "URY" "MAC" "PAK"</span></span>
 <span><span class="fu"><a href="reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span>, nomenclature <span class="op">=</span> <span class="st">"name_ar"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "تشيلي"                                </span></span>
-<span><span class="co">#&gt; [2] "إستونيا"                              </span></span>
-<span><span class="co">#&gt; [3] "سانت هيلانة وأسينشين وتريستان دا كونا"</span></span>
-<span><span class="co">#&gt; [4] "الجبل الأسود"                         </span></span>
-<span><span class="co">#&gt; [5] "إثيوبيا"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "قطر"             "الصحراء الغربية" "نيوزيلندا"       "سريلانكا"       </span></span>
+<span><span class="co">#&gt; [5] "جمهورية الكونغو"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="getting-information-about-countries">Getting information about countries<a class="anchor" aria-label="anchor" href="#getting-information-about-countries"></a>
 </h2>
-<p><code><a href="reference/country_info.html">country_info()</a></code> allows to download a variety of information about countries, such as: currencies used, capital city, language spoken, flag, neighbouring countries, and much more. You can find <a href="https://fbellelli.github.io/countries/reference/country_info.html">more information about this function</a> in the documentation.</p>
+<p><code><a href="reference/country_info.html">country_info()</a></code> allows to download a variety of information about countries from <a href="https://restcountries.com/" class="external-link">REST Countries API</a>, such as: currencies used, capital city, language spoken, flag, neighbouring countries, and much more. You can find <a href="https://fbellelli.github.io/countries/reference/country_info.html">more information about this function</a> in the documentation.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># What are the official languages of Switzerland?</span></span>
 <span><span class="fu"><a href="reference/country_info.html">country_info</a></span><span class="op">(</span><span class="st">"Switzerland"</span>, <span class="st">"languages"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     countries                              languages</span></span>
-<span><span class="co">#&gt; 1 Switzerland French; Swiss German; Italian; Romansh</span></span>
+<span><span class="co">#&gt; Warning in country_info("Switzerland", "languages"): Unable to connect to API.</span></span>
+<span><span class="co">#&gt; There might be a problem with Countries REST API.</span></span>
+<span><span class="co">#&gt; NULL</span></span>
 <span></span>
 <span><span class="co"># Get information on the capital name and currencies for multiple countries</span></span>
 <span><span class="fu"><a href="reference/country_info.html">country_info</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Canada"</span>, <span class="st">"Mozambique"</span>, <span class="st">"India"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"capital"</span>, <span class="st">"currencies"</span><span class="op">)</span><span class="op">)</span></span>
@@ -220,14 +218,14 @@
 <span><span class="co">#&gt;    country world_cups HS_chapter volume time Table4_pivoted_values</span></span>
 <span><span class="co">#&gt; 1      ITA          4          9   1000   NA                    NA</span></span>
 <span><span class="co">#&gt; 2      ITA          4         85   2000   NA                    NA</span></span>
-<span><span class="co">#&gt; 3      PAK          0         NA     NA 2010            0.63487402</span></span>
-<span><span class="co">#&gt; 4      PAK          0         NA     NA 2011            0.61413072</span></span>
-<span><span class="co">#&gt; 5      BRA          5         NA     NA 2010            0.40908297</span></span>
-<span><span class="co">#&gt; 6      BRA          5         NA     NA 2011            0.70334019</span></span>
-<span><span class="co">#&gt; 7      DEU         NA          9    800 2010            0.07250716</span></span>
-<span><span class="co">#&gt; 8      DEU         NA          9    800 2011            0.24580297</span></span>
-<span><span class="co">#&gt; 9      DEU         NA         85   5000 2010            0.07250716</span></span>
-<span><span class="co">#&gt; 10     DEU         NA         85   5000 2011            0.24580297</span></span>
+<span><span class="co">#&gt; 3      PAK          0         NA     NA 2010             0.9852906</span></span>
+<span><span class="co">#&gt; 4      PAK          0         NA     NA 2011             0.6920557</span></span>
+<span><span class="co">#&gt; 5      BRA          5         NA     NA 2010             0.9409735</span></span>
+<span><span class="co">#&gt; 6      BRA          5         NA     NA 2011             0.8452781</span></span>
+<span><span class="co">#&gt; 7      DEU         NA          9    800 2010             0.5690862</span></span>
+<span><span class="co">#&gt; 8      DEU         NA          9    800 2011             0.8562227</span></span>
+<span><span class="co">#&gt; 9      DEU         NA         85   5000 2010             0.5690862</span></span>
+<span><span class="co">#&gt; 10     DEU         NA         85   5000 2011             0.8562227</span></span>
 <span><span class="co">#&gt;             Description</span></span>
 <span><span class="co">#&gt; 1  Coffee, tea and mate</span></span>
 <span><span class="co">#&gt; 2  Electrical machinery</span></span>

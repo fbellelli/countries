@@ -41,6 +41,8 @@ test_that("country_name seems to correctly identify countries", {
 test_that("country_name seems to correctly deal with NA values", {
   expect_equal(country_name(c(example1,NA), to="ISO3"), c("USA","MAR","BRN",NA))
   expect_equal(country_name(c(NA,NA,NA), to="ISO3"), c(NA,NA,NA))
+  expect_equal(country_name(c("444","USA"), na_fill = T), c("444", "USA"))
+  expect_equal(any(is.na(country_name(c("444","USA"), poor_matches = T))), FALSE)
 })
 
 
@@ -232,11 +234,20 @@ test_that("output from auto_melt are as expected", {
 })
 
 
+# CHECK_COUNTRIES_API -------------------------------
+
+test_that("output from check_countries_api() are as expected", {
+  expect_equal(is.logical(check_countries_api(warnings = FALSE)), TRUE)
+})
+
+
+
+
 # LIST_FIELDS -------------------------------
 
 
 test_that("output from list_fields() are as expected", {
-  if (curl::has_internet()){
+  if (check_countries_api(warnings = FALSE)){
     expect_equal(length(list_fields())>0, TRUE)
   }
 })
@@ -245,7 +256,7 @@ test_that("output from list_fields() are as expected", {
 # COUNTRY_INFO ------------------------------
 
 test_that("output from country_info() are as expected", {
-  if (curl::has_internet()){
+  if (check_countries_api(warnings = FALSE)){
     expect_equal(is.data.frame(country_info("USA", "capital")), TRUE)
     expect_equal(dim(country_info("Belgium", "languages")), c(1, 2))
     expect_equal(dim(country_info("Belgium", "languages", collapse = FALSE)), c(1, 4))

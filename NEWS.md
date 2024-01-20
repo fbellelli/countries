@@ -1,3 +1,10 @@
+# countries 1.2.0
+* Added function *check_countries_api* to check whether connection to Countries REST API is working.
+* Updated country reference table to improve matching of former Yugoslavian countries.
+* Improved messages provided by *country_name* and *match_table* and added argument *na_fill* to replace potential NAs with the original country name. 
+* Updated vignettes
+
+
 # countries 1.1.2
 * Improving handling of API connection errors in function *country_info* and *list_fields*  
 * Fixing bug in *quick_map* occurring when *plot_col* is identical to one of the columns in the table *countries::world*

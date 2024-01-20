@@ -91,31 +91,29 @@ while the second provides `n` randomly picked countries.
 ``` r
 # Get 5 random country names in different languages/nomenclatures
 random_countries(5)
-#> [1] "Burkina Faso" "Andorra"      "Martinique"   "Italy"        "Armenia"
+#> [1] "Sweden"  "Macao"   "Iceland" "Egypt"   "Ecuador"
 random_countries(5, nomenclature = "ISO3")
-#> [1] "DNK" "RWA" "LCA" "HTI" "COG"
+#> [1] "CZE" "GBR" "URY" "MAC" "PAK"
 random_countries(5, nomenclature = "name_ar")
-#> [1] "تشيلي"                                
-#> [2] "إستونيا"                              
-#> [3] "سانت هيلانة وأسينشين وتريستان دا كونا"
-#> [4] "الجبل الأسود"                         
-#> [5] "إثيوبيا"
+#> [1] "قطر"             "الصحراء الغربية" "نيوزيلندا"       "سريلانكا"       
+#> [5] "جمهورية الكونغو"
 ```
 
 ## Getting information about countries
 
 `country_info()` allows to download a variety of information about
-countries, such as: currencies used, capital city, language spoken,
-flag, neighbouring countries, and much more. You can find [more
-information about this
+countries from [REST Countries API](https://restcountries.com/), such
+as: currencies used, capital city, language spoken, flag, neighbouring
+countries, and much more. You can find [more information about this
 function](https://fbellelli.github.io/countries/reference/country_info.html)
 in the documentation.
 
 ``` r
 # What are the official languages of Switzerland?
 country_info("Switzerland", "languages")
-#>     countries                              languages
-#> 1 Switzerland French; Swiss German; Italian; Romansh
+#> Warning in country_info("Switzerland", "languages"): Unable to connect to API.
+#> There might be a problem with Countries REST API.
+#> NULL
 
 # Get information on the capital name and currencies for multiple countries
 country_info(c("Canada", "Mozambique", "India"), c("capital", "currencies"))
@@ -183,14 +181,14 @@ auto_merge(tab1, tab2, tab3, tab4)
 #>    country world_cups HS_chapter volume time Table4_pivoted_values
 #> 1      ITA          4          9   1000   NA                    NA
 #> 2      ITA          4         85   2000   NA                    NA
-#> 3      PAK          0         NA     NA 2010            0.63487402
-#> 4      PAK          0         NA     NA 2011            0.61413072
-#> 5      BRA          5         NA     NA 2010            0.40908297
-#> 6      BRA          5         NA     NA 2011            0.70334019
-#> 7      DEU         NA          9    800 2010            0.07250716
-#> 8      DEU         NA          9    800 2011            0.24580297
-#> 9      DEU         NA         85   5000 2010            0.07250716
-#> 10     DEU         NA         85   5000 2011            0.24580297
+#> 3      PAK          0         NA     NA 2010             0.9852906
+#> 4      PAK          0         NA     NA 2011             0.6920557
+#> 5      BRA          5         NA     NA 2010             0.9409735
+#> 6      BRA          5         NA     NA 2011             0.8452781
+#> 7      DEU         NA          9    800 2010             0.5690862
+#> 8      DEU         NA          9    800 2011             0.8562227
+#> 9      DEU         NA         85   5000 2010             0.5690862
+#> 10     DEU         NA         85   5000 2011             0.8562227
 #>             Description
 #> 1  Coffee, tea and mate
 #> 2  Electrical machinery

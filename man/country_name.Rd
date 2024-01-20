@@ -11,6 +11,7 @@ country_name(
   verbose = FALSE,
   simplify = TRUE,
   poor_matches = FALSE,
+  na_fill = FALSE,
   custom_table = NULL
 )
 }
@@ -26,6 +27,8 @@ country_name(
 \item{simplify}{Logical value. If set to \code{TRUE} the function will return a vector of converted names. If set to \code{FALSE}, the function will return a list object containing the converted vector and additional details on the country matching process. Default is \code{TRUE}.}
 
 \item{poor_matches}{Logical value. If set to \code{FALSE} (the default), the function will return \code{NA} in case of poor matching. If set to \code{TRUE}, the function will always return the closest matching country name, even if the match is poor.}
+
+\item{na_fill}{Logical value. If set to \code{TRUE}, any \code{NA} in the output names will be filled with the original country name supplied in \code{x}. The default is \code{FALSE} (no filling). In general, \code{NA}s are produced if: 1) the country is not present in the nomenclature requested in \code{to} (e.g. \code{country_name("Abkhazia", to = "ISO3")}), 2) the input country name is \code{NA}, 3) No exact match is found and the user sets the option \code{fuzzy_match = FALSE}, 4) When the fuzzy match algorithm does not find a good match and the user sets the option \code{poor_match = FALSE}. The \code{na_fill} argument gives the option to replace the resulting NA with the original value in \code{x}.}
 
 \item{custom_table}{Custom conversion table to be used. This needs to be a \code{data.frame} object. Default is \code{NULL}.}
 }

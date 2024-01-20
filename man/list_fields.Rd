@@ -14,8 +14,8 @@ This function queries \href{https://restcountries.com/}{REST Countries API} and 
 \strong{NOTE:} Internet access is needed to download information from the API.
 }
 \examples{
-# Run example only if internet connection is available
-if (curl::has_internet()){
+# Run example only if a connection to the API is available
+if (check_countries_api(warnings = FALSE)){
 
 list_fields()
 

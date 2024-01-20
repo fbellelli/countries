@@ -90,7 +90,7 @@ random_countries(5, nomenclature = "name_ar")
 
 ## Getting information about countries
 
-`country_info()` allows to download a variety of information about countries, such as: currencies used, capital city, language spoken, flag, neighbouring countries, and much more. You can find [more information about this function](https://fbellelli.github.io/countries/reference/country_info.html) in the documentation.
+`country_info()` allows to download a variety of information about countries from [REST Countries API](https://restcountries.com/), such as: currencies used, capital city, language spoken, flag, neighbouring countries, and much more. You can find [more information about this function](https://fbellelli.github.io/countries/reference/country_info.html) in the documentation.
 
 ```{r}
 # What are the official languages of Switzerland?

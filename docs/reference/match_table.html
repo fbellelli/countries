@@ -70,6 +70,7 @@ The use of fuzzy matching allows more flexibility in recognising and identifying
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  matching_info <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  simplify <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  na_fill <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  poor_matches <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  custom_table <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -99,6 +100,10 @@ The use of fuzzy matching allows more flexibility in recognising and identifying
 
 <dt>simplify</dt>
 <dd><p>Logical value. If set to <code>TRUE</code> the function will return the match table as a <code>data.frame</code> object. If set to <code>FALSE</code>, the function will return a list object containing the match table and additional details on the country matching process. Default is <code>TRUE</code>.</p></dd>
+
+
+<dt>na_fill</dt>
+<dd><p>Logical value. If set to <code>TRUE</code>, any <code>NA</code> in the output names will be filled with the original country name supplied in <code>x</code>. The default is <code>FALSE</code> (no filling). In general, <code>NA</code>s are produced if: 1) the country is not present in the nomenclature requested in <code>to</code> (e.g. <code>country_name("Abkhazia", to = "ISO3")</code>), 2) the input country name is <code>NA</code>, 3) No exact match is found and the user sets the option <code>fuzzy_match = FALSE</code>, 4) When the fuzzy match algorithm does not find a good match and the user sets the option <code>poor_match = FALSE</code>. The <code>na_fill</code> argument gives the option to replace the resulting NA with the original value in <code>x</code>.</p></dd>
 
 
 <dt>poor_matches</dt>

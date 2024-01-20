@@ -11,6 +11,7 @@ match_table(
   verbose = FALSE,
   matching_info = FALSE,
   simplify = TRUE,
+  na_fill = FALSE,
   poor_matches = TRUE,
   custom_table = NULL
 )
@@ -27,6 +28,8 @@ match_table(
 \item{matching_info}{Logical value. If set to true the output match table will include additional information on the matching of \code{x}'s entries. Default is \code{FALSE}.}
 
 \item{simplify}{Logical value. If set to \code{TRUE} the function will return the match table as a \code{data.frame} object. If set to \code{FALSE}, the function will return a list object containing the match table and additional details on the country matching process. Default is \code{TRUE}.}
+
+\item{na_fill}{Logical value. If set to \code{TRUE}, any \code{NA} in the output names will be filled with the original country name supplied in \code{x}. The default is \code{FALSE} (no filling). In general, \code{NA}s are produced if: 1) the country is not present in the nomenclature requested in \code{to} (e.g. \code{country_name("Abkhazia", to = "ISO3")}), 2) the input country name is \code{NA}, 3) No exact match is found and the user sets the option \code{fuzzy_match = FALSE}, 4) When the fuzzy match algorithm does not find a good match and the user sets the option \code{poor_match = FALSE}. The \code{na_fill} argument gives the option to replace the resulting NA with the original value in \code{x}.}
 
 \item{poor_matches}{Logical value. If set to \code{TRUE} (the default option), the function will always return the closest matching country name, even if the matching is poor. If set to \code{FALSE}, the function will return \code{NA} in case of poor matching.}
 
