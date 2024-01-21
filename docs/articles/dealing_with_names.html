@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">countries</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -121,8 +121,8 @@ The former will return a list of ALL countries, while the second
 provides <code>n</code> randomly picked countries.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Korea, Republic of" "Somalia"            "Poland"            </span></span>
-<span><span class="co">#&gt; [4] "Namibia"            "Philippines"</span></span>
+<span><span class="co">#&gt; [1] "Timor-Leste"          "Italy"                "Saint Lucia"         </span></span>
+<span><span class="co">#&gt; [4] "Yemen"                "Syrian Arab Republic"</span></span>
 <span><span class="fu"><a href="../reference/list_countries.html">list_countries</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
 <span><span class="co">#&gt; [1] "Afghanistan"    "Åland Islands"  "Albania"        "Algeria"       </span></span>
 <span><span class="co">#&gt; [5] "American Samoa"</span></span></code></pre></div>
@@ -131,9 +131,11 @@ and nomenclatures. The list of all possible languages and nomenclatures
 is available in the next section.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span>, nomenclature <span class="op">=</span> <span class="st">"ISO3"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "COM" "KOR" "VNM" "JPN" "MDV"</span></span>
+<span><span class="co">#&gt; [1] "BHR" "NCL" "ARE" "EGY" "BLZ"</span></span>
 <span><span class="fu"><a href="../reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span>, nomenclature <span class="op">=</span> <span class="st">"name_ar"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "سلوفاكيا"     "صربيا"        "مارتينيك"     "الرأس الأخضر" "اليابان"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "ولايات ميكرونيسيا المتحدة" "قبرص"                     </span></span>
+<span><span class="co">#&gt; [3] "زامبيا"                    "توغو"                     </span></span>
+<span><span class="co">#&gt; [5] "كوريا الجنوبية"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="converting-and-translating-country-names">Converting and translating country names<a class="anchor" aria-label="anchor" href="#converting-and-translating-country-names"></a>

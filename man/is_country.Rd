@@ -18,7 +18,7 @@ Returns a logical vector indicating whether the string is a country name
 }
 \description{
 This function checks whether the string is a country name. It supports different languages and naming conventions.
-The function returns \code{TRUE} if it relates to one of the 249 countries of the ISO standard \code{3166}.
+The function returns \code{TRUE} if it relates to one of the 249 countries currently in the ISO standard \code{3166}.
 Alternatively, the argument \code{check_for} allows to narrow down the test to a subset of countries.
 Fuzzy matching can be used to allow a small margin of error in the string.
 }
