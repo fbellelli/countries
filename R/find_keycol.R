@@ -69,7 +69,7 @@ find_keycol <- function(x,
   # --- 1) FIND COUNTRY COLUMN (AND CHECK FOR CROSS-SECTIONAL STRUCTURE)----
 
   #make a list of country columns
-  country_cols <- find_countrycol(x, allow_NA = TRUE)
+  country_cols <- find_countrycol(x, allow_NA = TRUE, min_share = 0.6)
 
   #check if any of the country column is key of the table
   if (length(country_cols)>0){

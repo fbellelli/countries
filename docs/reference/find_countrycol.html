@@ -16,7 +16,7 @@ On large datasets a random sample is used for evaluating the columns."><meta pro
     
     <a class="navbar-brand me-2" href="../index.html">countries</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,7 @@ On large datasets a random sample is used for evaluating the columns.</p>
 <span>  <span class="va">x</span>,</span>
 <span>  return_index <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  allow_NA <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  min_share <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  min_share <span class="op">=</span> <span class="fl">0.6</span>,</span>
 <span>  sample_size <span class="op">=</span> <span class="fl">1000</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -93,7 +93,7 @@ On large datasets a random sample is used for evaluating the columns.</p>
 
 
 <dt>min_share</dt>
-<dd><p>A value between <code>0</code> and <code>1</code> indicating the minimum share of country names in columns that are returned. A value of <code>0</code> will return any column containing a country name. A value of <code>1</code> will return only columns whose entries are all country names. Default is <code>0.9</code>, i.e. at least 90 percent of the column entries need to be country names.</p></dd>
+<dd><p>A value between <code>0</code> and <code>1</code> indicating the minimum share of country names in columns that are returned. A value of <code>0</code> will return any column containing a country name. A value of <code>1</code> will return only columns whose entries are all country names. Default is <code>0.6</code>, i.e. at least 60 percent of the column entries need to be country names.</p></dd>
 
 
 <dt>sample_size</dt>

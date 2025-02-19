@@ -1,3 +1,6 @@
+# countries 1.2.1
+* Fixed bug preventing connection to the countries REST API.
+
 # countries 1.2.0
 * Added function *check_countries_api* to check whether connection to Countries REST API is working.
 * Updated country reference table to improve matching of former Yugoslavian countries.

@@ -1,4 +1,4 @@
-pandoc: 3.1.1
+pandoc: '3.2'
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
@@ -6,7 +6,7 @@ articles:
   data_structure: data_structure.html
   dealing_with_names: dealing_with_names.html
   quick_map: quick_map.html
-last_built: 2024-01-21T11:06Z
+last_built: 2025-02-19T21:15Z
 urls:
   reference: https://fbellelli.github.io/countries/reference
   article: https://fbellelli.github.io/countries/articles

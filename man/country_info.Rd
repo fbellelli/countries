@@ -9,7 +9,8 @@ country_info(
   fields = NULL,
   fuzzy_match = TRUE,
   match_info = FALSE,
-  collapse = TRUE
+  collapse = TRUE,
+  base_url = "restcountries.com:8080/v3.1/"
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ country_info(
 \item{match_info}{Logical value indicating whether to return information on country names matched to each input in \code{countries}. If \code{TRUE}, two additional columns will be added to the output (\code{matched_country} and \code{is_country}). Default is \code{FALSE}.}
 
 \item{collapse}{Logical value indicating whether to collapse multiple columns relating to a same field together. Default is \code{TRUE}. For some specific fields (currencies, languages, names), multiple columns will be returned. This happens because countries can take multiple values for these fields. For example, \code{country_info("Switzerland", "languages", collapse = FALSE)} will return 4 columns for the field languages. When \code{collapse = TRUE}, these four columns will be collapsed into one string, with values separated by semicolons.}
+
+\item{base_url}{Base URL used to construct the API calls. The default is \code{"restcountries.com:8080/v3.1/"}.}
 }
 \value{
 Returns the requested information about the countries in a table. The rows of the table correspond to entries in \code{countries}, columns correspond to requested \code{fields}.

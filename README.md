@@ -91,12 +91,14 @@ while the second provides `n` randomly picked countries.
 ``` r
 # Get 5 random country names in different languages/nomenclatures
 random_countries(5)
-#> [1] "Sweden"  "Macao"   "Iceland" "Egypt"   "Ecuador"
+#> [1] "Cayman Islands"              "Uganda"                     
+#> [3] "Falkland Islands (Malvinas)" "Slovakia"                   
+#> [5] "Afghanistan"
 random_countries(5, nomenclature = "ISO3")
-#> [1] "CZE" "GBR" "URY" "MAC" "PAK"
+#> [1] "TGO" "SYC" "IMN" "GNQ" "REU"
 random_countries(5, nomenclature = "name_ar")
-#> [1] "قطر"             "الصحراء الغربية" "نيوزيلندا"       "سريلانكا"       
-#> [5] "جمهورية الكونغو"
+#> [1] "الهند"             "جزر توركس وكايكوس" "تجمع سان مارتين"  
+#> [4] "لاتفيا"            "بوروندي"
 ```
 
 ## Getting information about countries
@@ -111,9 +113,8 @@ in the documentation.
 ``` r
 # What are the official languages of Switzerland?
 country_info("Switzerland", "languages")
-#> Warning in country_info("Switzerland", "languages"): Unable to connect to API.
-#> There might be a problem with Countries REST API.
-#> NULL
+#>     countries                              languages
+#> 1 Switzerland French; Swiss German; Italian; Romansh
 
 # Get information on the capital name and currencies for multiple countries
 country_info(c("Canada", "Mozambique", "India"), c("capital", "currencies"))
@@ -181,14 +182,14 @@ auto_merge(tab1, tab2, tab3, tab4)
 #>    country world_cups HS_chapter volume time Table4_pivoted_values
 #> 1      ITA          4          9   1000   NA                    NA
 #> 2      ITA          4         85   2000   NA                    NA
-#> 3      PAK          0         NA     NA 2010             0.9852906
-#> 4      PAK          0         NA     NA 2011             0.6920557
-#> 5      BRA          5         NA     NA 2010             0.9409735
-#> 6      BRA          5         NA     NA 2011             0.8452781
-#> 7      DEU         NA          9    800 2010             0.5690862
-#> 8      DEU         NA          9    800 2011             0.8562227
-#> 9      DEU         NA         85   5000 2010             0.5690862
-#> 10     DEU         NA         85   5000 2011             0.8562227
+#> 3      PAK          0         NA     NA 2010             0.7978031
+#> 4      PAK          0         NA     NA 2011             0.6825076
+#> 5      BRA          5         NA     NA 2010             0.5200385
+#> 6      BRA          5         NA     NA 2011             0.8474904
+#> 7      DEU         NA          9    800 2010             0.0577640
+#> 8      DEU         NA          9    800 2011             0.1221765
+#> 9      DEU         NA         85   5000 2010             0.0577640
+#> 10     DEU         NA         85   5000 2011             0.1221765
 #>             Description
 #> 1  Coffee, tea and mate
 #> 2  Electrical machinery

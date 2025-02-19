@@ -14,7 +14,7 @@ NOTE: Internet access is needed to download information from the API. At times t
     
     <a class="navbar-brand me-2" href="../index.html">countries</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,7 +71,8 @@ It allows to request and download information about countries, such as: currency
 <span>  fields <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fuzzy_match <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  match_info <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  collapse <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  collapse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  base_url <span class="op">=</span> <span class="st">"restcountries.com:8080/v3.1/"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -95,6 +96,10 @@ It allows to request and download information about countries, such as: currency
 
 <dt>collapse</dt>
 <dd><p>Logical value indicating whether to collapse multiple columns relating to a same field together. Default is <code>TRUE</code>. For some specific fields (currencies, languages, names), multiple columns will be returned. This happens because countries can take multiple values for these fields. For example, <code>country_info("Switzerland", "languages", collapse = FALSE)</code> will return 4 columns for the field languages. When <code>collapse = TRUE</code>, these four columns will be collapsed into one string, with values separated by semicolons.</p></dd>
+
+
+<dt>base_url</dt>
+<dd><p>Base URL used to construct the API calls. The default is <code>"restcountries.com:8080/v3.1/"</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

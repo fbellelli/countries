@@ -9,6 +9,7 @@
 #' @param fuzzy_match Logical value indicating whether to allow fuzzy matching of country names. Default is \code{TRUE}.
 #' @param match_info Logical value indicating whether to return information on country names matched to each input in \code{countries}. If \code{TRUE}, two additional columns will be added to the output (\code{matched_country} and \code{is_country}). Default is \code{FALSE}.
 #' @param collapse Logical value indicating whether to collapse multiple columns relating to a same field together. Default is \code{TRUE}. For some specific fields (currencies, languages, names), multiple columns will be returned. This happens because countries can take multiple values for these fields. For example, \code{country_info("Switzerland", "languages", collapse = FALSE)} will return 4 columns for the field languages. When \code{collapse = TRUE}, these four columns will be collapsed into one string, with values separated by semicolons.
+#' @param base_url Base URL used to construct the API calls. The default is \code{"restcountries.com:8080/v3.1/"}.
 #' @returns Returns the requested information about the countries in a table. The rows of the table correspond to entries in \code{countries}, columns correspond to requested \code{fields}.
 #' @seealso \link[countries]{list_fields}, \link[countries]{check_countries_api}
 #' @export
@@ -32,7 +33,7 @@
 #' info <- country_info()
 #'
 #' }
-country_info <- function(countries = NULL, fields = NULL, fuzzy_match = TRUE, match_info = FALSE, collapse = TRUE){
+country_info <- function(countries = NULL, fields = NULL, fuzzy_match = TRUE, match_info = FALSE, collapse = TRUE, base_url = "restcountries.com:8080/v3.1/"){
 
   # check input format
   if (!is.logical(fuzzy_match) | length(fuzzy_match)!=1) stop("Function argument - fuzzy_match - needs to be a single logical statement (TRUE/FALSE)")
@@ -99,7 +100,7 @@ country_info <- function(countries = NULL, fields = NULL, fuzzy_match = TRUE, ma
     fields <- fields[!is.na(fields)]
   }
 
-  query <- paste0("restcountries.com/v3.1/",
+  query <- paste0(base_url,
                   if (length(countries) == 0) "all?" else paste0("alpha?codes=", paste(stringr::str_to_lower(list_countries), collapse = ",", sep = "")),
                   if (length(fields) == 0) "" else paste0("&fields=", paste(fields, collapse = ",", sep = "")))
 
