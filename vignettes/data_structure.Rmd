@@ -32,7 +32,7 @@ download.file("https://fbellelli.com/data%20files/Extended%20EDB%20by%20measure-
 #unzip and load it in R
 library(data.table)
 example <- fread(
-  unzip(temp,"Extended EDB by measure-country-HS chapter/Extended EDB (by measure-country-HS chapter).csv"),
+  unzip(temp,"Extended EDB (by measure-country-HS chapter).csv"),
   stringsAsFactors=FALSE,
   encoding = "Latin-1")
 ```

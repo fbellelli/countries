@@ -1,3 +1,6 @@
+# countries 1.2.2
+* Patch to fix bug in unit tests due to changes in ggplot2 package.
+
 # countries 1.2.1
 * Fixed bug preventing connection to the countries REST API.
 

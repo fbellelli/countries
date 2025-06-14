@@ -4,4 +4,4 @@
 
 
 ## Changes
-* In this version I have: Modified the function country_info() to fix a small bug relating to data sourcing from an API
+* In this version I have: fixed unit tests to be compatible with new release of ggplot2 package

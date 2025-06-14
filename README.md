@@ -4,6 +4,7 @@
 # countries
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 `countries` is an R package designed to quickly wrangle, merge and
@@ -91,14 +92,12 @@ while the second provides `n` randomly picked countries.
 ``` r
 # Get 5 random country names in different languages/nomenclatures
 random_countries(5)
-#> [1] "Cayman Islands"              "Uganda"                     
-#> [3] "Falkland Islands (Malvinas)" "Slovakia"                   
-#> [5] "Afghanistan"
+#> [1] "Congo"      "Qatar"      "Zimbabwe"   "Estonia"    "Tajikistan"
 random_countries(5, nomenclature = "ISO3")
-#> [1] "TGO" "SYC" "IMN" "GNQ" "REU"
+#> [1] "SJM" "ESH" "MTQ" "TLS" "IND"
 random_countries(5, nomenclature = "name_ar")
-#> [1] "الهند"             "جزر توركس وكايكوس" "تجمع سان مارتين"  
-#> [4] "لاتفيا"            "بوروندي"
+#> [1] "سيشل"                   "اليمن"                  "جمهورية أفريقيا الوسطى"
+#> [4] "الأرجنتين"              "واليس وفوتونا"
 ```
 
 ## Getting information about countries
@@ -182,14 +181,14 @@ auto_merge(tab1, tab2, tab3, tab4)
 #>    country world_cups HS_chapter volume time Table4_pivoted_values
 #> 1      ITA          4          9   1000   NA                    NA
 #> 2      ITA          4         85   2000   NA                    NA
-#> 3      PAK          0         NA     NA 2010             0.7978031
-#> 4      PAK          0         NA     NA 2011             0.6825076
-#> 5      BRA          5         NA     NA 2010             0.5200385
-#> 6      BRA          5         NA     NA 2011             0.8474904
-#> 7      DEU         NA          9    800 2010             0.0577640
-#> 8      DEU         NA          9    800 2011             0.1221765
-#> 9      DEU         NA         85   5000 2010             0.0577640
-#> 10     DEU         NA         85   5000 2011             0.1221765
+#> 3      PAK          0         NA     NA 2010             0.2321350
+#> 4      PAK          0         NA     NA 2011             0.4595047
+#> 5      BRA          5         NA     NA 2010             0.1800116
+#> 6      BRA          5         NA     NA 2011             0.2851784
+#> 7      DEU         NA          9    800 2010             0.1630334
+#> 8      DEU         NA          9    800 2011             0.7002998
+#> 9      DEU         NA         85   5000 2010             0.1630334
+#> 10     DEU         NA         85   5000 2011             0.7002998
 #>             Description
 #> 1  Coffee, tea and mate
 #> 2  Electrical machinery
