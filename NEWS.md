@@ -1,3 +1,6 @@
+# countries 1.2.3
+* Patch adjusting the functions *country_info*, *list_fields* and *check_countries_api* to make them compatible with v5 of REST countries' API. See <https://restcountries.com/> for more information.
+
 # countries 1.2.2
 * Patch to fix bug in unit tests due to changes in ggplot2 package.
 

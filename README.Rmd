@@ -90,14 +90,23 @@ random_countries(5, nomenclature = "name_ar")
 
 ## Getting information about countries
 
-`country_info()` allows to download a variety of information about countries from [REST Countries API](https://restcountries.com/), such as: currencies used, capital city, language spoken, flag, neighbouring countries, and much more. You can find [more information about this function](https://fbellelli.github.io/countries/reference/country_info.html) in the documentation.
+`country_info()` allows to download a variety of information about countries from [REST Countries API](https://restcountries.com/), such as: currencies used, capital city, language spoken, flag, neighbouring countries, and much more. You can find [more information about this function](https://fbellelli.github.io/countries/reference/country_info.html) in the documentation. **Since 2026, a personal API key is needed to authenticate the requests, it can be obtained for free on the API website** [REST Countries API](https://restcountries.com/).
 
-```{r}
+```{r, eval=FALSE}
+
+# check what information is available from the API
+list_fields()
+
+# download all the API information for all the countries
+country_info(key = "YOUR_KEY")
+
 # What are the official languages of Switzerland?
-country_info("Switzerland", "languages")
+country_info(key = "YOUR_KEY", "Switzerland", "languages")
 
-# Get information on the capital name and currencies for multiple countries
-country_info(c("Canada", "Mozambique", "India"), c("capital", "currencies"))
+# Get information on the capitals and currencies for multiple countries
+country_info(key = "YOUR_KEY", c("South Africa", "Mozambique", "India"), c("capitals", "currencies"))
+
+
 ```
 
 
@@ -108,11 +117,13 @@ country_info(c("Canada", "Mozambique", "India"), c("capital", "currencies"))
 With `quick_map()`, it takes only one line of code to produce [chloropleth maps](https://en.wikipedia.org/wiki/Choropleth_map). It automatically recognises country names in multiple languages and nomenclatures. This allows to produce publication-grade maps in seconds. Moreover, the output is a ggplot object, so the visual look can be customised in infinite ways. You can find [more examples in this article](https://fbellelli.github.io/countries/articles/quick_map.html).
 
 ```{r, dpi = 700, warning = FALSE, message = FALSE, fig.asp=0.5}
-# downloading some sample data to plot
-example_data <- country_info(fields = c("car"))
+
+# creating some sample data to plot
+example_data <- data.frame(country = random_countries(200),
+                           random_group = paste("Group", sample(1:3, size = 200, replace = T)))
 
 # make a map
-quick_map(example_data, plot_col = "car.side")
+quick_map(example_data, plot_col = "random_group")
 ```
 
 

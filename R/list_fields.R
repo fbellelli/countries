@@ -16,12 +16,13 @@
 list_fields <- function(){
 
   # download all country data to get all possible fields
-  temp <- country_info()
+  temp <- country_info(key = "rc_live_demo")
 
   # extract and clean column names to remove sub-fields
   col_names <- colnames(temp)
   points <- stringr::str_locate(col_names, pattern = "\\.")
   cleaned_names <- unique(substr(col_names, 1, ifelse(is.na(points[,1]), 1000, points[,1] - 1)))
+  cleaned_names <- cleaned_names[!grepl("_meta",cleaned_names)]
 
   # final output
   return(cleaned_names)

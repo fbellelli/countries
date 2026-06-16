@@ -92,12 +92,11 @@ while the second provides `n` randomly picked countries.
 ``` r
 # Get 5 random country names in different languages/nomenclatures
 random_countries(5)
-#> [1] "Congo"      "Qatar"      "Zimbabwe"   "Estonia"    "Tajikistan"
+#> [1] "Congo"       "Guinea"      "Isle of Man" "Albania"     "Colombia"
 random_countries(5, nomenclature = "ISO3")
-#> [1] "SJM" "ESH" "MTQ" "TLS" "IND"
+#> [1] "CAN" "PAN" "MYS" "DZA" "KWT"
 random_countries(5, nomenclature = "name_ar")
-#> [1] "سيشل"                   "اليمن"                  "جمهورية أفريقيا الوسطى"
-#> [4] "الأرجنتين"              "واليس وفوتونا"
+#> [1] "ليتوانيا" "جزر كوك"  "ناورو"    "سوريا"    "مولدوفا"
 ```
 
 ## Getting information about countries
@@ -107,20 +106,23 @@ countries from [REST Countries API](https://restcountries.com/), such
 as: currencies used, capital city, language spoken, flag, neighbouring
 countries, and much more. You can find [more information about this
 function](https://fbellelli.github.io/countries/reference/country_info.html)
-in the documentation.
+in the documentation. **Since 2026, a personal API key is needed to
+authenticate the requests, it can be obtained for free on the API
+website** [REST Countries API](https://restcountries.com/).
 
 ``` r
-# What are the official languages of Switzerland?
-country_info("Switzerland", "languages")
-#>     countries                              languages
-#> 1 Switzerland French; Swiss German; Italian; Romansh
 
-# Get information on the capital name and currencies for multiple countries
-country_info(c("Canada", "Mozambique", "India"), c("capital", "currencies"))
-#>    countries   capital    currencies.name currencies.symbol
-#> 1     Canada    Ottawa    Canadian dollar                 $
-#> 2 Mozambique    Maputo Mozambican metical                MT
-#> 3      India New Delhi       Indian rupee                 ₹
+# check what information is available from the API
+list_fields()
+
+# download all the API information for all the countries
+country_info(key = "YOUR_KEY")
+
+# What are the official languages of Switzerland?
+country_info(key = "YOUR_KEY", "Switzerland", "languages")
+
+# Get information on the capitals and currencies for multiple countries
+country_info(key = "YOUR_KEY", c("South Africa", "Mozambique", "India"), c("capitals", "currencies"))
 ```
 
 ## Easy country maps
@@ -134,11 +136,13 @@ customised in infinite ways. You can find [more examples in this
 article](https://fbellelli.github.io/countries/articles/quick_map.html).
 
 ``` r
-# downloading some sample data to plot
-example_data <- country_info(fields = c("car"))
+
+# creating some sample data to plot
+example_data <- data.frame(country = random_countries(200),
+                           random_group = paste("Group", sample(1:3, size = 200, replace = T)))
 
 # make a map
-quick_map(example_data, plot_col = "car.side")
+quick_map(example_data, plot_col = "random_group")
 ```
 
 <img src="man/figures/unnamed-chunk-8-1.png" width="100%" />
@@ -181,14 +185,14 @@ auto_merge(tab1, tab2, tab3, tab4)
 #>    country world_cups HS_chapter volume time Table4_pivoted_values
 #> 1      ITA          4          9   1000   NA                    NA
 #> 2      ITA          4         85   2000   NA                    NA
-#> 3      PAK          0         NA     NA 2010             0.2321350
-#> 4      PAK          0         NA     NA 2011             0.4595047
-#> 5      BRA          5         NA     NA 2010             0.1800116
-#> 6      BRA          5         NA     NA 2011             0.2851784
-#> 7      DEU         NA          9    800 2010             0.1630334
-#> 8      DEU         NA          9    800 2011             0.7002998
-#> 9      DEU         NA         85   5000 2010             0.1630334
-#> 10     DEU         NA         85   5000 2011             0.7002998
+#> 3      PAK          0         NA     NA 2010             0.6589145
+#> 4      PAK          0         NA     NA 2011             0.3934466
+#> 5      BRA          5         NA     NA 2010             0.4665325
+#> 6      BRA          5         NA     NA 2011             0.7978796
+#> 7      DEU         NA          9    800 2010             0.2339758
+#> 8      DEU         NA          9    800 2011             0.1988923
+#> 9      DEU         NA         85   5000 2010             0.2339758
+#> 10     DEU         NA         85   5000 2011             0.1988923
 #>             Description
 #> 1  Coffee, tea and mate
 #> 2  Electrical machinery

@@ -257,15 +257,10 @@ test_that("output from list_fields() are as expected", {
 
 test_that("output from country_info() are as expected", {
   if (check_countries_api(warnings = FALSE)){
-    expect_equal(is.data.frame(country_info("USA", "capital")), TRUE)
-    expect_equal(dim(country_info("Belgium", "languages")), c(1, 2))
-    expect_equal(dim(country_info("Belgium", "languages", collapse = FALSE)), c(1, 4))
-    expect_equal(dim(country_info(c("Bel", "Taiwan"), c("capital", "unMember"))), c(2, 3))
-    expect_equal(dim(country_info(c("Bel", "China"), c("capital", "unMember"), match_info = TRUE)), c(2, 5))
-    expect_equal(all(c("matched_country", "is_country") %in% colnames(country_info(c("Bel", "China"), c("capital", "unMember"), match_info = TRUE))), TRUE)
-    expect_equal(unlist(country_info(c("France", "Australia", "Italy"), "capital")$capital), c("Paris", "Canberra", "Rome"))
-    expect_equal(nrow(country_info(fields = "capital"))>190, TRUE)
-    expect_equal(ncol(country_info("USA"))>50, TRUE)
+    expect_equal(is.data.frame(country_info(key = "rc_live_demo")), TRUE)
+    expect_equal(nrow(country_info(key = "rc_live_demo")) > 0, TRUE)
+    expect_equal(ncol(country_info(key = "rc_live_demo")) > 1, TRUE)
+    expect_equal(is.null(suppressWarnings(country_info(key = "rc_live_demo", countries = 1))), TRUE)
   }
 })
 

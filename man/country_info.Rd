@@ -5,26 +5,26 @@
 \title{Get information about countries}
 \usage{
 country_info(
+  key,
   countries = NULL,
   fields = NULL,
   fuzzy_match = TRUE,
   match_info = FALSE,
-  collapse = TRUE,
-  base_url = "restcountries.com:8080/v3.1/"
+  base_url = "https://api.restcountries.com/countries/v5"
 )
 }
 \arguments{
-\item{countries}{A vector of countries for which we wish to download information. The function also supports fuzzy matching capabilities to facilitate querying. Information is only returned for the 249 countries in the ISO standard \code{3166}.}
+\item{key}{String containing the personal API key used to authenticate the user. The key can be created on the API website \href{https://restcountries.com/}{REST Countries API}.}
 
-\item{fields}{Character vector indicating the fields to query. A description of the \href{https://gitlab.com/restcountries/restcountries/-/blob/master/FIELDS.md}{accepted fields can be found here}. Alternatively, a list of accepted field names can be obtained with the function \code{list_fields()}.}
+\item{countries}{(optional) A vector of countries for which we wish to filter the downloaded information. The function also supports fuzzy matching capabilities to facilitate filtering. When left blank or set to \code{NULL}, all the countries in the dataset are returned.}
+
+\item{fields}{(optional) Character vector indicating the fields to query. If \code{fields} is left empty, all available fields will be returned. A description of the accepted fields can be found on the API website or it can be obtained with the function \code{list_fields()}.}
 
 \item{fuzzy_match}{Logical value indicating whether to allow fuzzy matching of country names. Default is \code{TRUE}.}
 
 \item{match_info}{Logical value indicating whether to return information on country names matched to each input in \code{countries}. If \code{TRUE}, two additional columns will be added to the output (\code{matched_country} and \code{is_country}). Default is \code{FALSE}.}
 
-\item{collapse}{Logical value indicating whether to collapse multiple columns relating to a same field together. Default is \code{TRUE}. For some specific fields (currencies, languages, names), multiple columns will be returned. This happens because countries can take multiple values for these fields. For example, \code{country_info("Switzerland", "languages", collapse = FALSE)} will return 4 columns for the field languages. When \code{collapse = TRUE}, these four columns will be collapsed into one string, with values separated by semicolons.}
-
-\item{base_url}{Base URL used to construct the API calls. The default is \code{"restcountries.com:8080/v3.1/"}.}
+\item{base_url}{Base URL used to construct the API calls. The default is \code{"https://api.restcountries.com/countries/v5"}.}
 }
 \value{
 Returns the requested information about the countries in a table. The rows of the table correspond to entries in \code{countries}, columns correspond to requested \code{fields}.
@@ -32,26 +32,25 @@ Returns the requested information about the countries in a table. The rows of th
 \description{
 This function is an interface for \href{https://restcountries.com/}{REST Countries API}.
 It allows to request and download information about countries, such as: currency, capital city, language spoken, flag, neighbouring countries, and much more.
-\strong{NOTE:} Internet access is needed to download information from the API. At times the API may be unstable or slow to respond.
+\strong{NOTE:} From 2026, a personal key is needed to use the API, the key can be created on the API website \href{https://restcountries.com/}{REST Countries API}. Internet access is needed to download information from the API. At times the API may be unstable or slow to respond. Every time this function is executied it performs three API calls (the entire dataset is downloaded in three batches).
 }
 \examples{
 # Run examples only if a connection to the API is available:
 if (check_countries_api(warnings = FALSE)){
 
-# The example below queries information on the currency used in Brazil, US and France:
-info <- country_info(countries = "Brazil", fields = "capital")
+# NOTE: A VALID KEY IS NEEDED TO RUN THE EXAMPLES. CREATE ONE AT https://restcountries.com/
 
-# data for multiple countries can be requested
-info <- country_info(countries = c("Brazil", "USA", "FR"), fields = "capital")
+# downloaded all the available information by leaving both countries and fields arguments empty
+# The example below uses a test key (it will return a fixed output for Canada only)
+info <- country_info(key = "rc_live_demo")
 
-#' # Data can be returned for all countries by leaving - countries - empty
-info <- country_info(fields = "capital")
+# The example below filters the dataset to obtain information for one or more countries:
+# info <- country_info(countries = "DR Congo", key = "YOUR_KEY")
+# info <- country_info(countries = c("Morocco", "Brazil", "FR"), key = "YOUR_KEY")
 
-# All available fields can be requested by leaving fields empty
-info <- country_info(countries = c("Brazil", "USA", "FR"))
-
-# All information for all countries can be downloaded by leaving both arguments empty
-info <- country_info()
+# The fields argument can be used to query only for specific information
+# info <- country_info(fields = "capitals", key = "YOUR_KEY")
+# info <- country_info(countries = c("Brazil", "USA", "FR"), fields = "capitals", key = "YOUR_KEY")
 
 }
 }

@@ -20,11 +20,16 @@ check_countries_api <- function(warnings = TRUE, timeout = 4){
   if (curl::has_internet()){
 
     # If there is internet connection, try to send a request to the API
-    simple_query <- "restcountries.com/v3.1/alpha?codes=ita&fields=capital"
+    simple_query <- "https://api.restcountries.com/countries/v5/names.common/Canada"
+
+
 
     # Send request to API
     results <- "start query"
-    try(results <- httr::GET(url = simple_query, httr::timeout(timeout)), silent = TRUE)
+    try(results <- GET(
+            url = simple_query,
+            add_headers(Authorization = "Bearer rc_live_demo")
+          ), silent = TRUE)
 
     # If no result is returned, assume the API is down
     if (identical(results,  "start query")){
