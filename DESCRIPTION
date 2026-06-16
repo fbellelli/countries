@@ -1,7 +1,7 @@
 Package: countries
 Type: Package
 Title: Deal with Country Data in an Easy Way
-Version: 1.2.2
+Version: 1.2.3
 Authors@R: 
     person("Francesco Saverio", "Bellelli", , "fsabellelli@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(Website = "https://fbellelli.com/"))
@@ -11,7 +11,6 @@ Description: Wrangle country data more effectively and quickly.
     and make quick world maps.
 License: GPL-3
 Encoding: UTF-8
-RoxygenNote: 7.3.2
 Imports: 
     stringdist,
     tidyr,
@@ -19,7 +18,6 @@ Imports:
     dplyr,
     knitr,
     fastmatch,
-    rlang,
     lubridate,
     utils,
     methods,
@@ -33,7 +31,8 @@ Suggests:
     data.table,
     rmarkdown,
     testthat,
-    curl
+    curl,
+    rlang
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr
@@ -41,3 +40,4 @@ URL: https://fbellelli.github.io/countries/, https://github.com/fbellelli/countr
 BugReports: https://github.com/fbellelli/countries/issues
 Config/testthat/edition: 3
 LazyData: true
+Config/roxygen2/version: 8.0.0
