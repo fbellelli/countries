@@ -97,38 +97,39 @@ commands.</p>
 <h2 id="some-data-to-plot">Some data to plot<a class="anchor" aria-label="anchor" href="#some-data-to-plot"></a>
 </h2>
 <p>Let’s start by loading the package and putting together a table with
-country data which we will use for demonstration. This table contains
-information on countries’ population (numeric continuous variable), a
-boolean variable indicating whether the country is landlocked, a
-categorical/factor variable indicating whether cars in the country drive
-on the left or right, and finally information on the capital of the
-countries (name, latitude/longitude).</p>
+mock country data which we will use for demonstration. This table
+contains the following mock variables: big_number (a numeric continuous
+variable), a boolean variable, and a character (string) variable.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://fbellelli.github.io/countries/">countries</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/country_info.html">country_info</a></span><span class="op">(</span>fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"population"</span>, <span class="st">"landlocked"</span>, <span class="st">"car"</span>, <span class="st">"capital"</span>, <span class="st">"capitalInfo"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Mock data</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>country <span class="op">=</span> <span class="fu"><a href="../reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">245</span><span class="op">)</span>,</span>
+<span>                   big_number <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">245</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">245</span>, <span class="fl">4</span>, <span class="fl">9</span><span class="op">)</span>,</span>
+<span>                   boolean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span>, <span class="fl">245</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>                   random_side <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"right"</span><span class="op">)</span>, <span class="fl">245</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
 <p>All it takes to make a plot is one line of code telling to plot the
-column <code>"car.side"</code>from the table <code>data</code>. The
+column <code>"random_side"</code> from the table <code>data</code>. The
 function will take care of everything else. Under the hood, the function
 looks for a column of country names and matches them to one of the
 territories in the <a href="https://en.wikipedia.org/wiki/ISO_3166-1" class="external-link">ISO standard
 3166-1</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, plot_col <span class="op">=</span> <span class="st">"car.side"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, plot_col <span class="op">=</span> <span class="st">"random_side"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="quick_map_files/figure-html/unnamed-chunk-3-1.png" width="100%"></p>
 <div class="section level3">
 <h3 id="saving-your-plot">Saving your plot<a class="anchor" aria-label="anchor" href="#saving-your-plot"></a>
 </h3>
-<p>The plot can be saved with by passing a file path to the argument
+<p>The plot can be saved by passing a file path to the argument
 <code>save_to</code>. This comes with predefined size and resolution
 options. If you wish a more customised download, the function
 <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code> can be used.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, plot_col <span class="op">=</span> <span class="st">"car.side"</span>, </span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, plot_col <span class="op">=</span> <span class="st">"random_side"</span>, </span>
 <span>          save_to <span class="op">=</span> <span class="st">"example_path/plot.png"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -136,10 +137,18 @@ options. If you wish a more customised download, the function
 </h3>
 <p>When a country name is not recognised or does not match with a
 country in the standard, a warning is given to the user. In the example
-above, the country that has no match (UNK) is Kosovo, which is not in
+below, the country that has no match (UNK) is Kosovo, which is not in
 the ISO 3166-1 standard.</p>
 <p>If you are interested in knowing exactly how the country were matched
 you can just use the function <code><a href="../reference/country_name.html">country_name()</a></code>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FRA"</span>, <span class="st">"UNK"</span>, <span class="st">"Greece"</span><span class="op">)</span>, </span>
+<span>                     random_side <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"right"</span>, <span class="st">"left"</span><span class="op">)</span><span class="op">)</span>, </span>
+<span>          plot_col <span class="op">=</span> <span class="st">"random_side"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Some country IDs have no match in one or more of the requested country naming conventions, NA returned.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Set - verbose - to TRUE for more details</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -150,12 +159,12 @@ package comes with predefined zoom settings
 <code>c("Default", "World", "Africa", "Asia", "Europe", "SEAsia", "NAmerica", "CAmerica", "SAmerica", "Oceania")</code>.
 Alternatively, it is also possible to define a custom zoom by passing
 the min/max longitude and latitude.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, plot_col <span class="op">=</span> <span class="st">"car.side"</span>, zoom <span class="op">=</span> <span class="st">"Africa"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="quick_map_files/figure-html/unnamed-chunk-5-1.png" width="50%" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, plot_col <span class="op">=</span> <span class="st">"car.side"</span>, zoom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">55</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, plot_col <span class="op">=</span> <span class="st">"random_side"</span>, zoom <span class="op">=</span> <span class="st">"Africa"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="quick_map_files/figure-html/unnamed-chunk-6-1.png" width="50%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, plot_col <span class="op">=</span> <span class="st">"random_side"</span>, zoom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">55</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="quick_map_files/figure-html/unnamed-chunk-7-1.png" width="50%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="customising-the-look-of-your-map">Customising the look of your map<a class="anchor" aria-label="anchor" href="#customising-the-look-of-your-map"></a>
@@ -173,11 +182,10 @@ a number between 1 and 11, or one of the predefined themes’ names:
 <code>c("Default", "Greyscale", "Candy", "RedBlue", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")</code>.
 If <code>0</code> or <code>"NoTheme"</code> is passed, ggplot2 settings
 are used (no theme is applied to the map).</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, plot_col <span class="op">=</span> <span class="st">"population"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, plot_col <span class="op">=</span> <span class="st">"big_number"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>          theme <span class="op">=</span> <span class="st">"Candy"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="quick_map_files/figure-html/unnamed-chunk-7-1.png" width="100%"></p>
+<p><img src="quick_map_files/figure-html/unnamed-chunk-8-1.png" width="100%"></p>
 <p>Some basic visual elements can be modified within
 <code><a href="../reference/quick_map.html">quick_map()</a></code>. For instance, In case you are not happy with
 the colour ordering, it can be reversed with
@@ -187,32 +195,32 @@ can be changed with <code>name_legend</code>, finally,
 <code>col_na</code> and <code>width_border</code> set the colour and
 thickness of the border lines between territories (or remove them
 altogether).</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">150</span>,<span class="op">]</span>, plot_col <span class="op">=</span> <span class="st">"population"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, plot_col <span class="op">=</span> <span class="st">"big_number"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>          theme <span class="op">=</span> <span class="st">"Greyscale"</span>,</span>
 <span>          reverse_palette <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>          name_legend <span class="op">=</span> <span class="st">"Countries' populations\nas of 2022"</span>, </span>
+<span>          name_legend <span class="op">=</span> <span class="st">"A random big\nnumber"</span>, </span>
 <span>          col_na <span class="op">=</span> <span class="st">"darkred"</span>,</span>
 <span>          col_border <span class="op">=</span> <span class="st">"NA"</span><span class="op">)</span> <span class="co"># here we are removing the border lines</span></span></code></pre></div>
-<p><img src="quick_map_files/figure-html/unnamed-chunk-8-1.png" width="100%"></p>
+<p><img src="quick_map_files/figure-html/unnamed-chunk-9-1.png" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="colour-scale-breaks">Colour scale breaks<a class="anchor" aria-label="anchor" href="#colour-scale-breaks"></a>
 </h3>
 <p>By default, <code><a href="../reference/quick_map.html">quick_map()</a></code> discretises continuous
 variables, such as population, in 6 buckets for plotting. This is
-because continuous scales usually are not easy to interpret in world
-maps. This means that the colour assignment depends the bucket in which
-the country falls. In some cases, like in the example above, the
-automatic buckets defined by <code><a href="../reference/quick_map.html">quick_map()</a></code> may not yield the
-best results. Users can supply values for the colour breaks manually
-with the argument <code>col_breaks</code>. In the example below, I
-manually pass powers of ten as breaks.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, plot_col <span class="op">=</span> <span class="st">"population"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+because continuous scales usually are not easy to visually interpret in
+world maps. This means that the colour assignment depends on the bucket
+in which the country falls. In some cases, the automatic buckets defined
+by <code><a href="../reference/quick_map.html">quick_map()</a></code> may not yield the best results. Users can
+supply values for the colour breaks manually with the argument
+<code>col_breaks</code>. In the example below, I manually pass powers of
+ten as breaks.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, plot_col <span class="op">=</span> <span class="st">"big_number"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>          theme <span class="op">=</span> <span class="st">"RedBlue"</span>,</span>
 <span>          col_breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1e5</span>, <span class="fl">1e6</span>, <span class="fl">1e7</span> , <span class="fl">1e8</span>, <span class="fl">1e9</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="quick_map_files/figure-html/unnamed-chunk-9-1.png" width="100%"></p>
+<p><img src="quick_map_files/figure-html/unnamed-chunk-10-1.png" width="100%"></p>
 <p>Some predefined themes have only a limited number of colours. If you
 have many breaks, the following themes support more colours:
 <code>c("Greyscale", "Dark", "Reds", "Blues", "Greens", "Viridis", "Cividis", "Distinct")</code>.
@@ -226,15 +234,15 @@ disretised one, you can request the raw ggplot output with
 <p>The nice thing about <code><a href="../reference/quick_map.html">quick_map()</a></code> is that the output is a
 ggplot object, so customisation is truly endless. Let’s start with our
 last plot:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, plot_col <span class="op">=</span> <span class="st">"population"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, plot_col <span class="op">=</span> <span class="st">"big_number"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>          theme <span class="op">=</span> <span class="st">"RedBlue"</span>,</span>
 <span>          col_breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1e5</span>, <span class="fl">1e6</span>, <span class="fl">1e7</span> , <span class="fl">1e8</span>, <span class="fl">1e9</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The look of the can be customised with any of ggplot’s
 <code>theme</code> or <code>scale</code> commands. For example, below I
 remove the name of the legend, <strong>provide custom colours</strong>
 for the 6 buckets, add a title and change the background:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># let's define 6 colours for our map</span></span>
@@ -244,29 +252,30 @@ for the 6 buckets, add a title and change the background:</p>
 <span><span class="va">p</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>,  <span class="co"># remove name in fill legend</span></span>
 <span>                    values <span class="op">=</span> <span class="va">colours6</span><span class="op">)</span><span class="op">+</span> <span class="co"># use custom colours</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"World population"</span><span class="op">)</span> <span class="op">+</span> <span class="co"># add a title to the plot </span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"A very big number for each country"</span><span class="op">)</span> <span class="op">+</span> <span class="co"># add a title to the plot </span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#e3cff9"</span><span class="op">)</span>, <span class="co"># change colour of background</span></span>
 <span>        legend.position <span class="op">=</span> <span class="st">"top"</span>,  <span class="co"># move legend on top</span></span>
 <span>        plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span>, family <span class="op">=</span> <span class="st">"mono"</span><span class="op">)</span><span class="op">)</span> <span class="co"># center the title and change font family</span></span></code></pre></div>
-<p><img src="quick_map_files/figure-html/unnamed-chunk-11-1.png" width="100%"></p>
+<p><img src="quick_map_files/figure-html/unnamed-chunk-12-1.png" width="100%"></p>
 <p>Anything that works with ggplot will work also with the output of
 <code><a href="../reference/quick_map.html">quick_map()</a></code>. It’s even possible to <strong>add annotations
 or additional layers</strong> to the map. For example, in the image
-below, I am adding text, arrows and markers corresponding to country
-capitals by using the longitude and latitude as coordinates.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># extract capital longitude and latitude in data table</span></span>
-<span><span class="va">data</span><span class="op">$</span><span class="va">long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">capitalInfo.latlng</span>, pattern <span class="op">=</span> <span class="st">"^.*; "</span>, replacement <span class="op">=</span> <span class="st">""</span>, perl <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">data</span><span class="op">$</span><span class="va">lat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">capitalInfo.latlng</span>, pattern <span class="op">=</span> <span class="st">";.*$"</span>, replacement <span class="op">=</span> <span class="st">""</span>, perl <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+below, I am adding text, arrows and markers corresponding by passing
+their longitude and latitude as coordinates.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># create the coordinates for random points</span></span>
+<span><span class="va">data</span><span class="op">$</span><span class="va">long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="op">-</span><span class="fl">150</span>, <span class="fl">150</span><span class="op">)</span></span>
+<span><span class="va">data</span><span class="op">$</span><span class="va">lat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="op">-</span><span class="fl">80</span>, <span class="fl">80</span><span class="op">)</span></span>
+<span><span class="va">data</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Point"</span>, <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># make a map</span></span>
-<span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, <span class="st">"landlocked"</span>, zoom <span class="op">=</span> <span class="st">"Europe"</span>, theme <span class="op">=</span> <span class="st">"Greens"</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">long</span>, y <span class="op">=</span> <span class="va">lat</span>, group <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>, shape <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">+</span> <span class="co"># add markers for the capitals</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span><span class="op">[</span><span class="fl">100</span><span class="op">:</span><span class="fl">120</span>,<span class="op">]</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">long</span>, y <span class="op">=</span> <span class="va">lat</span>, label <span class="op">=</span> <span class="va">capital</span>, group <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">3</span>, nudge_y <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span> <span class="co"># printing capital name for first 20 rows</span></span>
+<span><span class="fu"><a href="../reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">data</span>, <span class="st">"boolean"</span>, zoom <span class="op">=</span> <span class="st">"Europe"</span>, theme <span class="op">=</span> <span class="st">"Greens"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">long</span>, y <span class="op">=</span> <span class="va">lat</span>, group <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>, shape <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">+</span> <span class="co"># add markers for the random points</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>,<span class="op">]</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">long</span>, y <span class="op">=</span> <span class="va">lat</span>, label <span class="op">=</span> <span class="va">name</span>, group <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">3</span>, nudge_y <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span> <span class="co"># printing name next to some of the random points</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span><span class="st">"segment"</span>, x <span class="op">=</span> <span class="fl">18</span>, y <span class="op">=</span> <span class="fl">35</span>, xend <span class="op">=</span> <span class="fl">14</span>, yend <span class="op">=</span> <span class="fl">42</span>,</span>
 <span>           arrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/arrow.html" class="external-link">arrow</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"closed"</span>, length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0.02</span>, <span class="st">"npc"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>   <span class="co"># add an arrow</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span><span class="st">"label"</span>, x <span class="op">=</span> <span class="fl">18</span>, y <span class="op">=</span> <span class="fl">35</span>, label <span class="op">=</span> <span class="st">"A boot!"</span><span class="op">)</span>  <span class="co"># add a text annotation</span></span></code></pre></div>
-<p><img src="quick_map_files/figure-html/unnamed-chunk-12-1.png" width="100%"></p>
+<p><img src="quick_map_files/figure-html/unnamed-chunk-13-1.png" width="100%"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -4,4 +4,4 @@
 
 
 ## Changes
-* In this version I have: fixed unit tests to be compatible with new release of ggplot2 package
+* In this version I have: adjusted three functions (country_info, list_fields, check_countries_api) to make them compatible with the new version of REST countries API. This fixes the errors in the CRAN checks.

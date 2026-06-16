@@ -129,40 +129,42 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get 5 random country names in different languages/nomenclatures</span></span>
 <span><span class="fu"><a href="reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Congo"      "Qatar"      "Zimbabwe"   "Estonia"    "Tajikistan"</span></span>
+<span><span class="co">#&gt; [1] "Congo"       "Guinea"      "Isle of Man" "Albania"     "Colombia"</span></span>
 <span><span class="fu"><a href="reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span>, nomenclature <span class="op">=</span> <span class="st">"ISO3"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "SJM" "ESH" "MTQ" "TLS" "IND"</span></span>
+<span><span class="co">#&gt; [1] "CAN" "PAN" "MYS" "DZA" "KWT"</span></span>
 <span><span class="fu"><a href="reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">5</span>, nomenclature <span class="op">=</span> <span class="st">"name_ar"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "سيشل"                   "اليمن"                  "جمهورية أفريقيا الوسطى"</span></span>
-<span><span class="co">#&gt; [4] "الأرجنتين"              "واليس وفوتونا"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "ليتوانيا" "جزر كوك"  "ناورو"    "سوريا"    "مولدوفا"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="getting-information-about-countries">Getting information about countries<a class="anchor" aria-label="anchor" href="#getting-information-about-countries"></a>
 </h2>
-<p><code><a href="reference/country_info.html">country_info()</a></code> allows to download a variety of information about countries from <a href="https://restcountries.com/" class="external-link">REST Countries API</a>, such as: currencies used, capital city, language spoken, flag, neighbouring countries, and much more. You can find <a href="https://fbellelli.github.io/countries/reference/country_info.html">more information about this function</a> in the documentation.</p>
+<p><code><a href="reference/country_info.html">country_info()</a></code> allows to download a variety of information about countries from <a href="https://restcountries.com/" class="external-link">REST Countries API</a>, such as: currencies used, capital city, language spoken, flag, neighbouring countries, and much more. You can find <a href="https://fbellelli.github.io/countries/reference/country_info.html">more information about this function</a> in the documentation. <strong>Since 2026, a personal API key is needed to authenticate the requests, it can be obtained for free on the API website</strong> <a href="https://restcountries.com/" class="external-link">REST Countries API</a>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># What are the official languages of Switzerland?</span></span>
-<span><span class="fu"><a href="reference/country_info.html">country_info</a></span><span class="op">(</span><span class="st">"Switzerland"</span>, <span class="st">"languages"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     countries                              languages</span></span>
-<span><span class="co">#&gt; 1 Switzerland French; Swiss German; Italian; Romansh</span></span>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># check what information is available from the API</span></span>
+<span><span class="fu"><a href="reference/list_fields.html">list_fields</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Get information on the capital name and currencies for multiple countries</span></span>
-<span><span class="fu"><a href="reference/country_info.html">country_info</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Canada"</span>, <span class="st">"Mozambique"</span>, <span class="st">"India"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"capital"</span>, <span class="st">"currencies"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    countries   capital    currencies.name currencies.symbol</span></span>
-<span><span class="co">#&gt; 1     Canada    Ottawa    Canadian dollar                 $</span></span>
-<span><span class="co">#&gt; 2 Mozambique    Maputo Mozambican metical                MT</span></span>
-<span><span class="co">#&gt; 3      India New Delhi       Indian rupee                 ₹</span></span></code></pre></div>
+<span><span class="co"># download all the API information for all the countries</span></span>
+<span><span class="fu"><a href="reference/country_info.html">country_info</a></span><span class="op">(</span>key <span class="op">=</span> <span class="st">"YOUR_KEY"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># What are the official languages of Switzerland?</span></span>
+<span><span class="fu"><a href="reference/country_info.html">country_info</a></span><span class="op">(</span>key <span class="op">=</span> <span class="st">"YOUR_KEY"</span>, <span class="st">"Switzerland"</span>, <span class="st">"languages"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Get information on the capitals and currencies for multiple countries</span></span>
+<span><span class="fu"><a href="reference/country_info.html">country_info</a></span><span class="op">(</span>key <span class="op">=</span> <span class="st">"YOUR_KEY"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"South Africa"</span>, <span class="st">"Mozambique"</span>, <span class="st">"India"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"capitals"</span>, <span class="st">"currencies"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="easy-country-maps">Easy country maps<a class="anchor" aria-label="anchor" href="#easy-country-maps"></a>
 </h2>
 <p>With <code><a href="reference/quick_map.html">quick_map()</a></code>, it takes only one line of code to produce <a href="https://en.wikipedia.org/wiki/Choropleth_map" class="external-link">chloropleth maps</a>. It automatically recognises country names in multiple languages and nomenclatures. This allows to produce publication-grade maps in seconds. Moreover, the output is a ggplot object, so the visual look can be customised in infinite ways. You can find <a href="https://fbellelli.github.io/countries/articles/quick_map.html">more examples in this article</a>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># downloading some sample data to plot</span></span>
-<span><span class="va">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/country_info.html">country_info</a></span><span class="op">(</span>fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"car"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># creating some sample data to plot</span></span>
+<span><span class="va">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>country <span class="op">=</span> <span class="fu"><a href="reference/random_countries.html">random_countries</a></span><span class="op">(</span><span class="fl">200</span><span class="op">)</span>,</span>
+<span>                           random_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Group"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, size <span class="op">=</span> <span class="fl">200</span>, replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># make a map</span></span>
-<span><span class="fu"><a href="reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">example_data</span>, plot_col <span class="op">=</span> <span class="st">"car.side"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/quick_map.html">quick_map</a></span><span class="op">(</span><span class="va">example_data</span>, plot_col <span class="op">=</span> <span class="st">"random_group"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/unnamed-chunk-8-1.png" width="100%"></p>
 </div>
 <div class="section level2">
@@ -197,14 +199,14 @@
 <span><span class="co">#&gt;    country world_cups HS_chapter volume time Table4_pivoted_values</span></span>
 <span><span class="co">#&gt; 1      ITA          4          9   1000   NA                    NA</span></span>
 <span><span class="co">#&gt; 2      ITA          4         85   2000   NA                    NA</span></span>
-<span><span class="co">#&gt; 3      PAK          0         NA     NA 2010             0.2321350</span></span>
-<span><span class="co">#&gt; 4      PAK          0         NA     NA 2011             0.4595047</span></span>
-<span><span class="co">#&gt; 5      BRA          5         NA     NA 2010             0.1800116</span></span>
-<span><span class="co">#&gt; 6      BRA          5         NA     NA 2011             0.2851784</span></span>
-<span><span class="co">#&gt; 7      DEU         NA          9    800 2010             0.1630334</span></span>
-<span><span class="co">#&gt; 8      DEU         NA          9    800 2011             0.7002998</span></span>
-<span><span class="co">#&gt; 9      DEU         NA         85   5000 2010             0.1630334</span></span>
-<span><span class="co">#&gt; 10     DEU         NA         85   5000 2011             0.7002998</span></span>
+<span><span class="co">#&gt; 3      PAK          0         NA     NA 2010             0.6589145</span></span>
+<span><span class="co">#&gt; 4      PAK          0         NA     NA 2011             0.3934466</span></span>
+<span><span class="co">#&gt; 5      BRA          5         NA     NA 2010             0.4665325</span></span>
+<span><span class="co">#&gt; 6      BRA          5         NA     NA 2011             0.7978796</span></span>
+<span><span class="co">#&gt; 7      DEU         NA          9    800 2010             0.2339758</span></span>
+<span><span class="co">#&gt; 8      DEU         NA          9    800 2011             0.1988923</span></span>
+<span><span class="co">#&gt; 9      DEU         NA         85   5000 2010             0.2339758</span></span>
+<span><span class="co">#&gt; 10     DEU         NA         85   5000 2011             0.1988923</span></span>
 <span><span class="co">#&gt;             Description</span></span>
 <span><span class="co">#&gt; 1  Coffee, tea and mate</span></span>
 <span><span class="co">#&gt; 2  Electrical machinery</span></span>
