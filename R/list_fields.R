@@ -16,7 +16,12 @@
 list_fields <- function(){
 
   # download all country data to get all possible fields
-  temp <- country_info(key = "rc_live_demo")
+  tryCatch({
+    temp <- country_info(key = "rc_live_demo")
+  }, error = function(e) {
+    warning(paste("Unable to execute API call:", as.character(e$message)))
+    temp <- NULL
+  })
 
   # extract and clean column names to remove sub-fields
   col_names <- colnames(temp)

@@ -137,7 +137,11 @@ country_info <- function(key, countries = NULL, fields = NULL, fuzzy_match = TRU
     )
 
     # check fo errors before attempting to parse
-    stop_for_status(response)
+    warn_for_status(response)
+    if (response$status_code != 200){
+      warning("Request failed")
+      return(data.frame(Result = "API call failed (see warning message)"))
+    }
 
     # Parse the response into JSON and flatten the nested objects
     parsed_data <- jsonlite::fromJSON(content(response, as = "text", encoding = "UTF-8"), flatten = TRUE)

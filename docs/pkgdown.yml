@@ -1,12 +1,12 @@
-pandoc: '3.4'
-pkgdown: 2.1.1
+pandoc: 3.8.3
+pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   auto_merge: auto_merge.html
   data_structure: data_structure.html
   dealing_with_names: dealing_with_names.html
   quick_map: quick_map.html
-last_built: 2026-06-16T09:09Z
+last_built: 2026-07-18T08:42Z
 urls:
   reference: https://fbellelli.github.io/countries/reference
   article: https://fbellelli.github.io/countries/articles

@@ -1,0 +1,272 @@
+# Simplified merging supporting different country nomenclatures and date formats
+
+The aim of this function is to simplify country data merging for quick
+analyses. Compared to a normal merge function `auto_merge()`:
+
+- Is able to perform the merging of multiple data tables at once.
+
+- Supports automatic detection of columns to merge.
+
+- It is able to handle different country naming conventions and date
+  formats. For example, it will be able to recognise that "Italy" and
+  "ITA" refer to the same country and will merge the two entries across
+  tables.
+
+- It detects if data is in a wide format with country names or years in
+  the column names and will automatically pivot the data.
+
+## Usage
+
+``` r
+auto_merge(
+  ...,
+  by = NULL,
+  country_to = "ISO3",
+  inner_join = FALSE,
+  merging_info = FALSE,
+  verbose = TRUE,
+  auto_melt = TRUE
+)
+```
+
+## Arguments
+
+- ...:
+
+  Data to be merged. Inputs need to be data frames or coercible to data
+  frame. Tables can also be provided into a single list e.g.
+  `tab1, tab2, tab3` or `list(tab1, tab2, tab3)`.
+
+- by:
+
+  A list or a vector indicating the columns to be used for merging the
+  data. *If not provided, the function will try to automatically detect
+  columns to be merged*. For more information, refer to the details
+  sections.
+
+- country_to:
+
+  Nomenclature to which country names should be converted to in the
+  output. Default is `ISO3`. For a description of possible options,
+  refer to the table in the vignette [Dealing with country
+  names](https://fbellelli.github.io/countries/articles/dealing_with_names.html).
+
+- inner_join:
+
+  Logical value indicating whether to perform an inner join. The default
+  is `FALSE`, which results in a full join of the provided tables.
+
+- merging_info:
+
+  Logical value. If `TRUE`, the function will output a list containing
+  the merged data and information generated during the merging process,
+  such as information on columns that have been merged or the conversion
+  table used for country names. The default is `FALSE`, which results
+  into a single merged table being returned.
+
+- verbose:
+
+  Logical value indicating whether to print status messages on the
+  console. Default is `TRUE`.
+
+- auto_melt:
+
+  Logical value indicating whether to automatically pivot country names
+  or years present in the column names. Default is `TRUE`. When at least
+  3 country names or years are found in the column names, the function
+  will automatically transform the table from a wide to a long format by
+  pivoting the country/year columns.
+
+## Value
+
+If `merging_info = FALSE` a single merged table is returned. If
+`merging_info = TRUE`, a list object is returned, containing the merged
+table (`merged_table`), a table summarising which columns have been
+merged (`info_merged_columns`), a table summarising the conversion of
+country names (`info_country_names`), a table summarising the conversion
+of time columns to a common format (`info_time_formats`), a list of all
+the columns that have been pivoted when wide tables with country or
+years in column names were detected (`pivoted_columns`), a list
+recapitulating the inputs passed to the function (`call`).
+
+## Details
+
+**Automatic detection of columns to merge**. The automatic detection
+process starts by first identifying the key of each table, i.e. a set of
+variables identifying the entries in the table. This process is
+optimised for common formats of country data. The function will then try
+to match key columns across tables based on their values. Columns
+containing country names and time information are identified and are
+processed to take into account different nomenclatures and time formats.
+This automatic process works for the most common dataset structures, but
+it is not foolproof. Therefore, we always advise to check the columns
+that are being merged by setting `verbose = TRUE` and reading the
+printout. Moreover, users should be aware that this automatic detection
+process can increase the overall merging time considerably. This can be
+especially long for tables containing many columns or when a large
+number of tables is being merged.
+
+**Formatting of `by` argument** If an argument is provided to `by`, it
+needs to be either 1) a list of column names, or 2) a vector of regular
+expressions. The format requirements are the following:
+
+1.  In case a **list** is passed, each element of the list must be a
+    vector of length equal to the number of tables being merged (i.e.,
+    if 3 tables are being merged, the list needs to contain all vectors
+    of length 3). The vectors should contain the names of columns to be
+    merged in each table, `NA` can be inserted for tables that do not
+    contain the variable, and names should be ordered in the same order
+    of the tables that are being merged (i.e. the first column name
+    should be present in the first table being merged). The name of the
+    merged columns can be modified by assigning a name to the elements
+    of the list. For example,
+    `list("countries"=c("Nation",NA,"COUNTRY"), "sector"=c("Industry","industry",NA))`
+    is requesting to merge the columns `tab1$Nation` and `tab3$COUNTRY`,
+    and the columns `tab1$Industry` and `tab2$industry`. These two
+    merged columns will be named `"countries"` and `"sector"` in the
+    output, as requested by the user.
+
+2.  In case a **vector** is passed, each element is interpreted as a
+    regular expression to be used for matching the columns to be merged.
+    For example, the same order provided in the list example could be
+    written as
+    `c("countries"="Nation|COUNTRY", "sector"="[Ii]ndustry")`. This will
+    merge the first column in each table whose name matches the pattern
+    described by the regular expression and will name the two resulting
+    columns as `"countries"` and `"sector"` respectively.
+
+## See also
+
+[country_name](https://fbellelli.github.io/countries/reference/country_name.md),
+[find_keycol](https://fbellelli.github.io/countries/reference/find_keycol.md)
+
+## Examples
+
+``` r
+# sample data
+tab1 <- data.frame(Industry = c(1, 1, 2, 2), Nation = c("ITA", "FRA", "ITA", "FRA"), tot = runif(4))
+tab2 <- data.frame(industry = 1:4, rate = runif(1:4))
+tab3 <- data.frame(COUNTRY = c("United States", "France", "India"), national_avg = runif(3))
+
+# examples of merging orders
+auto_merge(tab1, tab2, tab3)
+#> Identifying columns to merge
+#> Data type for variable Industry differ across tables - converting to character
+#> Converting country names
+#> The following columns are being merged:
+#> 
+#> =======  =======  ========
+#> \        country  Industry
+#> =======  =======  ========
+#> Table 1  Nation   Industry
+#> Table 2           industry
+#> Table 3  COUNTRY          
+#> =======  =======  ========
+#> 
+                                              
+Performing merge: 2/2 
+                                              
+Performing merge: 1/2 
+                                              
+Merge complete
+#> (Set merging_info to TRUE to save merging details)
+#>   Industry country        tot national_avg        rate
+#> 1        1     ITA 0.08075014           NA 0.007399441
+#> 2        1     FRA 0.83433304    0.7725215 0.007399441
+#> 3        2     ITA 0.60076089           NA 0.466393497
+#> 4        2     FRA 0.15720844    0.7725215 0.466393497
+#> 5     <NA>     USA         NA    0.7328820          NA
+#> 6     <NA>     IND         NA    0.8746007          NA
+#> 7        3    <NA>         NA           NA 0.497777389
+#> 8        4    <NA>         NA           NA 0.289767245
+auto_merge(list(tab1, tab2, tab3))
+#> Identifying columns to merge
+#> Data type for variable Industry differ across tables - converting to character
+#> Converting country names
+#> The following columns are being merged:
+#> 
+#> =======  =======  ========
+#> \        country  Industry
+#> =======  =======  ========
+#> Table 1  Nation   Industry
+#> Table 2           industry
+#> Table 3  COUNTRY          
+#> =======  =======  ========
+#> 
+                                              
+Performing merge: 2/2 
+                                              
+Performing merge: 1/2 
+                                              
+Merge complete
+#> (Set merging_info to TRUE to save merging details)
+#>   Industry country        tot national_avg        rate
+#> 1        1     ITA 0.08075014           NA 0.007399441
+#> 2        1     FRA 0.83433304    0.7725215 0.007399441
+#> 3        2     ITA 0.60076089           NA 0.466393497
+#> 4        2     FRA 0.15720844    0.7725215 0.466393497
+#> 5     <NA>     USA         NA    0.7328820          NA
+#> 6     <NA>     IND         NA    0.8746007          NA
+#> 7        3    <NA>         NA           NA 0.497777389
+#> 8        4    <NA>         NA           NA 0.289767245
+auto_merge(tab1, tab2, tab3, by = c("countries"="Nation|COUNTRY", "sector"="[Ii]ndustry"))
+#> Identifying columns to merge
+#> Data type for variable sector differ across tables - converting to character
+#> Converting country names
+#> The following columns are being merged:
+#> 
+#> =======  =========  ========
+#> \        countries  sector  
+#> =======  =========  ========
+#> Table 1  Nation     Industry
+#> Table 2             industry
+#> Table 3  COUNTRY            
+#> =======  =========  ========
+#> 
+                                              
+Performing merge: 2/2 
+                                              
+Performing merge: 1/2 
+                                              
+Merge complete
+#> (Set merging_info to TRUE to save merging details)
+#>   sector countries        tot national_avg        rate
+#> 1      1       ITA 0.08075014           NA 0.007399441
+#> 2      1       FRA 0.83433304    0.7725215 0.007399441
+#> 3      2       ITA 0.60076089           NA 0.466393497
+#> 4      2       FRA 0.15720844    0.7725215 0.466393497
+#> 5   <NA>       USA         NA    0.7328820          NA
+#> 6   <NA>       IND         NA    0.8746007          NA
+#> 7      3      <NA>         NA           NA 0.497777389
+#> 8      4      <NA>         NA           NA 0.289767245
+auto_merge(tab1, tab2, tab3, country_to = "UN_fr")
+#> Identifying columns to merge
+#> Data type for variable Industry differ across tables - converting to character
+#> Converting country names
+#> The following columns are being merged:
+#> 
+#> =======  =======  ========
+#> \        country  Industry
+#> =======  =======  ========
+#> Table 1  Nation   Industry
+#> Table 2           industry
+#> Table 3  COUNTRY          
+#> =======  =======  ========
+#> 
+                                              
+Performing merge: 2/2 
+                                              
+Performing merge: 1/2 
+                                              
+Merge complete
+#> (Set merging_info to TRUE to save merging details)
+#>   Industry               country        tot national_avg        rate
+#> 1        1                Italie 0.08075014           NA 0.007399441
+#> 2        1                France 0.83433304    0.7725215 0.007399441
+#> 3        2                Italie 0.60076089           NA 0.466393497
+#> 4        2                France 0.15720844    0.7725215 0.466393497
+#> 5     <NA> États-Unis d’Amérique         NA    0.7328820          NA
+#> 6     <NA>                  Inde         NA    0.8746007          NA
+#> 7        3                  <NA>         NA           NA 0.497777389
+#> 8        4                  <NA>         NA           NA 0.289767245
+```

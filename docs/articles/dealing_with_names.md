@@ -1,0 +1,274 @@
+# Dealing with country names
+
+## Identifying country names
+
+The function
+[`is_country()`](https://fbellelli.github.io/countries/reference/is_country.md)
+allows to check whether a string is a country name. The argument
+`fuzzy_match` can be used to increase tolerance and allow for small
+typos in the names.
+
+``` r
+
+is_country(c("United States","Unated States","dot","DNK",123), fuzzy_match = FALSE) # FALSE is the default and will run faster
+#> [1]  TRUE FALSE FALSE  TRUE FALSE
+is_country(c("United States","Unated States","dot","DNK",123), fuzzy_match = TRUE)
+#> [1]  TRUE  TRUE FALSE  TRUE FALSE
+```
+
+Furthermore,
+[`is_country()`](https://fbellelli.github.io/countries/reference/is_country.md)
+can also be used to check for a specific subset of countries. In the
+following example, the function is used to test whether the string
+relates to India or Sri Lanka, while allowing for different naming
+conventions and languages.
+
+``` r
+
+is_country(x=c("Ceylon","LKA","Indonesia","Inde"), check_for=c("India","Sri Lanka"))
+#> [1]  TRUE  TRUE FALSE  TRUE
+```
+
+Finally, the package also provides the function
+[`find_countrycol()`](https://fbellelli.github.io/countries/reference/find_countrycol.md),
+which can be used to find which columns in a data frame contain country
+names.
+
+## Getting a list of country names
+
+The functions
+[`list_countries()`](https://fbellelli.github.io/countries/reference/list_countries.md)
+and
+[`random_countries()`](https://fbellelli.github.io/countries/reference/random_countries.md)
+allow to get a list of country names. The former will return a list of
+ALL countries, while the second provides `n` randomly picked countries.
+
+``` r
+
+random_countries(5)
+#> [1] "Peru"                                   
+#> [2] "Mozambique"                             
+#> [3] "Slovenia"                               
+#> [4] "Korea (Democratic People's Republic of)"
+#> [5] "Turks and Caicos Islands"
+list_countries()[1:5]
+#> [1] "Afghanistan"    "Åland Islands"  "Albania"        "Algeria"       
+#> [5] "American Samoa"
+```
+
+The function allows to request country names in different languages and
+nomenclatures. The list of all possible languages and nomenclatures is
+available in the next section.
+
+``` r
+
+random_countries(5, nomenclature = "ISO3")
+#> [1] "HMD" "IRL" "CHN" "NIC" "SAU"
+random_countries(5, nomenclature = "name_ar")
+#> [1] "توفالو"          "سنغافورة"        "السنغال"         "ساموا الأمريكية"
+#> [5] "بنين"
+```
+
+## Converting and translating country names
+
+The function
+[`country_name()`](https://fbellelli.github.io/countries/reference/country_name.md)
+can be used to convert country names to different naming conventions or
+to translate them to different languages.
+
+``` r
+
+example <- c("United States","DR Congo", "Morocco")
+
+# Getting 3-letters ISO code
+country_name(x= example, to="ISO3")
+#> [1] "USA" "COD" "MAR"
+
+# Translating to Spanish
+country_name(x= example, to="name_es")
+#> [1] "Estados Unidos"                  "República Democrática del Congo"
+#> [3] "Marruecos"
+```
+
+If multiple arguments are passed to the argument `to`, the function will
+output a `data.frame` object, with one column corresponding to every
+naming convention.
+
+``` r
+
+# Requesting 2-letter ISO codes and translation to Spanish and French
+country_name(x= example, to=c("ISO2","name_es","name_fr"))
+#>   ISO2                         name_es                          name_fr
+#> 1   US                  Estados Unidos                       États-Unis
+#> 2   CD República Democrática del Congo République démocratique du Congo
+#> 3   MA                       Marruecos                            Maroc
+```
+
+The `to` argument supports all the following naming conventions:
+
+| CODE | DESCRIPTION |
+|:---|:---|
+| **simple** | This is a simple english version of the name containing only ASCII characters. This nomenclature is available for all countries. |
+| **ISO3** | 3-letter country codes as defined in ISO standard `3166-1 alpha-3`. This nomenclature is available only for the territories in the standard (currently 249 territories). |
+| **ISO2** | 2-letter country codes as defined in ISO standard `3166-1 alpha-2`. This nomenclature is available only for the territories in the standard (currently 249 territories). |
+| **ISO_code** | Numeric country codes as defined in ISO standard `3166-1 numeric`. This country code is the same as the UN’s country number (M49 standard). This nomenclature is available for the territories in the ISO standard (currently 249 countries). |
+| **UN\_**xx | Official UN name in 6 official UN languages. Arabic (`UN_ar`), Chinese (`UN_zh`), English (`UN_en`), French (`UN_fr`), Spanish (`UN_es`), Russian (`UN_ru`). This nomenclature is only available for countries in the M49 standard (currently 249 territories). |
+| **WTO\_**xx | Official WTO name in 3 official WTO languages: English (`WTO_en`), French (`WTO_fr`), Spanish (`WTO_es`). This nomenclature is only available for WTO members and observers (currently 189 entities). |
+| **name\_**xx | Translation of ISO country names in 28 different languages: Arabic (`name_ar`), Bulgarian (`name_bg`), Czech (`name_cs`), Danish (`name_da`), German (`name_de`), Greek (`name_el`), English (`name_en`), Spanish (`name_es`), Estonian (`name_et`), Basque (`name_eu`), Finnish (`name_fi`), French (`name_fr`), Hungarian (`name_hu`), Italian (`name_it`), Japponease (`name_ja`), Korean (`name_ko`), Lithuanian (`name_lt`), Dutch (`name_nl`), Norwegian (`name_no`), Polish (`name_po`), Portuguese (`name_pt`), Romenian (`name_ro`), Russian (`name_ru`), Slovak (`name_sk`), Swedish (`name_sv`), Thai (`name_th`), Ukranian (`name_uk`), Chinese simplified (`name_zh`), Chinese traditional (`name_zh-tw`) |
+| **GTAP** | GTAP country and region codes. |
+| **all** | Converts to all the nomenclatures and languages in this table |
+
+### Further options and warning messages
+
+[`country_name()`](https://fbellelli.github.io/countries/reference/country_name.md)
+can identify countries even when they are provided in mixed formats or
+in different languages. It is robust to small misspellings and
+recognises alternative name formulations and old nomenclatures.
+
+``` r
+
+fuzzy_example <- c("US","C@ète d^Ivoire","Zaire","FYROM","Estados Unidos","ITA","blablabla")
+
+country_name(x= fuzzy_example, to=c("UN_en"))
+#> Multiple country IDs have been matched to the same country name.
+#> There is low confidence on the matching of some country names, NA returned.
+#> 
+#> Set - verbose - to TRUE for more details
+#> [1] "United States of America"         "Côte d’Ivoire"                   
+#> [3] "Democratic Republic of the Congo" "North Macedonia"                 
+#> [5] "United States of America"         "Italy"                           
+#> [7] NA
+```
+
+More information on the country matching process can be obtained by
+setting `verbose=TRUE`. The function will print information on:
+
+- The number of unique values provided by the user. In the example below
+  7 distinct strings have been provided.
+- How many country names correspond exactly to the ones in the
+  function’s reference list and how many have been processed with fuzzy
+  matching. In the example below, `"C@ète d^Ivoire"` and `"blablabla"`
+  are the only names processed with fuzzy matching. The function’s
+  reference table can be accessed with the command
+  `data(country_reference_list)`. Finally, if any match is poor, the
+  function will print the number of country names which are probably
+  mismatched (in this example only `"blablabla"`).
+
+``` r
+
+country_name(x= fuzzy_example, to=c("UN_en"), verbose=TRUE)
+#> 
+#> In total 7 unique country names were provided
+#> 5/7 have been matched with EXACT matching
+#> 2/7 have been matched with FUZZY matching, out of which:
+#> 1/2 are a POOR match (likely wrongly identified)
+#> 
+#> 
+#> Multiple arguments have been matched to the same country name:
+#>   - Estados Unidos : United States of America 
+#>   - US : United States of America
+#> 
+#> No close match found for the following countries, NA returned:
+#> (set - poor_matches - to TRUE if you want the closest match to be returned or set - na_fill - to TRUE if you wish to fill the NAs with the original name supplied in - x)
+#>  - blablabla
+#> [1] "United States of America"         "Côte d’Ivoire"                   
+#> [3] "Democratic Republic of the Congo" "North Macedonia"                 
+#> [5] "United States of America"         "Italy"                           
+#> [7] NA
+```
+
+In addition, setting `verbose=TRUE` will also print additional
+informations relating to specific warnings that are normally given by
+the function:
+
+- `Multiple country IDs have been matched to the same country name`:
+  This warning is issued if multiple strings have been matched to the
+  same country. In verbose mode, the strings and corresponding countries
+  will be listed. In the example above, both `"US"` and
+  `"Estados Unidos"` are matched to the same country. If the vector of
+  country names is a unique identifier, this could indicate that some
+  country name was not recognised correctly. The user might consider
+  using custom tables (refer to the next section).
+- `Unable to find an EXACT match for all country names`: indicates that
+  it is impossible to find an exact match for one or more country names
+  with `fuzzy_match=FALSE`. The user might consider using
+  `fuzzy_match=TRUE` or custom tables (refer to the next section).
+- `There is low confidence on the matching of some country names`: This
+  warning indicates that some strings have been matched poorly. Thus
+  indicating that the country might have been misidentified. In verbose
+  mode the function will provide a list of problematic strings (see the
+  example below). If `poor_matches` is set to `FALSE` (the default), the
+  function will return `NA` for these uncertain string. On the other
+  hand, if `poor_matches=TRUE` the function will always return the
+  closest match, even if poor. The user might consider using custom
+  tables to solve issues with misidentification of country names (refer
+  to the next section). Alternatively, the user can set `na_fill=TRUE`
+  to replace the resulting `NA`s with the original name provided in `x`.
+- `Some country IDs have no match in one or more country naming conventions`:
+  Conversion is requested to a nomenclature for which there is no
+  information on the country. For instance, in the example below
+  “Taiwan” has no correspondence in the [UN M49
+  standard](https://unstats.un.org/unsd/methodology/m49/). In verbose
+  mode, the function will print all the country names affected by this
+  problem. The user might consider using custom tables to solve this
+  type of issues (refer to the next section). Alternatively, the user
+  can set `na_fill=TRUE` to replace the resulting `NA`s with the
+  original name provided in `x`.
+
+``` r
+
+country_name(x= c("Taiwan","lsajdèd"), to=c("UN_en"), verbose=FALSE)
+#> Some country IDs have no match in one or more of the requested country naming conventions, NA returned.
+#> There is low confidence on the matching of some country names, NA returned.
+#> 
+#> Set - verbose - to TRUE for more details
+#> [1] NA NA
+
+country_name(x= c("Taiwan","lsajdèd"), to=c("UN_en"), verbose=FALSE, na_fill = TRUE)
+#> Some country IDs have no match in one or more of the requested country naming conventions, used original name to fill the NAs.
+#> There is low confidence on the matching of some country names, keeping the original names in - x.
+#> 
+#> Set - verbose - to TRUE for more details
+#> [1] "Taiwan"  "lsajdèd"
+```
+
+All the information from verbose mode can be accessed by setting
+´simplify=FALSE´. This will return a list object containing:
+
+- `converted_data`: the normal output of the function
+- `match_table`: the conversion table with information on the closest
+  match for each country name and distance metrics.
+- `summary`: summary values for the distance metrics
+- `warning`: logical value indicating whether a warning is issued by the
+  function
+- `call`: the arguments passed by the user
+
+## Using custom conversion tables
+
+In some cases, the user might be unhappy with the naming conversion or
+no valid conversion might exist for the provided territory. In these
+cases, it might be useful to tweak the conversion table. The package
+contains a utility function called
+[`match_table()`](https://fbellelli.github.io/countries/reference/match_table.md),
+which can be used to generate conversion tables for small adjustments.
+
+``` r
+
+example_custom <- c("Siam","Burma","H#@°)Koe2")
+
+#suppose we are unhappy with how "H#@°)Koe2" is interpreted by the function
+country_name(x = example_custom, to = "name_en")
+#> There is low confidence on the matching of some country names, NA returned.
+#> 
+#> Set - verbose - to TRUE for more details
+#> [1] "Thailand" "Myanmar"  NA
+
+#match_table can be used to generate a table for small adjustments
+tab <- match_table(x = example_custom, to = "name_en")
+#> There is low confidence on the matching of some country names, returning the closest match.
+tab$name_en[2] <- "Hong Kong"
+
+#which can then be used for conversion
+country_name(x = example_custom, to = "name_en", custom_table = tab)
+#> [1] "Thailand"  "Myanmar"   "Hong Kong"
+```
