@@ -1,3 +1,6 @@
+# countries 1.2.5
+* Updated data for Naoro's name change
+
 # countries 1.2.4
 * Bug fixes
 

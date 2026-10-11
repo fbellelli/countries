@@ -25,6 +25,7 @@ download.file("https://fbellelli.com/data%20files/Extended%20EDB%20by%20measure-
 
 #unzip and load it in R
 library(data.table)
+#> Warning: package 'data.table' was built under R version 4.6.1
 #> 
 #> Attaching package: 'data.table'
 #> The following object is masked from 'package:base':

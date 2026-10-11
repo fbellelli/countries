@@ -35,6 +35,7 @@ list_fields()
 #> [13] "population"      "timezones"       "tlds"            "uuid"           
 #> [17] "names"           "codes"           "flag"            "area"           
 #> [21] "cars"            "classification"  "coordinates"     "date"           
-#> [25] "demonyms"        "economy"         "links"           "memberships"    
-#> [29] "number_format"   "parent"          "postal_code"     "units"          
+#> [25] "demonyms"        "descriptions"    "economy"         "links"          
+#> [29] "memberships"     "number_format"   "parent"          "postal_code"    
+#> [33] "units"          
 ```

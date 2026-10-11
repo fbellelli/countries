@@ -92,15 +92,12 @@ while the second provides `n` randomly picked countries.
 ``` r
 # Get 5 random country names in different languages/nomenclatures
 random_countries(5)
-#> [1] "Georgia"  "Tuvalu"   "Zambia"   "Barbados" "Turkey"
+#> [1] "Seychelles"  "Isle of Man" "Burundi"     "Bahamas"     "Ireland"
 random_countries(5, nomenclature = "ISO3")
-#> [1] "LCA" "BRA" "WLF" "SHN" "FRA"
+#> [1] "IOT" "TJK" "UGA" "VIR" "MNG"
 random_countries(5, nomenclature = "name_ar")
-#> [1] "سان مارينو"                           
-#> [2] "جيبوتي"                               
-#> [3] "سانت هيلانة وأسينشين وتريستان دا كونا"
-#> [4] "جزر ماريانا الشمالية"                 
-#> [5] "غانا"
+#> [1] "المملكة المتحدة" "إسرائيل"         "البوسنة والهرسك" "أوكرانيا"       
+#> [5] "أفغانستان"
 ```
 
 ## Getting information about countries
@@ -189,14 +186,14 @@ auto_merge(tab1, tab2, tab3, tab4)
 #>    country world_cups HS_chapter volume time Table4_pivoted_values
 #> 1      ITA          4          9   1000   NA                    NA
 #> 2      ITA          4         85   2000   NA                    NA
-#> 3      PAK          0         NA     NA 2010            0.94856283
-#> 4      PAK          0         NA     NA 2011            0.01944021
-#> 5      BRA          5         NA     NA 2010            0.36460499
-#> 6      BRA          5         NA     NA 2011            0.95757954
-#> 7      DEU         NA          9    800 2010            0.58601106
-#> 8      DEU         NA          9    800 2011            0.52684820
-#> 9      DEU         NA         85   5000 2010            0.58601106
-#> 10     DEU         NA         85   5000 2011            0.52684820
+#> 3      PAK          0         NA     NA 2010             0.7387109
+#> 4      PAK          0         NA     NA 2011             0.1919059
+#> 5      BRA          5         NA     NA 2010             0.3969679
+#> 6      BRA          5         NA     NA 2011             0.5898195
+#> 7      DEU         NA          9    800 2010             0.3752516
+#> 8      DEU         NA          9    800 2011             0.8537194
+#> 9      DEU         NA         85   5000 2010             0.3752516
+#> 10     DEU         NA         85   5000 2011             0.8537194
 #>             Description
 #> 1  Coffee, tea and mate
 #> 2  Electrical machinery

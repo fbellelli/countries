@@ -1,6 +1,12 @@
 # Changelog
 
+## countries 1.2.5
+
+- Updated data for Naoro’s name change
+
 ## countries 1.2.4
+
+CRAN release: 2026-07-18
 
 - Bug fixes
 
