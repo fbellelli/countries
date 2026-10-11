@@ -4,4 +4,4 @@
 
 
 ## Changes
-* In this version I have: small adjustments to make functions dependent on internet fail more gracefully
+* In this version I have updated the package data
